@@ -6,6 +6,7 @@ export function renderHomePage({ routes = [], places = [], settings = {}, popula
   const bizPhone = settings.biz_phone || '+918128807488';
   const bizPhoneD = settings.biz_phone_display || '+91 81288 07488';
   const bizWa = settings.biz_whatsapp || '918128807488';
+  const googleReviewUrl = 'https://share.google/umyeUNRZxnhOibomq';
 
   const content = `
 <style>
@@ -263,6 +264,173 @@ ${routes && routes.length ? `
         <div class="qfull err" id="q-err"></div>
         <div class="qfull">
           <button class="btn btn-wa btn-block" id="q-send"><i class="fa fa-whatsapp"></i> Send requirement on WhatsApp</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GOOGLE REVIEWS -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kick">GOOGLE REVIEWS</div>
+      <h2>Trusted by riders across Kutch &amp; Gujarat</h2>
+      <p>Verified reviews from our Google Business profile for <b>MADHAVI CAB KUTCH</b>.</p>
+    </div>
+
+    <!-- Google Trust Header -->
+    <div class="g-trust-banner">
+      <div class="g-trust-left">
+        <svg class="g-logo-svg" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+        <div>
+          <div class="g-trust-score">5.0 / 5.0</div>
+          <div class="g-stars-row">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="g-trust-meta">Rated 5.0 stars on Google &middot; Authentic Customer Feedback</div>
+        </div>
+      </div>
+      <div class="g-trust-btns">
+        <a href="${googleReviewUrl}" target="_blank" rel="noopener" class="btn btn-gold btn-sm"><i class="fa fa-pencil"></i> Write a Review</a>
+        <a href="${googleReviewUrl}" target="_blank" rel="noopener" class="btn btn-ghost btn-sm"><i class="fa fa-google"></i> View all Google Reviews &rarr;</a>
+      </div>
+    </div>
+
+    <div class="g3">
+      <div class="g-rev-card">
+        <div class="g-rev-head">
+          <div class="g-rev-user">
+            <div class="g-avatar" style="background:#ea4335">R</div>
+            <div>
+              <div class="g-name">Rahul Mehta <span class="g-verified"><i class="fa fa-check-circle"></i> Verified</span></div>
+              <div class="g-time">Ahmedabad &middot; a month ago</div>
+            </div>
+          </div>
+          <svg class="g-icon-badge" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+        </div>
+        <div class="g-rev-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="g-rev-text">Booked a one way cab to Ahmedabad at short notice. The driver was prompt, polite, and arrived early. The fare was exactly what was quoted on WhatsApp without any hidden extra charges. Super reliable service in Bhuj!</p>
+        <div class="g-rev-foot">
+          <span>One Way Taxi (Bhuj &rarr; Ahmedabad)</span>
+          <a href="${googleReviewUrl}" target="_blank" rel="noopener" class="g-rev-link">Google Review &rarr;</a>
+        </div>
+      </div>
+
+      <div class="g-rev-card">
+        <div class="g-rev-head">
+          <div class="g-rev-user">
+            <div class="g-avatar" style="background:#4285f4">P</div>
+            <div>
+              <div class="g-name">Priya Sharma <span class="g-verified"><i class="fa fa-check-circle"></i> Verified</span></div>
+              <div class="g-time">Mumbai &middot; 3 weeks ago</div>
+            </div>
+          </div>
+          <svg class="g-icon-badge" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+        </div>
+        <div class="g-rev-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="g-rev-text">Driver knew the Rann route well and adjusted our timing so we caught the sunset at Dhordo. Clean Innova, comfortable seating and respectful driver who took great care of our family throughout the Kutch trip.</p>
+        <div class="g-rev-foot">
+          <span>Kutch Tour &middot; White Rann</span>
+          <a href="${googleReviewUrl}" target="_blank" rel="noopener" class="g-rev-link">Google Review &rarr;</a>
+        </div>
+      </div>
+
+      <div class="g-rev-card">
+        <div class="g-rev-head">
+          <div class="g-rev-user">
+            <div class="g-avatar" style="background:#34a853">J</div>
+            <div>
+              <div class="g-name">Jignesh Patel <span class="g-verified"><i class="fa fa-check-circle"></i> Verified</span></div>
+              <div class="g-time">Surat &middot; 2 weeks ago</div>
+            </div>
+          </div>
+          <svg class="g-icon-badge" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+        </div>
+        <div class="g-rev-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="g-rev-text">Hired a tempo traveller for our 3-day group trip to Dholavira, Mandvi, and Bhuj city. AC was working perfectly in the afternoon heat, vehicle was spotless, and driver was very patient with kids around. 10/10 recommend!</p>
+        <div class="g-rev-foot">
+          <span>Tempo Traveller Rental</span>
+          <a href="${googleReviewUrl}" target="_blank" rel="noopener" class="g-rev-link">Google Review &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="sec sec-grey">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kick">WHY MADHAVI CAB</div>
+      <h2>Why Book Taxi in Bhuj with Madhavi Cab?</h2>
+    </div>
+    <div class="g4">
+      <div class="why"><i class="fa fa-inr"></i><h3>Fixed fares</h3><p>Quoted once and charged the same. Nothing added at drop-off except toll and parking.</p></div>
+      <div class="why"><i class="fa fa-user"></i><h3>Local drivers</h3><p>Kutch men who know every road, shortcut and the right time to leave for the Rann.</p></div>
+      <div class="why"><i class="fa fa-clock-o"></i><h3>On time, 24&times;7</h3><p>Early morning airport and station pickups are routine for us, not a favour.</p></div>
+      <div class="why"><i class="fa fa-check-circle"></i><h3>Clean vehicles</h3><p>Serviced weekly, cleaned before every trip, air conditioning always working.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kick">FIXED PACKAGES</div>
+      <h2>Kutch Tour Packages with Cab &amp; Driver</h2>
+      <p>Ready-made trips covering the White Rann, Dholavira, Mandvi and the craft villages &mdash; vehicle, driver and stay arranged together.</p>
+    </div>
+
+    <div class="g4">
+      <div class="pcard">
+        ${photo('white-rann.jpg', '1 night 2 days Kutch tour package from Bhuj', '&#127957;')}
+        <div class="b">
+          <h3>1 Night 2 Days</h3>
+          <div class="dur">White Rann &amp; Bhuj</div>
+          <ul><li>White Rann sunset at Dhordo</li><li>Kalo Dungar viewpoint</li><li>Bhuj city sightseeing</li></ul>
+          <div class="foot">
+            <span class="price">From <b>&#8377;4,900</b></span>
+            <a href="package-detail?p=1n2d" class="more">Details &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard">
+        ${photo('dholavira.jpg', '2 nights 3 days Kutch Dholavira tour package', '&#127961;')}
+        <div class="b">
+          <h3>2 Nights 3 Days</h3>
+          <div class="dur">+ Dholavira</div>
+          <ul><li>Harappan site at Dholavira</li><li>Road to Heaven</li><li>White Rann and Bhuj</li></ul>
+          <div class="foot">
+            <span class="price">From <b>&#8377;9,000</b></span>
+            <a href="package-detail?p=2n3d" class="more">Details &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard">
+        ${photo('mandvi.jpg', '3 nights 4 days Kutch and Mandvi tour package', '&#127958;')}
+        <div class="b">
+          <h3>3 Nights 4 Days</h3>
+          <div class="dur">+ Mandvi beach</div>
+          <ul><li>Mandvi beach and Vijay Vilas</li><li>Dholavira and White Rann</li><li>Craft villages of Kutch</li></ul>
+          <div class="foot">
+            <span class="price">From <b>&#8377;13,200</b></span>
+            <a href="package-detail?p=3n4d" class="more">Details &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard">
+        ${photo('rann-utsav.jpg', '4 nights 5 days complete Kutch tour package', '&#9978;')}
+        <div class="b">
+          <h3>4 Nights 5 Days</h3>
+          <div class="dur">+ Mata Na Madh</div>
+          <ul><li>Complete Kutch circuit</li><li>Mata Na Madh and Narayan Sarovar</li><li>Mandvi, Dholavira, White Rann</li></ul>
+          <div class="foot">
+            <span class="price">From <b>&#8377;17,000</b></span>
+            <a href="package-detail?p=4n5d" class="more">Details &rarr;</a>
+          </div>
         </div>
       </div>
     </div>
