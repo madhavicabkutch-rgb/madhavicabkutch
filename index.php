@@ -623,36 +623,36 @@ $homePlaces = fetch_all("SELECT * FROM places WHERE is_active=1 ORDER BY sort_or
       <p>Common questions travelers ask about our car rental, one way taxi and Kutch tour packages.</p>
     </div>
 
-    <div class="faq-grid">
-      <div class="faq-item">
-        <h3>How do I book a cab with Madhavi Cab Kutch?</h3>
-        <p>You can book instantly by calling <a href="tel:<?php echo BIZ_PHONE; ?>"><?php echo BIZ_PHONE_D; ?></a> or sending your pickup point, drop location, and date on WhatsApp. We provide upfront fixed fare quotes within minutes with zero advance payment needed.</p>
-      </div>
+    <div class="faq">
+      <details open>
+        <summary>How do I book a cab with Madhavi Cab Kutch?</summary>
+        <div class="ans">You can book instantly by calling <a href="tel:<?php echo BIZ_PHONE; ?>"><?php echo BIZ_PHONE_D; ?></a> or sending your pickup point, drop location, and date on WhatsApp. We provide upfront fixed fare quotes within minutes with zero advance payment needed.</div>
+      </details>
 
-      <div class="faq-item">
-        <h3>Are one-way taxi fares charged for return travel?</h3>
-        <p>No. Our one-way taxi drops (such as Bhuj to Ahmedabad, Rajkot, or Mandvi) cover one direction only. You never pay for the vehicle's return trip.</p>
-      </div>
+      <details>
+        <summary>Are one-way taxi fares charged for return travel?</summary>
+        <div class="ans">No. Our one-way taxi drops (such as Bhuj to Ahmedabad, Rajkot, or Mandvi) cover one direction only. You never pay for the vehicle's return trip.</div>
+      </details>
 
-      <div class="faq-item">
-        <h3>Do you provide cabs for the White Rann (Dhordo) and Dholavira?</h3>
-        <p>Yes. We operate daily sightseeing cabs and tour packages covering the White Rann at Dhordo, Kalo Dungar viewpoint, the Road to Heaven, and the Dholavira UNESCO World Heritage site.</p>
-      </div>
+      <details>
+        <summary>Do you provide cabs for the White Rann (Dhordo) and Dholavira?</summary>
+        <div class="ans">Yes. We operate daily sightseeing cabs and tour packages covering the White Rann at Dhordo, Kalo Dungar viewpoint, the Road to Heaven, and the Dholavira UNESCO World Heritage site.</div>
+      </details>
 
-      <div class="faq-item">
-        <h3>Are toll taxes, parking, and driver charges included?</h3>
-        <p>Fuel, vehicle charges, and driver services are always included in the quote. Toll taxes and parking fees are charged transparently at actual government receipts.</p>
-      </div>
+      <details>
+        <summary>Are toll taxes, parking, and driver charges included?</summary>
+        <div class="ans">Fuel, vehicle charges, and driver services are always included in the quote. Toll taxes and parking fees are charged transparently at actual government receipts.</div>
+      </details>
 
-      <div class="faq-item">
-        <h3>Can I book early morning pickups from Bhuj Airport or Railway Station?</h3>
-        <p>Yes. We operate 24 hours a day, 7 days a week. Early morning train and flight arrivals at Bhuj Airport (BHJ) and Bhuj Railway Station are routine for our drivers.</p>
-      </div>
+      <details>
+        <summary>Can I book early morning pickups from Bhuj Airport or Railway Station?</summary>
+        <div class="ans">Yes. We operate 24 hours a day, 7 days a week. Early morning train and flight arrivals at Bhuj Airport (BHJ) and Bhuj Railway Station are routine for our drivers.</div>
+      </details>
 
-      <div class="faq-item">
-        <h3>What vehicles do you offer for hire?</h3>
-        <p>We provide comfortable 4-seater sedans (Swift Dzire), 6-7 seater family SUVs (Ertiga, Innova Crysta), luxury wedding cars (Fortuner), and 12-25 seater Tempo Travellers &amp; buses for group tours.</p>
-      </div>
+      <details>
+        <summary>What vehicles do you offer for hire?</summary>
+        <div class="ans">We provide comfortable 4-seater sedans (Swift Dzire), 6-7 seater family SUVs (Ertiga, Innova Crysta), luxury wedding cars (Fortuner), and 12-25 seater Tempo Travellers &amp; buses for group tours.</div>
+      </details>
     </div>
   </div>
 </section>

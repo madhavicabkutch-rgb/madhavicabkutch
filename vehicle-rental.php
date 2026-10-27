@@ -99,10 +99,25 @@ $vehicles = fetch_all(
 <section class="sec">
   <div class="wrap">
 
-    <div class="vtabs">
-      <a href="vehicle-rental?type=Car" class="vt-tab <?php echo $type==='Car'?'on':''; ?>">Cars</a>
-      <a href="vehicle-rental?type=Bus" class="vt-tab <?php echo $type==='Bus'?'on':''; ?>">Buses</a>
-      <a href="vehicle-rental?type=Premium" class="vt-tab <?php echo $type==='Premium'?'on':''; ?>">Premium</a>
+    <!-- Category Filter Tabs -->
+    <div class="vtabs-wrap">
+      <div class="vtabs-bar">
+        <a href="vehicle-rental?type=Car" class="vt-pill <?php echo $type==='Car'?'on':''; ?>">
+          <i class="fa fa-car"></i>
+          <span>Sedans &amp; SUVs</span>
+          <span class="vt-badge">Popular</span>
+        </a>
+        <a href="vehicle-rental?type=Bus" class="vt-pill <?php echo $type==='Bus'?'on':''; ?>">
+          <i class="fa fa-bus"></i>
+          <span>Tempo &amp; Buses</span>
+          <span class="vt-badge">Group Tour</span>
+        </a>
+        <a href="vehicle-rental?type=Premium" class="vt-pill <?php echo $type==='Premium'?'on':''; ?>">
+          <i class="fa fa-star"></i>
+          <span>VIP &amp; Luxury</span>
+          <span class="vt-badge">Executive</span>
+        </a>
+      </div>
     </div>
 
     <?php if (count($vehicles)): ?>
@@ -111,10 +126,8 @@ $vehicles = fetch_all(
         <?php
           $name = trim($v['name']);
           $image = trim($v['image']);
-          $wa_text = 'Hi, I want to book a ' . $name . ' on rent.';
+          $wa_text = 'Hi, I want to book a ' . $name . ' (12 hrs / 300 km package) on rent in Bhuj.';
 
-          $has_local_8  = ($v['local_8h_80km_ac'] !== null && $v['local_8h_80km_ac'] !== '');
-          $has_local_8n = ($v['local_8h_80km_nonac'] !== null && $v['local_8h_80km_nonac'] !== '');
           $has_local_12  = ($v['local_12h_300km_ac'] !== null && $v['local_12h_300km_ac'] !== '');
           $has_local_12n = ($v['local_12h_300km_nonac'] !== null && $v['local_12h_300km_nonac'] !== '');
           $has_per_km = ($v['per_km'] !== null && $v['per_km'] !== '');
@@ -122,120 +135,118 @@ $vehicles = fetch_all(
           $has_night = ($v['driver_night_allowance'] !== null && $v['driver_night_allowance'] !== '');
           $has_daily_min = ($v['daily_min_km'] !== null && $v['daily_min_km'] !== '');
 
-          $display_rate = $has_per_km ? $v['per_km'] : ($has_local_8 ? $v['local_8h_80km_ac'] : '');
+          $display_rate = $has_local_12
+            ? '&#8377;' . e($v['local_12h_300km_ac']) . ' <small style="font-size:10.5px;font-weight:600">/ 12h &bull; 300km</small>'
+            : ($has_per_km ? '&#8377;' . e($v['per_km']) . '/km' : 'Best Rates');
         ?>
-        <article class="vcard mv-vehicle-card">
-          <?php
-            if ($image) {
-              photo($image, $name . ' on rent in Bhuj', '&#128663;', 'contain');
-            } else {
-              echo '<div class="ph" style="display:grid;place-items:center;font-size:40px">&#128663;</div>';
-            }
-          ?>
+        <article class="vcard-pro">
+          <div class="vcard-pro-head">
+            <span class="vcard-type-tag"><i class="fa fa-check-circle"></i> Verified Cab</span>
+            <span class="vcard-price-tag"><?php echo $display_rate; ?></span>
+            <?php
+              if ($image) {
+                photo($image, $name . ' on rent in Bhuj', '&#128663;', 'contain');
+              } else {
+                echo '<div style="font-size:48px">&#128663;</div>';
+              }
+            ?>
+          </div>
 
-          <div class="b">
-            <h3><?php echo e($name); ?></h3>
+          <div class="vcard-pro-body">
+            <div class="vcard-title-row">
+              <h3><?php echo e($name); ?></h3>
+              <div class="vcard-models"><?php echo e(!empty($v['models']) ? $v['models'] : $name); ?></div>
+            </div>
 
-            <div class="meta">
-              <?php
-                $meta = array();
-                if (!empty($v['models'])) $meta[] = e($v['models']);
-                if (!empty($v['seats'])) $meta[] = e($v['seats']).' seats';
-                if (!empty($v['luggage'])) $meta[] = e($v['luggage']);
-                echo implode(' &middot; ', $meta);
-              ?>
+            <!-- 12 Hours / 300 KM Prime Package Highlight -->
+            <?php if ($has_local_12): ?>
+              <div class="v-main-pkg">
+                <div class="v-main-pkg-info">
+                  <span class="v-main-pkg-tag"><i class="fa fa-star"></i> Recommended Package</span>
+                  <span class="v-main-pkg-title">12 Hours / 300 KM</span>
+                </div>
+                <div class="v-main-pkg-price">
+                  <strong>&#8377;<?php echo e($v['local_12h_300km_ac']); ?></strong>
+                  <span>A/C Fixed Rate</span>
+                </div>
+              </div>
+            <?php endif; ?>
+
+            <!-- Feature Chips -->
+            <div class="v-chips-grid">
+              <span class="v-chip"><i class="fa fa-users"></i> <?php echo e(!empty($v['seats']) ? $v['seats'] : '4-5'); ?> Seats</span>
+              <span class="v-chip"><i class="fa fa-briefcase"></i> <?php echo e(!empty($v['luggage']) ? $v['luggage'] : 'Luggage Boot'); ?></span>
+              <span class="v-chip"><i class="fa fa-snowflake-o"></i> AC &amp; Heater</span>
+              <span class="v-chip"><i class="fa fa-shield"></i> Clean &amp; Sanitized</span>
             </div>
 
             <?php if (!empty($v['description'])): ?>
-              <p class="mv-description"><?php echo nl2br(e($v['description'])); ?></p>
+              <p class="vcard-desc"><?php echo nl2br(e($v['description'])); ?></p>
             <?php endif; ?>
 
-            <?php if ($has_local_8 || $has_local_8n || $has_local_12 || $has_local_12n): ?>
-              <div class="mv-rate-title">Local rental — Bhuj</div>
-              <div class="mv-rate-table">
-                <div class="mv-rate-row mv-rate-head">
-                  <span>Package</span><span>A/C</span><span>Non-A/C</span>
-                </div>
-
-                <?php if ($has_local_8 || $has_local_8n): ?>
-                  <div class="mv-rate-row">
-                    <span>8 hours / 80 km</span>
-                    <strong><?php echo $has_local_8 ? e($v['local_8h_80km_ac']) : '—'; ?></strong>
-                    <strong><?php echo $has_local_8n ? e($v['local_8h_80km_nonac']) : '—'; ?></strong>
-                  </div>
-                <?php endif; ?>
-
-                <?php if ($has_local_12 || $has_local_12n): ?>
-                  <div class="mv-rate-row">
-                    <span>12 hours / 300 km</span>
-                    <strong><?php echo $has_local_12 ? e($v['local_12h_300km_ac']) : '—'; ?></strong>
-                    <strong><?php echo $has_local_12n ? e($v['local_12h_300km_nonac']) : '—'; ?></strong>
-                  </div>
-                <?php endif; ?>
+            <!-- Local Bhuj Rates Table (12h / 300km) -->
+            <?php if ($has_local_12 || $has_local_12n): ?>
+              <div class="v-rate-block">
+                <div class="v-rate-header"><i class="fa fa-map-marker"></i> Day Rental Package</div>
+                <table class="v-rate-tbl">
+                  <thead>
+                    <tr>
+                      <th>Package</th>
+                      <th>A/C</th>
+                      <th>Non-A/C</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="background:#fffbeb">
+                      <td><strong style="color:#b45309">&#9733; 12 hrs / 300 km</strong></td>
+                      <td><strong style="color:#b45309"><?php echo $has_local_12 ? '&#8377;' . e($v['local_12h_300km_ac']) : '—'; ?></strong></td>
+                      <td><strong><?php echo $has_local_12n ? '&#8377;' . e($v['local_12h_300km_nonac']) : '—'; ?></strong></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             <?php endif; ?>
 
+            <!-- Outstation & Extra Charges -->
             <?php if ($has_per_km || $has_daily_min || $has_night || $has_airport): ?>
-              <div class="mv-rate-title">Outstation & other rates</div>
-              <div class="mv-extra-grid">
-
+              <div class="v-extra-pills">
                 <?php if ($has_per_km): ?>
-                  <div class="mv-extra-item">
-                    <span>Per km</span>
-                    <strong><?php echo e($v['per_km']); ?></strong>
+                  <div class="v-extra-pill">
+                    <span>Outstation</span>
+                    <strong>&#8377;<?php echo e($v['per_km']); ?>/km</strong>
                   </div>
                 <?php endif; ?>
-
                 <?php if ($has_daily_min): ?>
-                  <div class="mv-extra-item">
-                    <span>Daily minimum</span>
+                  <div class="v-extra-pill">
+                    <span>Daily Min.</span>
                     <strong><?php echo e($v['daily_min_km']); ?> km</strong>
                   </div>
                 <?php endif; ?>
-
                 <?php if ($has_night): ?>
-                  <div class="mv-extra-item">
-                    <span>Driver night allowance</span>
-                    <strong><?php echo e($v['driver_night_allowance']); ?></strong>
+                  <div class="v-extra-pill">
+                    <span>Driver Night</span>
+                    <strong>&#8377;<?php echo e($v['driver_night_allowance']); ?></strong>
                   </div>
                 <?php endif; ?>
-
                 <?php if ($has_airport): ?>
-                  <div class="mv-extra-item">
-                    <span>Airport / station transfer</span>
-                    <strong><?php echo e($v['airport_transfer']); ?></strong>
+                  <div class="v-extra-pill">
+                    <span>Airport Drop</span>
+                    <strong>&#8377;<?php echo e($v['airport_transfer']); ?></strong>
                   </div>
                 <?php endif; ?>
-
               </div>
             <?php endif; ?>
 
-            <?php if (($v['extra_km_ac'] !== null && $v['extra_km_ac'] !== '') ||
-                      ($v['extra_km_nonac'] !== null && $v['extra_km_nonac'] !== '')): ?>
-              <div class="mv-extra-km">
-                <span>Extra km</span>
-                <?php if ($v['extra_km_ac'] !== null && $v['extra_km_ac'] !== ''): ?>
-                  <span>A/C: <strong><?php echo e($v['extra_km_ac']); ?></strong></span>
-                <?php endif; ?>
-                <?php if ($v['extra_km_nonac'] !== null && $v['extra_km_nonac'] !== ''): ?>
-                  <span>Non-A/C: <strong><?php echo e($v['extra_km_nonac']); ?></strong></span>
-                <?php endif; ?>
-              </div>
-            <?php endif; ?>
-
-            <div class="foot mv-foot">
-              <span class="price">
-                <?php if ($display_rate !== ''): ?>
-                  <b><?php echo e($display_rate); ?></b>
-                  <?php if ($has_per_km): ?><span>/km</span><?php endif; ?>
-                <?php else: ?>
-                  <b>On request</b>
-                <?php endif; ?>
-              </span>
-
-              <a class="more" target="_blank" rel="noopener"
-                 href="<?php echo wa_link($wa_text); ?>">Book on WhatsApp &rarr;</a>
+            <!-- Instant Easy Booking Buttons -->
+            <div class="v-booking-actions">
+              <a href="<?php echo wa_link($wa_text); ?>" class="btn-book-wa" target="_blank" rel="noopener">
+                <i class="fa fa-whatsapp"></i> Book on WhatsApp
+              </a>
+              <a href="tel:<?php echo BIZ_PHONE; ?>" class="btn-book-call">
+                <i class="fa fa-phone"></i> Call Now
+              </a>
             </div>
+
           </div>
         </article>
       <?php endforeach; ?>

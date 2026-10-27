@@ -132,78 +132,127 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         flash_set('error', 'Vehicle name is required.');
     } elseif (!$upload_failed) {
 
-        if ($id) {
-            $sql = "UPDATE vehicles SET
-                name=?, category=?, models=?, seats=?, luggage=?, per_km=?,
-                description=?, image=?, sort_order=?, is_active=?,
-                local_8h_80km_ac=?, local_8h_80km_nonac=?,
-                local_12h_300km_ac=?, local_12h_300km_nonac=?,
-                extra_km_ac=?, extra_km_nonac=?, airport_transfer=?,
-                daily_min_km=?, driver_night_allowance=?, notes=?
-                WHERE id=?";
+        if (defined('DB_OK') && DB_OK && isset($conn) && $conn) {
+            if ($id) {
+                $sql = "UPDATE vehicles SET
+                    name=?, category=?, models=?, seats=?, luggage=?, per_km=?,
+                    description=?, image=?, sort_order=?, is_active=?,
+                    local_8h_80km_ac=?, local_8h_80km_nonac=?,
+                    local_12h_300km_ac=?, local_12h_300km_nonac=?,
+                    extra_km_ac=?, extra_km_nonac=?, airport_transfer=?,
+                    daily_min_km=?, driver_night_allowance=?, notes=?
+                    WHERE id=?";
 
-            $st = $conn->prepare($sql);
+                $st = $conn->prepare($sql);
 
-            if (!$st) {
-                flash_set('error', 'Database error: ' . $conn->error);
-            } else {
-                $types = 'ssssssssiisssssssissi';
-                $st->bind_param(
-                    $types,
-                    $name, $category, $models, $seats, $luggage, $per_km,
-                    $description, $image, $sort_order, $is_active,
-                    $local_8h_80km_ac, $local_8h_80km_nonac,
-                    $local_12h_300km_ac, $local_12h_300km_nonac,
-                    $extra_km_ac, $extra_km_nonac, $airport_transfer,
-                    $daily_min_km, $driver_night_allowance, $notes, $id
-                );
+                if (!$st) {
+                    flash_set('error', 'Database error: ' . $conn->error);
+                } else {
+                    $types = 'ssssssssiisssssssissi';
+                    $st->bind_param(
+                        $types,
+                        $name, $category, $models, $seats, $luggage, $per_km,
+                        $description, $image, $sort_order, $is_active,
+                        $local_8h_80km_ac, $local_8h_80km_nonac,
+                        $local_12h_300km_ac, $local_12h_300km_nonac,
+                        $extra_km_ac, $extra_km_nonac, $airport_transfer,
+                        $daily_min_km, $driver_night_allowance, $notes, $id
+                    );
 
-                if ($st->execute()) {
-                    flash_set('ok', 'Vehicle updated successfully.');
+                    if ($st->execute()) {
+                        flash_set('ok', 'Vehicle updated successfully.');
+                        $st->close();
+                        header('Location: vehicles.php');
+                        exit;
+                    }
+
+                    flash_set('error', 'Could not save vehicle: ' . $st->error);
                     $st->close();
-                    header('Location: vehicles.php');
-                    exit;
                 }
+            } else {
+                $sql = "INSERT INTO vehicles
+                    (name, category, models, seats, luggage, per_km,
+                     description, image, sort_order, is_active,
+                     local_8h_80km_ac, local_8h_80km_nonac,
+                     local_12h_300km_ac, local_12h_300km_nonac,
+                     extra_km_ac, extra_km_nonac, airport_transfer,
+                     daily_min_km, driver_night_allowance, notes)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-                flash_set('error', 'Could not save vehicle: ' . $st->error);
-                $st->close();
+                $st = $conn->prepare($sql);
+
+                if (!$st) {
+                    flash_set('error', 'Database error: ' . $conn->error);
+                } else {
+                    $types = 'ssssssssiisssssssiss';
+                    $st->bind_param(
+                        $types,
+                        $name, $category, $models, $seats, $luggage, $per_km,
+                        $description, $image, $sort_order, $is_active,
+                        $local_8h_80km_ac, $local_8h_80km_nonac,
+                        $local_12h_300km_ac, $local_12h_300km_nonac,
+                        $extra_km_ac, $extra_km_nonac, $airport_transfer,
+                        $daily_min_km, $driver_night_allowance, $notes
+                    );
+
+                    if ($st->execute()) {
+                        flash_set('ok', 'Vehicle added successfully.');
+                        $st->close();
+                        header('Location: vehicles.php');
+                        exit;
+                    }
+
+                    flash_set('error', 'Could not add vehicle: ' . $st->error);
+                    $st->close();
+                }
             }
         } else {
-            $sql = "INSERT INTO vehicles
-                (name, category, models, seats, luggage, per_km,
-                 description, image, sort_order, is_active,
-                 local_8h_80km_ac, local_8h_80km_nonac,
-                 local_12h_300km_ac, local_12h_300km_nonac,
-                 extra_km_ac, extra_km_nonac, airport_transfer,
-                 daily_min_km, driver_night_allowance, notes)
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
-            $st = $conn->prepare($sql);
-
-            if (!$st) {
-                flash_set('error', 'Database error: ' . $conn->error);
-            } else {
-                $types = 'ssssssssiisssssssiss';
-                $st->bind_param(
-                    $types,
-                    $name, $category, $models, $seats, $luggage, $per_km,
-                    $description, $image, $sort_order, $is_active,
-                    $local_8h_80km_ac, $local_8h_80km_nonac,
-                    $local_12h_300km_ac, $local_12h_300km_nonac,
-                    $extra_km_ac, $extra_km_nonac, $airport_transfer,
-                    $daily_min_km, $driver_night_allowance, $notes
-                );
-
-                if ($st->execute()) {
-                    flash_set('ok', 'Vehicle added successfully.');
-                    $st->close();
-                    header('Location: vehicles.php');
-                    exit;
+            // Local JSON storage save
+            $vehicles = load_local_data('vehicles');
+            if ($id) {
+                foreach ($vehicles as &$v) {
+                    if ($v['id'] == $id) {
+                        $v['name'] = $name;
+                        $v['category'] = $category;
+                        $v['models'] = $models;
+                        $v['seats'] = $seats;
+                        $v['luggage'] = $luggage;
+                        $v['per_km'] = $per_km;
+                        $v['description'] = $description;
+                        $v['image'] = $image;
+                        $v['sort_order'] = $sort_order;
+                        $v['is_active'] = $is_active;
+                        $v['local_8h_80km_ac'] = $local_8h_80km_ac;
+                        $v['local_8h_80km_nonac'] = $local_8h_80km_nonac;
+                        $v['local_12h_300km_ac'] = $local_12h_300km_ac;
+                        $v['local_12h_300km_nonac'] = $local_12h_300km_nonac;
+                        $v['extra_km_ac'] = $extra_km_ac;
+                        $v['extra_km_nonac'] = $extra_km_nonac;
+                        $v['airport_transfer'] = $airport_transfer;
+                        $v['daily_min_km'] = $daily_min_km;
+                        $v['driver_night_allowance'] = $driver_night_allowance;
+                        $v['notes'] = $notes;
+                    }
                 }
-
-                flash_set('error', 'Could not add vehicle: ' . $st->error);
-                $st->close();
+                flash_set('ok', 'Vehicle updated successfully.');
+            } else {
+                $newId = count($vehicles) ? max(array_column($vehicles, 'id')) + 1 : 1;
+                $vehicles[] = array(
+                    'id' => $newId, 'name' => $name, 'category' => $category, 'models' => $models,
+                    'seats' => $seats, 'luggage' => $luggage, 'per_km' => $per_km,
+                    'description' => $description, 'image' => $image, 'sort_order' => $sort_order,
+                    'is_active' => $is_active, 'local_8h_80km_ac' => $local_8h_80km_ac,
+                    'local_8h_80km_nonac' => $local_8h_80km_nonac, 'local_12h_300km_ac' => $local_12h_300km_ac,
+                    'local_12h_300km_nonac' => $local_12h_300km_nonac, 'extra_km_ac' => $extra_km_ac,
+                    'extra_km_nonac' => $extra_km_nonac, 'airport_transfer' => $airport_transfer,
+                    'daily_min_km' => $daily_min_km, 'driver_night_allowance' => $driver_night_allowance,
+                    'notes' => $notes
+                );
+                flash_set('ok', 'Vehicle added successfully.');
             }
+            save_local_data('vehicles', $vehicles);
+            header('Location: vehicles.php');
+            exit;
         }
     }
 
@@ -297,22 +346,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="hint">Extra Hour Charge is intentionally excluded.</div>
       </div>
 
-      <div class="fld f-full">
-        <h3 style="margin:4px 0 8px">Under 80 Kms (08 Hours) Fix Charge</h3>
-      </div>
-
-      <div class="fld">
-        <label>A/C (₹)</label>
-        <input type="text" name="local_8h_80km_ac" value="<?php echo e($row['local_8h_80km_ac']); ?>" placeholder="e.g. 2400 or On Call">
-      </div>
-
-      <div class="fld">
-        <label>Non-A/C (₹)</label>
-        <input type="text" name="local_8h_80km_nonac" value="<?php echo e($row['local_8h_80km_nonac']); ?>" placeholder="e.g. 2400 or On Call">
-      </div>
+      <input type="hidden" name="local_8h_80km_ac" value="<?php echo e($row['local_8h_80km_ac']); ?>">
+      <input type="hidden" name="local_8h_80km_nonac" value="<?php echo e($row['local_8h_80km_nonac']); ?>">
 
       <div class="fld f-full">
-        <h3 style="margin:12px 0 8px">Under 300 Kms (12 Hours) Fix Charge</h3>
+        <h3 style="margin:12px 0 8px">Day Rental Package — 12 Hours / 300 Kms Fix Charge</h3>
       </div>
 
       <div class="fld">

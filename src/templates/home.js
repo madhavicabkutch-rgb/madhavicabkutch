@@ -429,29 +429,40 @@ ${places && places.length ? `
   <div class="wrap">
     <div class="sec-head">
       <div class="kick">FREQUENTLY ASKED QUESTIONS</div>
-      <h2>Common Questions About Cab Booking in Bhuj</h2>
+      <h2>Cab Booking &amp; Car Rental FAQs in Bhuj</h2>
+      <p>Common questions travelers ask about our car rental, one way taxi and Kutch tour packages.</p>
     </div>
 
-    <div class="g2">
-      <div class="faq-box">
-        <h3>How do I book a cab with Madhavi Cab?</h3>
-        <p>You can call us directly at <a href="tel:${e(bizPhone)}">${e(bizPhoneD)}</a> or click any WhatsApp button on this website with your trip details. We confirm vehicle availability and fixed fare in minutes.</p>
-      </div>
+    <div class="faq">
+      <details open>
+        <summary>How do I book a cab with Madhavi Cab Kutch?</summary>
+        <div class="ans">You can book instantly by calling <a href="tel:${e(bizPhone)}">${e(bizPhoneD)}</a> or sending your pickup point, drop location, and date on WhatsApp. We provide upfront fixed fare quotes within minutes with zero advance payment needed.</div>
+      </details>
 
-      <div class="faq-box">
-        <h3>Are the drivers experienced with Kutch routes?</h3>
-        <p>Yes. All our drivers are locals with extensive experience navigating Kutch routes, White Rann checkposts, Dholavira access roads, and highway outstation travel.</p>
-      </div>
+      <details>
+        <summary>Are one-way taxi fares charged for return travel?</summary>
+        <div class="ans">No. Our one-way taxi drops (such as Bhuj to Ahmedabad, Rajkot, or Mandvi) cover one direction only. You never pay for the vehicle's return trip.</div>
+      </details>
 
-      <div class="faq-box">
-        <h3>Do you charge for the return journey on one-way trips?</h3>
-        <p>No! Our one-way taxi drops are charged strictly for single-side travel. You never pay for the vehicle's empty return trip.</p>
-      </div>
+      <details>
+        <summary>Do you provide cabs for the White Rann (Dhordo) and Dholavira?</summary>
+        <div class="ans">Yes. We operate daily sightseeing cabs and tour packages covering the White Rann at Dhordo, Kalo Dungar viewpoint, the Road to Heaven, and the Dholavira UNESCO World Heritage site.</div>
+      </details>
 
-      <div class="faq-box">
-        <h3>Can you arrange White Rann permits?</h3>
-        <p>Yes. Our drivers assist you directly at the Bhirandiyara checkpost or guide you through the online gateway for White Rann permits.</p>
-      </div>
+      <details>
+        <summary>Are toll taxes, parking, and driver charges included?</summary>
+        <div class="ans">Fuel, vehicle charges, and driver services are always included in the quote. Toll taxes and parking fees are charged transparently at actual government receipts.</div>
+      </details>
+
+      <details>
+        <summary>Can I book early morning pickups from Bhuj Airport or Railway Station?</summary>
+        <div class="ans">Yes. We operate 24 hours a day, 7 days a week. Early morning train and flight arrivals at Bhuj Airport (BHJ) and Bhuj Railway Station are routine for our drivers.</div>
+      </details>
+
+      <details>
+        <summary>What vehicles do you offer for hire?</summary>
+        <div class="ans">We provide comfortable 4-seater sedans (Swift Dzire), 6-7 seater family SUVs (Ertiga, Innova Crysta), luxury VIP cars (Fortuner), and 12-25 seater Tempo Travellers &amp; buses for group tours.</div>
+      </details>
     </div>
   </div>
 </section>

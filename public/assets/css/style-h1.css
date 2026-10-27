@@ -216,14 +216,18 @@ tbody tr:last-child td{border-bottom:none}
 .iday p{font-size:14.5px;color:var(--muted)}
 
 /* ---------- faq ---------- */
-.faq{border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
-.faq details{border-bottom:1px solid var(--line)}
+.faq{border:1px solid var(--line);border-radius:14px;background:#fff;overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.03)}
+.faq details{border-bottom:1px solid var(--line);transition:background .2s ease}
 .faq details:last-child{border-bottom:none}
-.faq summary{padding:17px 20px;font-weight:500;font-size:16px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:14px;align-items:center}
+.faq details[open]{background:#fafbfc}
+.faq summary{padding:18px 22px;font-weight:600;font-size:16px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:14px;align-items:center;color:var(--ink);transition:all .15s ease;user-select:none}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";font-size:21px;color:var(--gold);flex-shrink:0}
-.faq details[open] summary::after{content:"\2013"}
-.faq .ans{padding:0 20px 17px;font-size:15px;color:var(--muted)}
+.faq summary:hover{background:#f8fafc;color:var(--gold-d)}
+.faq summary::after{content:"+";font-size:24px;line-height:1;color:var(--gold-d);font-weight:600;flex-shrink:0;transition:transform .2s ease}
+.faq details[open] summary{color:var(--gold-d)}
+.faq details[open] summary::after{content:"\2212";font-size:22px}
+.faq .ans{padding:0 22px 18px;font-size:14.5px;line-height:1.65;color:#475569}
+.faq .ans a{color:var(--gold-d);font-weight:600}
 
 /* ---------- cta band ---------- */
 .band{background:var(--gold);padding:34px 0}
@@ -362,15 +366,25 @@ tbody tr:last-child td{border-bottom:none}
 .vt-pill.on .vt-badge{background:rgba(0,0,0,.15);color:#fff}
 
 /* Vehicle Card Pro */
-.vcard-pro{background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 4px 20px rgba(0,0,0,.04);transition:transform .25s ease,box-shadow .25s ease}
+.vcard-pro{background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 4px 20px rgba(0,0,0,.04);transition:transform .25s ease,box-shadow .25s ease;width:100%;min-width:0;box-sizing:border-box}
 .vcard-pro:hover{transform:translateY(-5px);box-shadow:0 12px 32px rgba(0,0,0,.08);border-color:#cbd5e1}
 
 /* Card Visual Header */
-.vcard-pro-head{background:radial-gradient(circle at center,#ffffff 30%,#f1f5f9 100%);padding:18px 16px 10px;position:relative;height:200px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid #edf2f7}
+.vcard-pro-head{background:radial-gradient(circle at center,#ffffff 30%,#f1f5f9 100%);padding:18px 16px 10px;position:relative;height:200px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid #edf2f7;box-sizing:border-box}
 .vcard-pro-head img{max-height:160px;width:auto;max-width:92%;object-fit:contain;transition:transform .35s ease;filter:drop-shadow(0 6px 14px rgba(0,0,0,.10))}
 .vcard-pro:hover .vcard-pro-head img{transform:scale(1.05)}
 .vcard-price-tag{position:absolute;top:12px;right:12px;background:var(--gold);color:var(--gold-ink);font-weight:700;font-size:12px;padding:5px 12px;border-radius:20px;box-shadow:0 2px 8px rgba(246,169,26,.35);letter-spacing:.2px}
 .vcard-type-tag{position:absolute;top:12px;left:12px;background:rgba(20,27,46,.82);color:#fff;font-weight:500;font-size:11px;padding:4px 9px;border-radius:14px;backdrop-filter:blur(4px);display:inline-flex;align-items:center;gap:5px}
+
+/* Featured 12h / 300km Rate Box */
+.v-main-pkg{background:linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%);border:1.5px solid #f59e0b;border-radius:12px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 3px 10px rgba(245,158,11,.15)}
+.v-main-pkg-info{display:flex;flex-direction:column;gap:2px}
+.v-main-pkg-tag{font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.5px;display:inline-flex;align-items:center;gap:4px}
+.v-main-pkg-tag i{color:#f59e0b}
+.v-main-pkg-title{font-size:14px;font-weight:700;color:#78350f}
+.v-main-pkg-price{text-align:right}
+.v-main-pkg-price strong{font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;color:#78350f;display:block;line-height:1.1}
+.v-main-pkg-price span{font-size:10px;color:#92400e;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
 
 /* Card Body */
 .vcard-pro-body{padding:20px;display:flex;flex-direction:column;flex:1}

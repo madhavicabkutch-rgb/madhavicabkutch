@@ -73,8 +73,6 @@ export function renderVehicleRentalPage({ type = 'Car', vehicles = [], settings 
       <div class="g3">
         ${vehicles.map(v => {
           const name = v.name || '';
-          const hasLocal8 = v.local_8h_80km_ac !== null && v.local_8h_80km_ac !== '';
-          const hasLocal8n = v.local_8h_80km_nonac !== null && v.local_8h_80km_nonac !== '';
           const hasLocal12 = v.local_12h_300km_ac !== null && v.local_12h_300km_ac !== '';
           const hasLocal12n = v.local_12h_300km_nonac !== null && v.local_12h_300km_nonac !== '';
           const hasPerKm = v.per_km !== null && v.per_km !== '';
@@ -82,11 +80,11 @@ export function renderVehicleRentalPage({ type = 'Car', vehicles = [], settings 
           const hasNight = v.driver_night_allowance !== null && v.driver_night_allowance !== '';
           const hasDailyMin = v.daily_min_km !== null && v.daily_min_km !== '';
 
-          const displayPriceTag = hasPerKm
-            ? `&#8377;${e(v.per_km)}/km`
-            : (hasLocal8 ? `&#8377;${e(v.local_8h_80km_ac)} / 8h` : 'Best Rates');
+          const displayPriceTag = hasLocal12
+            ? `&#8377;${e(v.local_12h_300km_ac)} <small style="font-size:10.5px;font-weight:600">/ 12h &bull; 300km</small>`
+            : (hasPerKm ? `&#8377;${e(v.per_km)}/km` : 'Best Rates');
 
-          const waBookingMsg = `Hi Madhavi Cab, I want to book ${name} for rental in Bhuj. Please confirm rates and availability.`;
+          const waBookingMsg = `Hi Madhavi Cab, I want to book ${name} (12 hrs / 300 km package) for rental in Bhuj. Please confirm rates and availability.`;
 
           return `
           <article class="vcard-pro">
@@ -102,6 +100,20 @@ export function renderVehicleRentalPage({ type = 'Car', vehicles = [], settings 
                 <div class="vcard-models">${e(v.models || name)}</div>
               </div>
 
+              <!-- 12 Hours / 300 KM Prime Package Highlight -->
+              ${hasLocal12 ? `
+                <div class="v-main-pkg">
+                  <div class="v-main-pkg-info">
+                    <span class="v-main-pkg-tag"><i class="fa fa-star"></i> Recommended Package</span>
+                    <span class="v-main-pkg-title">12 Hours / 300 KM</span>
+                  </div>
+                  <div class="v-main-pkg-price">
+                    <strong>&#8377;${e(v.local_12h_300km_ac)}</strong>
+                    <span>A/C Fixed Rate</span>
+                  </div>
+                </div>
+              ` : ''}
+
               <!-- Feature Chips -->
               <div class="v-chips-grid">
                 <span class="v-chip"><i class="fa fa-users"></i> ${e(v.seats || '4-5')} Seats</span>
@@ -112,10 +124,10 @@ export function renderVehicleRentalPage({ type = 'Car', vehicles = [], settings 
 
               ${v.description ? `<p class="vcard-desc">${e(v.description)}</p>` : ''}
 
-              <!-- Local Bhuj Rates Table -->
-              ${hasLocal8 || hasLocal8n || hasLocal12 || hasLocal12n ? `
+              <!-- Local Bhuj Rates Table (12h / 300km) -->
+              ${hasLocal12 || hasLocal12n ? `
                 <div class="v-rate-block">
-                  <div class="v-rate-header"><i class="fa fa-map-marker"></i> Local Rental — Bhuj City</div>
+                  <div class="v-rate-header"><i class="fa fa-map-marker"></i> Day Rental Package</div>
                   <table class="v-rate-tbl">
                     <thead>
                       <tr>
@@ -125,20 +137,11 @@ export function renderVehicleRentalPage({ type = 'Car', vehicles = [], settings 
                       </tr>
                     </thead>
                     <tbody>
-                      ${hasLocal8 || hasLocal8n ? `
-                        <tr>
-                          <td>8 hrs / 80 km</td>
-                          <td><strong>${hasLocal8 ? '&#8377;' + e(v.local_8h_80km_ac) : '—'}</strong></td>
-                          <td><strong>${hasLocal8n ? '&#8377;' + e(v.local_8h_80km_nonac) : '—'}</strong></td>
-                        </tr>
-                      ` : ''}
-                      ${hasLocal12 || hasLocal12n ? `
-                        <tr>
-                          <td>12 hrs / 300 km</td>
-                          <td><strong>${hasLocal12 ? '&#8377;' + e(v.local_12h_300km_ac) : '—'}</strong></td>
-                          <td><strong>${hasLocal12n ? '&#8377;' + e(v.local_12h_300km_nonac) : '—'}</strong></td>
-                        </tr>
-                      ` : ''}
+                      <tr style="background:#fffbeb">
+                        <td><strong style="color:#b45309">&#9733; 12 hrs / 300 km</strong></td>
+                        <td><strong style="color:#b45309">${hasLocal12 ? '&#8377;' + e(v.local_12h_300km_ac) : '—'}</strong></td>
+                        <td><strong>${hasLocal12n ? '&#8377;' + e(v.local_12h_300km_nonac) : '—'}</strong></td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>

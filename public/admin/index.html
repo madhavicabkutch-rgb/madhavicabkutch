@@ -223,7 +223,7 @@
                   <th style="padding:10px">Category</th>
                   <th style="padding:10px">Seats</th>
                   <th style="padding:10px">Per Km</th>
-                  <th style="padding:10px">Local 8h/80km</th>
+                  <th style="padding:10px">12h / 300km AC</th>
                   <th style="padding:10px">Status</th>
                   <th style="padding:10px">Actions</th>
                 </tr>
@@ -419,20 +419,17 @@
           <input type="text" id="veh-luggage" placeholder="2 Bags">
         </div>
       </div>
-      <div class="fld-grid-3">
+      <div class="fld-grid-2">
         <div class="fld">
           <label>Per Km (₹)</label>
           <input type="text" id="veh-perkm" placeholder="12">
         </div>
         <div class="fld">
-          <label>Local 8h/80km AC (₹)</label>
-          <input type="text" id="veh-local8" placeholder="2,000">
-        </div>
-        <div class="fld">
-          <label>Local 12h/300km AC (₹)</label>
+          <label>12h / 300km AC Package (₹)</label>
           <input type="text" id="veh-local12" placeholder="3,500">
         </div>
       </div>
+      <input type="hidden" id="veh-local8">
       <div class="fld">
         <label>Image Filename (in assets/img/)</label>
         <input type="text" id="veh-image" placeholder="sedan.jpg">
@@ -789,7 +786,7 @@
         '<td style="padding:10px">' + v.category + '</td>' +
         '<td style="padding:10px">' + (v.seats || '—') + '</td>' +
         '<td style="padding:10px">' + (v.per_km ? '₹' + v.per_km : '—') + '</td>' +
-        '<td style="padding:10px">' + (v.local_8h_80km_ac ? '₹' + v.local_8h_80km_ac : '—') + '</td>' +
+        '<td style="padding:10px"><strong>' + (v.local_12h_300km_ac ? '₹' + v.local_12h_300km_ac : '—') + '</strong></td>' +
         '<td style="padding:10px">' + (v.is_active ? '<span class="badge-active">Active</span>' : '<span class="badge-inactive">Inactive</span>') + '</td>' +
         '<td style="padding:10px">' +
           '<button class="btn btn-out btn-sm btn-edit-veh" data-id="' + v.id + '" style="margin-right:6px">Edit</button>' +

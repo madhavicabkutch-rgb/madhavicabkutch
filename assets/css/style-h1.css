@@ -215,14 +215,18 @@ tbody tr:last-child td{border-bottom:none}
 .iday p{font-size:14.5px;color:var(--muted)}
 
 /* ---------- faq ---------- */
-.faq{border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
-.faq details{border-bottom:1px solid var(--line)}
+.faq{border:1px solid var(--line);border-radius:14px;background:#fff;overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.03)}
+.faq details{border-bottom:1px solid var(--line);transition:background .2s ease}
 .faq details:last-child{border-bottom:none}
-.faq summary{padding:17px 20px;font-weight:500;font-size:16px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:14px;align-items:center}
+.faq details[open]{background:#fafbfc}
+.faq summary{padding:18px 22px;font-weight:600;font-size:16px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:14px;align-items:center;color:var(--ink);transition:all .15s ease;user-select:none}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";font-size:21px;color:var(--gold);flex-shrink:0}
-.faq details[open] summary::after{content:"\2013"}
-.faq .ans{padding:0 20px 17px;font-size:15px;color:var(--muted)}
+.faq summary:hover{background:#f8fafc;color:var(--gold-d)}
+.faq summary::after{content:"+";font-size:24px;line-height:1;color:var(--gold-d);font-weight:600;flex-shrink:0;transition:transform .2s ease}
+.faq details[open] summary{color:var(--gold-d)}
+.faq details[open] summary::after{content:"\2212";font-size:22px}
+.faq .ans{padding:0 22px 18px;font-size:14.5px;line-height:1.65;color:#475569}
+.faq .ans a{color:var(--gold-d);font-weight:600}
 
 /* ---------- cta band ---------- */
 .band{background:var(--gold);padding:34px 0}
@@ -346,3 +350,110 @@ tbody tr:last-child td{border-bottom:none}
 .faq-item p{font-size:14.5px;color:#4b5563;line-height:1.6}
 .faq-item p a{color:var(--gold-d);font-weight:600}
 @media(max-width:760px){.faq-grid{grid-template-columns:1fr}}
+
+/* ============================================================
+   PREMIUM VEHICLE RENTAL UI & INSTANT BOOKING SYSTEM
+   ============================================================ */
+.vtabs-wrap{display:flex;justify-content:center;margin-bottom:32px;overflow-x:auto;max-width:100%}
+.vtabs-bar{display:inline-flex;background:#fff;padding:6px;border-radius:50px;border:1px solid var(--line);box-shadow:0 4px 16px rgba(0,0,0,.04);gap:6px;flex-wrap:wrap;justify-content:center}
+.vt-pill{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:40px;font-weight:600;font-size:14px;color:var(--text);text-decoration:none;transition:all .25s ease}
+.vt-pill i{font-size:15px;color:var(--muted);transition:color .25s ease}
+.vt-pill .vt-badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;border-radius:20px;background:#f1f4f9;color:var(--muted);margin-left:4px}
+.vt-pill:hover{background:#f8fafc;color:var(--ink)}
+.vt-pill.on{background:var(--gold);color:var(--gold-ink);box-shadow:0 4px 12px rgba(246,169,26,.35)}
+.vt-pill.on i{color:var(--gold-ink)}
+.vt-pill.on .vt-badge{background:rgba(0,0,0,.15);color:#fff}
+
+/* Vehicle Card Pro */
+.vcard-pro{background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 4px 20px rgba(0,0,0,.04);transition:transform .25s ease,box-shadow .25s ease;width:100%;min-width:0;box-sizing:border-box}
+.vcard-pro:hover{transform:translateY(-5px);box-shadow:0 12px 32px rgba(0,0,0,.08);border-color:#cbd5e1}
+
+/* Card Visual Header */
+.vcard-pro-head{background:radial-gradient(circle at center,#ffffff 30%,#f1f5f9 100%);padding:18px 16px 10px;position:relative;height:200px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid #edf2f7;box-sizing:border-box}
+.vcard-pro-head img{max-height:160px;width:auto;max-width:92%;object-fit:contain;transition:transform .35s ease;filter:drop-shadow(0 6px 14px rgba(0,0,0,.10))}
+.vcard-pro:hover .vcard-pro-head img{transform:scale(1.05)}
+.vcard-price-tag{position:absolute;top:12px;right:12px;background:var(--gold);color:var(--gold-ink);font-weight:700;font-size:12px;padding:5px 12px;border-radius:20px;box-shadow:0 2px 8px rgba(246,169,26,.35);letter-spacing:.2px}
+.vcard-type-tag{position:absolute;top:12px;left:12px;background:rgba(20,27,46,.82);color:#fff;font-weight:500;font-size:11px;padding:4px 9px;border-radius:14px;backdrop-filter:blur(4px);display:inline-flex;align-items:center;gap:5px}
+
+/* Featured 12h / 300km Rate Box */
+.v-main-pkg{background:linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%);border:1.5px solid #f59e0b;border-radius:12px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 3px 10px rgba(245,158,11,.15)}
+.v-main-pkg-info{display:flex;flex-direction:column;gap:2px}
+.v-main-pkg-tag{font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.5px;display:inline-flex;align-items:center;gap:4px}
+.v-main-pkg-tag i{color:#f59e0b}
+.v-main-pkg-title{font-size:14px;font-weight:700;color:#78350f}
+.v-main-pkg-price{text-align:right}
+.v-main-pkg-price strong{font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;color:#78350f;display:block;line-height:1.1}
+.v-main-pkg-price span{font-size:10px;color:#92400e;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+
+/* Card Body */
+.vcard-pro-body{padding:20px;display:flex;flex-direction:column;flex:1}
+.vcard-title-row{margin-bottom:12px}
+.vcard-pro h3{font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.2}
+.vcard-models{font-size:13px;color:var(--muted);font-weight:500}
+
+/* Feature Chips */
+.v-chips-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-bottom:14px}
+.v-chip{display:inline-flex;align-items:center;gap:6px;background:#f8fafc;border:1px solid #edf0f5;padding:6px 9px;border-radius:8px;font-size:12px;font-weight:500;color:#475569}
+.v-chip i{color:var(--gold-d);font-size:13px}
+
+/* Description */
+.vcard-desc{font-size:13.5px;line-height:1.55;color:#526077;margin-bottom:14px;flex-grow:1}
+
+/* Rate Section: Local Bhuj */
+.v-rate-block{margin-bottom:14px}
+.v-rate-header{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#1e293b;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.v-rate-header i{color:var(--gold-d)}
+.v-rate-tbl{width:100%;border-collapse:separate;border-spacing:0;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;font-size:12px;min-width:auto}
+.v-rate-tbl thead th{background:#1e293b;color:#f8fafc;padding:7px 10px;font-size:11px;font-weight:600;text-align:center}
+.v-rate-tbl thead th:first-child{text-align:left}
+.v-rate-tbl tbody td{padding:7px 10px;border-bottom:1px solid #edf2f7;color:#334155;text-align:center}
+.v-rate-tbl tbody td:first-child{text-align:left;font-weight:500;color:#1e293b}
+.v-rate-tbl tbody tr:last-child td{border-bottom:none}
+.v-rate-tbl tbody tr:nth-child(even){background:#fafcff}
+.v-rate-tbl strong{color:#0f172a;font-weight:700}
+
+/* Outstation & Extra Pills Grid */
+.v-extra-pills{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:16px}
+.v-extra-pill{background:#f8fafc;border:1px solid #edf0f5;border-radius:9px;padding:6px 9px;display:flex;flex-direction:column;gap:2px}
+.v-extra-pill span{font-size:10.5px;color:#64748b;text-transform:uppercase;letter-spacing:.4px}
+.v-extra-pill strong{font-size:13px;color:#0f172a;font-weight:700}
+
+/* Easy Booking Action Buttons */
+.v-booking-actions{display:grid;grid-template-columns:1.4fr 1fr;gap:8px;margin-top:auto;padding-top:14px;border-top:1px solid #edf2f7}
+.btn-book-wa{background:#25d366;color:#fff!important;font-weight:600;font-size:13.5px;padding:11px 12px;border-radius:10px;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 3px 10px rgba(37,211,102,.25);transition:all .2s ease}
+.btn-book-wa:hover{background:#1ebc59;transform:translateY(-1px);box-shadow:0 6px 16px rgba(37,211,102,.35)}
+.btn-book-wa i{font-size:17px}
+.btn-book-call{background:#0f172a;color:#fff!important;font-weight:600;font-size:13px;padding:11px 10px;border-radius:10px;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:all .2s ease}
+.btn-book-call:hover{background:#1e293b;color:var(--gold)!important;transform:translateY(-1px)}
+.btn-book-call i{color:var(--gold)}
+
+@media(max-width:900px){
+  .v-chips-grid{grid-template-columns:1fr 1fr}
+  .vcard-pro-head{height:180px}
+}
+@media(max-width:600px){
+  .vtabs-bar{border-radius:14px;width:100%}
+  .vt-pill{width:100%;justify-content:center;border-radius:10px;padding:10px 14px}
+  .v-booking-actions{grid-template-columns:1fr}
+}
+
+/* ============================================================
+   TOP DESTINATIONS PRO CARDS (Places & Tour Packages)
+   ============================================================ */
+.plcard-pro{background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 3px 14px rgba(0,0,0,.04);transition:transform .25s ease,box-shadow .25s ease;text-decoration:none}
+.plcard-pro:hover{transform:translateY(-5px);box-shadow:0 12px 28px rgba(0,0,0,.09);border-color:#cbd5e1}
+.plcard-pro-img{position:relative;height:190px;overflow:hidden;background:#e2e8f0}
+.plcard-pro-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.plcard-pro:hover .plcard-pro-img img{transform:scale(1.06)}
+.pl-cat-badge{position:absolute;top:12px;left:12px;background:#e11d48;color:#fff;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.6px;padding:4px 9px;border-radius:20px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.pl-dist-badge{position:absolute;bottom:10px;left:12px;background:rgba(15,23,42,.85);color:#fff;font-size:11.5px;font-weight:500;padding:4px 9px;border-radius:14px;backdrop-filter:blur(4px);display:inline-flex;align-items:center;gap:4px}
+.pl-dist-badge i{color:var(--gold)}
+.plcard-pro-body{padding:18px;display:flex;flex-direction:column;flex:1}
+.plcard-pro h3{font-family:'Outfit',sans-serif;font-size:17.5px;font-weight:700;color:var(--ink);margin-bottom:6px;line-height:1.25;text-transform:uppercase}
+.plcard-pro h3 a{color:inherit;text-decoration:none}
+.plcard-pro p{font-size:13.5px;line-height:1.55;color:#526077;margin-bottom:14px;flex-grow:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.plcard-pro-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:12px;border-top:1px solid #edf2f7;margin-top:auto}
+.pl-explore-btn{color:#e11d48;font-weight:700;font-size:13.5px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:gap .2s ease}
+.pl-explore-btn:hover{text-decoration:underline;gap:8px}
+.pl-book-wa{background:#25d366;color:#fff!important;font-weight:600;font-size:12px;padding:6px 11px;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:5px;box-shadow:0 2px 6px rgba(37,211,102,.25)}
+.pl-book-wa:hover{background:#1ebc59}

@@ -156,6 +156,46 @@ export function renderOneWayTaxiPage({ routes = [], settings = {}, popularRoutes
   </div>
 </section>
 
+<!-- FAQ -->
+<section class="sec sec-grey">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kick">QUESTIONS</div>
+      <h2>Common questions about one way taxi</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Is the fare fixed or per kilometre?</summary>
+        <div class="ans">Listed routes are fixed-fare. You are quoted one number before travel and that is what you pay, apart from toll and parking. Routes not on the list are quoted per kilometre.</div>
+      </details>
+      <details>
+        <summary>Can I be picked up from outside Bhuj?</summary>
+        <div class="ans">Yes. We operate across Kutch, so pickups from Gandhidham, Anjar, Mandvi, Bhachau and nearby towns are routine. The fare adjusts for the pickup point.</div>
+      </details>
+      <details>
+        <summary>Do I have to pay in advance?</summary>
+        <div class="ans">No online advance is needed for most bookings. Payment is made to the driver at the end of the trip, in cash or by UPI.</div>
+      </details>
+      <details>
+        <summary>What if I need to stop on the way?</summary>
+        <div class="ans">Short refreshment stops are part of the trip. Sightseeing detours add distance, so tell us in advance and we include it in the quote.</div>
+      </details>
+      <details>
+        <summary>Can I book a one way drop late at night?</summary>
+        <div class="ans">Yes, we run 24x7. Night departures between 10 pm and 6 am carry a small driver night charge on long routes.</div>
+      </details>
+      <details>
+        <summary>Do you handle airport and railway station drops?</summary>
+        <div class="ans">Yes, from Bhuj airport, Bhuj station and Gandhidham station, and drops to Ahmedabad airport. Share your flight or train number and we track it.</div>
+      </details>
+      <details>
+        <summary>How do I cancel a booking?</summary>
+        <div class="ans">Message us on WhatsApp. Cancellations made more than six hours before pickup carry no charge.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
 <script>
 (function(){
   var err=document.getElementById('q-err');

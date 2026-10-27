@@ -167,6 +167,46 @@ export function renderTourPackagesPage({ places = [], settings = {}, popularRout
   </div>
 </section>
 
+<!-- Questions & Answers Accordion -->
+<section class="sec sec-grey">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kick">QUESTIONS</div>
+      <h2>Common questions about tour packages</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Is the price per person or per vehicle?</summary>
+        <div class="ans">Per vehicle, not per head. A group of six in one SUV pays the same as a group of two, so larger groups work out cheaper per person.</div>
+      </details>
+      <details>
+        <summary>Can the itinerary be changed?</summary>
+        <div class="ans">Yes. These are starting points, not fixed schedules. Tell us what you want to add or drop and we will rebuild the plan and requote.</div>
+      </details>
+      <details>
+        <summary>Do you arrange hotels and tent city stay?</summary>
+        <div class="ans">We can book both at cost. During Rann Utsav the tent city fills up early, so book at least three to four weeks ahead.</div>
+      </details>
+      <details>
+        <summary>What is the best time to visit Kutch?</summary>
+        <div class="ans">November to February has the most comfortable weather and covers the Rann Utsav season. The White Rann is at its best on full moon nights.</div>
+      </details>
+      <details>
+        <summary>Do we need a permit for the White Rann?</summary>
+        <div class="ans">Yes, a permit is checked at the Bhirandiyara checkpost. It is quick to obtain and your driver will guide you through it. Carry a photo ID.</div>
+      </details>
+      <details>
+        <summary>Are these tours suitable for elderly travellers?</summary>
+        <div class="ans">Most are. Distances are moderate and the vehicle stays with you throughout. Tell us in advance and we will keep the daily driving shorter with more breaks.</div>
+      </details>
+      <details>
+        <summary>Can you pick us up from Ahmedabad instead of Bhuj?</summary>
+        <div class="ans">Yes. Pickup from Ahmedabad, Rajkot or Gandhidham can be added to any package, quoted separately based on the distance.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
 <!-- Quick WhatsApp Enquiry Strip -->
 <section class="sec" style="background:#fff;padding-top:0;">
   <div class="wrap">

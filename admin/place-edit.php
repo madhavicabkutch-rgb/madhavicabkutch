@@ -105,55 +105,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (!$hasError) {
-            $chk = $conn->prepare("SELECT id FROM places WHERE slug = ? AND id <> ? LIMIT 1");
-            $chk->bind_param('si', $slug, $id);
-            $chk->execute();
-            $clash = $chk->get_result()->fetch_assoc();
-            $chk->close();
-            if ($clash) {
-                $slug = $slug . '-' . time();
-            }
+            if (defined('DB_OK') && DB_OK && isset($conn) && $conn) {
+                $chk = $conn->prepare("SELECT id FROM places WHERE slug = ? AND id <> ? LIMIT 1");
+                $chk->bind_param('si', $slug, $id);
+                $chk->execute();
+                $clash = $chk->get_result()->fetch_assoc();
+                $chk->close();
+                if ($clash) {
+                    $slug = $slug . '-' . time();
+                }
 
-            if ($id) {
-                $st = $conn->prepare("UPDATE places SET
-                        title=?, slug=?, category=?, distance_bhuj=?, best_time=?,
-                        short_desc=?, description=?, image=?, sort_order=?, is_active=?
-                      WHERE id=?");
-                if (!$st) {
-                    flash_set('error', 'SQL error: ' . $conn->error);
-                } else {
-                    $st->bind_param('ssssssssiii',
-                        $title, $slug, $category, $distance_bhuj, $best_time,
-                        $short_desc, $description, $image, $sort_order, $is_active, $id);
-                    if ($st->execute()) {
-                        flash_set('ok', 'Place saved.');
+                if ($id) {
+                    $st = $conn->prepare("UPDATE places SET
+                            title=?, slug=?, category=?, distance_bhuj=?, best_time=?,
+                            short_desc=?, description=?, image=?, sort_order=?, is_active=?
+                          WHERE id=?");
+                    if (!$st) {
+                        flash_set('error', 'SQL error: ' . $conn->error);
+                    } else {
+                        $st->bind_param('ssssssssiii',
+                            $title, $slug, $category, $distance_bhuj, $best_time,
+                            $short_desc, $description, $image, $sort_order, $is_active, $id);
+                        if ($st->execute()) {
+                            flash_set('ok', 'Place saved.');
+                            $st->close();
+                            header('Location: places.php');
+                            exit;
+                        }
+                        flash_set('error', 'Could not save: ' . $st->error);
                         $st->close();
-                        header('Location: places.php');
-                        exit;
                     }
-                    flash_set('error', 'Could not save: ' . $st->error);
-                    $st->close();
+                } else {
+                    $st = $conn->prepare("INSERT INTO places
+                            (title, slug, category, distance_bhuj, best_time,
+                             short_desc, description, image, sort_order, is_active)
+                          VALUES (?,?,?,?,?,?,?,?,?,?)");
+                    if (!$st) {
+                        flash_set('error', 'SQL error: ' . $conn->error);
+                    } else {
+                        $st->bind_param('ssssssssii',
+                            $title, $slug, $category, $distance_bhuj, $best_time,
+                            $short_desc, $description, $image, $sort_order, $is_active);
+                        if ($st->execute()) {
+                            flash_set('ok', 'Place added.');
+                            $st->close();
+                            header('Location: places.php');
+                            exit;
+                        }
+                        flash_set('error', 'Could not save: ' . $st->error);
+                        $st->close();
+                    }
                 }
             } else {
-                $st = $conn->prepare("INSERT INTO places
-                        (title, slug, category, distance_bhuj, best_time,
-                         short_desc, description, image, sort_order, is_active)
-                      VALUES (?,?,?,?,?,?,?,?,?,?)");
-                if (!$st) {
-                    flash_set('error', 'SQL error: ' . $conn->error);
-                } else {
-                    $st->bind_param('ssssssssii',
-                        $title, $slug, $category, $distance_bhuj, $best_time,
-                        $short_desc, $description, $image, $sort_order, $is_active);
-                    if ($st->execute()) {
-                        flash_set('ok', 'Place added.');
-                        $st->close();
-                        header('Location: places.php');
-                        exit;
+                // Local JSON storage save
+                $places = load_local_data('places');
+                if ($id) {
+                    foreach ($places as &$p) {
+                        if ($p['id'] == $id) {
+                            $p['title'] = $title;
+                            $p['slug'] = $slug;
+                            $p['category'] = $category;
+                            $p['distance_bhuj'] = $distance_bhuj;
+                            $p['best_time'] = $best_time;
+                            $p['short_desc'] = $short_desc;
+                            $p['description'] = $description;
+                            $p['image'] = $image;
+                            $p['sort_order'] = $sort_order;
+                            $p['is_active'] = $is_active;
+                        }
                     }
-                    flash_set('error', 'Could not save: ' . $st->error);
-                    $st->close();
+                    flash_set('ok', 'Place saved.');
+                } else {
+                    $newId = count($places) ? max(array_column($places, 'id')) + 1 : 1;
+                    $places[] = array(
+                        'id' => $newId, 'title' => $title, 'slug' => $slug,
+                        'category' => $category, 'distance_bhuj' => $distance_bhuj,
+                        'best_time' => $best_time, 'short_desc' => $short_desc,
+                        'description' => $description, 'image' => $image,
+                        'sort_order' => $sort_order, 'is_active' => $is_active
+                    );
+                    flash_set('ok', 'Place added.');
                 }
+                save_local_data('places', $places);
+                header('Location: places.php');
+                exit;
             }
         }
     }

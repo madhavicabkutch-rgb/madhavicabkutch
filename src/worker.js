@@ -749,28 +749,52 @@ export default {
             const b = await request.json();
             const slug = (b.from_city + '-to-' + b.to_city).toLowerCase().replace(/[^a-z0-9]+/g, '-');
             if (env.DB) {
-              await env.DB.prepare(`
-                INSERT INTO routes (from_city, to_city, slug, distance_km, duration, sedan_fare, suv_fare, tempo_fare, description, show_on_home, is_active)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-              `).bind(b.from_city, b.to_city, slug, b.distance_km || 0, b.duration || '', b.sedan_fare || 0, b.suv_fare || 0, b.tempo_fare || 0, b.description || '', b.show_on_home ? 1 : 0, b.is_active ? 1 : 0).run();
+              try {
+                await env.DB.prepare(`
+                  INSERT INTO routes (from_city, to_city, slug, distance_km, duration, sedan_fare, suv_fare, tempo_fare, description, show_on_home, is_active)
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                `).bind(b.from_city, b.to_city, slug, b.distance_km || 0, b.duration || '', b.sedan_fare || 0, b.suv_fare || 0, b.tempo_fare || 0, b.description || '', b.show_on_home ? 1 : 0, b.is_active ? 1 : 0).run();
+              } catch (e) {}
             }
+            const newId = FALLBACK_ROUTES.length ? Math.max(...FALLBACK_ROUTES.map(r => r.id || 0)) + 1 : 1;
+            FALLBACK_ROUTES.push({
+              id: newId, from_city: b.from_city, to_city: b.to_city, slug,
+              distance_km: b.distance_km || 0, duration: b.duration || '',
+              sedan_fare: b.sedan_fare || 0, suv_fare: b.suv_fare || 0, tempo_fare: b.tempo_fare || 0,
+              description: b.description || '', show_on_home: b.show_on_home ? 1 : 0, is_active: b.is_active ? 1 : 0
+            });
             return jsonResponse({ ok: true });
           }
           if (method === 'PUT') {
             const b = await request.json();
             if (env.DB && b.id) {
-              await env.DB.prepare(`
-                UPDATE routes SET from_city=?, to_city=?, distance_km=?, duration=?, sedan_fare=?, suv_fare=?, tempo_fare=?, description=?, show_on_home=?, is_active=?
-                WHERE id=?
-              `).bind(b.from_city, b.to_city, b.distance_km || 0, b.duration || '', b.sedan_fare || 0, b.suv_fare || 0, b.tempo_fare || 0, b.description || '', b.show_on_home ? 1 : 0, b.is_active ? 1 : 0, b.id).run();
+              try {
+                await env.DB.prepare(`
+                  UPDATE routes SET from_city=?, to_city=?, distance_km=?, duration=?, sedan_fare=?, suv_fare=?, tempo_fare=?, description=?, show_on_home=?, is_active=?
+                  WHERE id=?
+                `).bind(b.from_city, b.to_city, b.distance_km || 0, b.duration || '', b.sedan_fare || 0, b.suv_fare || 0, b.tempo_fare || 0, b.description || '', b.show_on_home ? 1 : 0, b.is_active ? 1 : 0, b.id).run();
+              } catch (e) {}
+            }
+            const target = FALLBACK_ROUTES.find(r => r.id === Number(b.id));
+            if (target) {
+              Object.assign(target, {
+                from_city: b.from_city, to_city: b.to_city,
+                distance_km: b.distance_km || 0, duration: b.duration || '',
+                sedan_fare: b.sedan_fare || 0, suv_fare: b.suv_fare || 0, tempo_fare: b.tempo_fare || 0,
+                description: b.description || '', show_on_home: b.show_on_home ? 1 : 0, is_active: b.is_active ? 1 : 0
+              });
             }
             return jsonResponse({ ok: true });
           }
           if (method === 'DELETE') {
             const id = Number(url.searchParams.get('id'));
             if (env.DB && id) {
-              await env.DB.prepare('DELETE FROM routes WHERE id=?').bind(id).run();
+              try {
+                await env.DB.prepare('DELETE FROM routes WHERE id=?').bind(id).run();
+              } catch (e) {}
             }
+            const idx = FALLBACK_ROUTES.findIndex(r => r.id === id);
+            if (idx !== -1) FALLBACK_ROUTES.splice(idx, 1);
             return jsonResponse({ ok: true });
           }
         }
@@ -785,28 +809,51 @@ export default {
             const b = await request.json();
             const slug = (b.title).toLowerCase().replace(/[^a-z0-9]+/g, '-');
             if (env.DB) {
-              await env.DB.prepare(`
-                INSERT INTO places (title, slug, category, distance_bhuj, best_time, image, short_desc, description, is_active)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-              `).bind(b.title, slug, b.category || '', b.distance_bhuj || '', b.best_time || '', b.image || '', b.short_desc || '', b.description || '', b.is_active ? 1 : 0).run();
+              try {
+                await env.DB.prepare(`
+                  INSERT INTO places (title, slug, category, distance_bhuj, best_time, image, short_desc, description, is_active)
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                `).bind(b.title, slug, b.category || '', b.distance_bhuj || '', b.best_time || '', b.image || '', b.short_desc || '', b.description || '', b.is_active ? 1 : 0).run();
+              } catch (e) {}
             }
+            const newId = FALLBACK_PLACES.length ? Math.max(...FALLBACK_PLACES.map(p => p.id || 0)) + 1 : 1;
+            FALLBACK_PLACES.push({
+              id: newId, title: b.title, slug, category: b.category || '',
+              distance_bhuj: b.distance_bhuj || '', best_time: b.best_time || '',
+              image: b.image || '', short_desc: b.short_desc || '', description: b.description || '',
+              sort_order: newId, is_active: b.is_active ? 1 : 0
+            });
             return jsonResponse({ ok: true });
           }
           if (method === 'PUT') {
             const b = await request.json();
             if (env.DB && b.id) {
-              await env.DB.prepare(`
-                UPDATE places SET title=?, category=?, distance_bhuj=?, best_time=?, image=?, short_desc=?, description=?, is_active=?
-                WHERE id=?
-              `).bind(b.title, b.category || '', b.distance_bhuj || '', b.best_time || '', b.image || '', b.short_desc || '', b.description || '', b.is_active ? 1 : 0, b.id).run();
+              try {
+                await env.DB.prepare(`
+                  UPDATE places SET title=?, category=?, distance_bhuj=?, best_time=?, image=?, short_desc=?, description=?, is_active=?
+                  WHERE id=?
+                `).bind(b.title, b.category || '', b.distance_bhuj || '', b.best_time || '', b.image || '', b.short_desc || '', b.description || '', b.is_active ? 1 : 0, b.id).run();
+              } catch (e) {}
+            }
+            const target = FALLBACK_PLACES.find(p => p.id === Number(b.id));
+            if (target) {
+              Object.assign(target, {
+                title: b.title, category: b.category || '', distance_bhuj: b.distance_bhuj || '',
+                best_time: b.best_time || '', image: b.image || '', short_desc: b.short_desc || '',
+                description: b.description || '', is_active: b.is_active ? 1 : 0
+              });
             }
             return jsonResponse({ ok: true });
           }
           if (method === 'DELETE') {
             const id = Number(url.searchParams.get('id'));
             if (env.DB && id) {
-              await env.DB.prepare('DELETE FROM places WHERE id=?').bind(id).run();
+              try {
+                await env.DB.prepare('DELETE FROM places WHERE id=?').bind(id).run();
+              } catch (e) {}
             }
+            const idx = FALLBACK_PLACES.findIndex(p => p.id === id);
+            if (idx !== -1) FALLBACK_PLACES.splice(idx, 1);
             return jsonResponse({ ok: true });
           }
         }
@@ -820,28 +867,53 @@ export default {
           if (method === 'POST') {
             const b = await request.json();
             if (env.DB) {
-              await env.DB.prepare(`
-                INSERT INTO vehicles (name, category, models, seats, luggage, per_km, local_8h_80km_ac, local_12h_300km_ac, image, description, is_active)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-              `).bind(b.name, b.category || 'Car', b.models || '', b.seats || '', b.luggage || '', b.per_km || '', b.local_8h_80km_ac || '', b.local_12h_300km_ac || '', b.image || '', b.description || '', b.is_active ? 1 : 0).run();
+              try {
+                await env.DB.prepare(`
+                  INSERT INTO vehicles (name, category, models, seats, luggage, per_km, local_8h_80km_ac, local_12h_300km_ac, image, description, is_active)
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                `).bind(b.name, b.category || 'Car', b.models || '', b.seats || '', b.luggage || '', b.per_km || '', b.local_8h_80km_ac || '', b.local_12h_300km_ac || '', b.image || '', b.description || '', b.is_active ? 1 : 0).run();
+              } catch (e) {}
             }
+            const newId = FALLBACK_VEHICLES.length ? Math.max(...FALLBACK_VEHICLES.map(v => v.id || 0)) + 1 : 1;
+            FALLBACK_VEHICLES.push({
+              id: newId, name: b.name, category: b.category || 'Car', models: b.models || '',
+              seats: b.seats || '', luggage: b.luggage || '', per_km: b.per_km || '',
+              local_8h_80km_ac: b.local_8h_80km_ac || '', local_12h_300km_ac: b.local_12h_300km_ac || '',
+              image: b.image || '', description: b.description || '', is_active: b.is_active ? 1 : 0,
+              sort_order: newId
+            });
             return jsonResponse({ ok: true });
           }
           if (method === 'PUT') {
             const b = await request.json();
             if (env.DB && b.id) {
-              await env.DB.prepare(`
-                UPDATE vehicles SET name=?, category=?, models=?, seats=?, luggage=?, per_km=?, local_8h_80km_ac=?, local_12h_300km_ac=?, image=?, description=?, is_active=?
-                WHERE id=?
-              `).bind(b.name, b.category || 'Car', b.models || '', b.seats || '', b.luggage || '', b.per_km || '', b.local_8h_80km_ac || '', b.local_12h_300km_ac || '', b.image || '', b.description || '', b.is_active ? 1 : 0, b.id).run();
+              try {
+                await env.DB.prepare(`
+                  UPDATE vehicles SET name=?, category=?, models=?, seats=?, luggage=?, per_km=?, local_8h_80km_ac=?, local_12h_300km_ac=?, image=?, description=?, is_active=?
+                  WHERE id=?
+                `).bind(b.name, b.category || 'Car', b.models || '', b.seats || '', b.luggage || '', b.per_km || '', b.local_8h_80km_ac || '', b.local_12h_300km_ac || '', b.image || '', b.description || '', b.is_active ? 1 : 0, b.id).run();
+              } catch (e) {}
+            }
+            const target = FALLBACK_VEHICLES.find(v => v.id === Number(b.id));
+            if (target) {
+              Object.assign(target, {
+                name: b.name, category: b.category || 'Car', models: b.models || '',
+                seats: b.seats || '', luggage: b.luggage || '', per_km: b.per_km || '',
+                local_8h_80km_ac: b.local_8h_80km_ac || '', local_12h_300km_ac: b.local_12h_300km_ac || '',
+                image: b.image || '', description: b.description || '', is_active: b.is_active ? 1 : 0
+              });
             }
             return jsonResponse({ ok: true });
           }
           if (method === 'DELETE') {
             const id = Number(url.searchParams.get('id'));
             if (env.DB && id) {
-              await env.DB.prepare('DELETE FROM vehicles WHERE id=?').bind(id).run();
+              try {
+                await env.DB.prepare('DELETE FROM vehicles WHERE id=?').bind(id).run();
+              } catch (e) {}
             }
+            const idx = FALLBACK_VEHICLES.findIndex(v => v.id === id);
+            if (idx !== -1) FALLBACK_VEHICLES.splice(idx, 1);
             return jsonResponse({ ok: true });
           }
         }

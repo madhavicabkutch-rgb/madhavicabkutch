@@ -34,6 +34,7 @@ $rows = fetch_all("SELECT * FROM vehicles ORDER BY category ASC, sort_order ASC,
             <th>Model / Category</th>
             <th>Seats</th>
             <th>Per KM</th>
+            <th>12h / 300km AC</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -54,6 +55,7 @@ $rows = fetch_all("SELECT * FROM vehicles ORDER BY category ASC, sort_order ASC,
             <td><?php echo e($r['models']); ?></td>
             <td><?php echo e($r['seats']); ?></td>
             <td><?php echo $r['per_km'] !== null ? '&#8377;' . money($r['per_km']) : '&mdash;'; ?></td>
+            <td><strong><?php echo !empty($r['local_12h_300km_ac']) ? '&#8377;' . e($r['local_12h_300km_ac']) : '&mdash;'; ?></strong></td>
             <td>
               <?php if ((int)$r['is_active']): ?>
                 <span class="pill yes">Active</span>
