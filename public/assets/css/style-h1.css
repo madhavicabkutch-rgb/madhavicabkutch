@@ -49,8 +49,9 @@ h1,h2,h3,h4{font-family:'Outfit',system-ui,sans-serif;font-weight:600;line-heigh
 /* ---------- header ---------- */
 .hdr{background:var(--ink);position:sticky;top:0;z-index:80}
 .hdr .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:12px;padding-bottom:12px;position:relative}
-.logo-plate{background:#fff;border-radius:var(--radius);padding:8px 14px;display:flex;align-items:center;gap:9px}
-.logo-plate img{height:40px;width:auto;max-width:170px;object-fit:contain}
+.logo-plate{background:#fff;border-radius:10px;padding:6px 12px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:transform .2s ease}
+.logo-plate:hover{transform:scale(1.02)}
+.logo-plate img{height:34px;width:auto;max-width:145px;object-fit:contain;display:block}
 .logo-mark{width:28px;height:28px;border-radius:5px;background:var(--gold);color:var(--gold-ink);display:grid;place-items:center;font-family:'Outfit',sans-serif;font-weight:600;font-size:15px}
 .logo-txt{font-family:'Outfit',sans-serif;font-weight:600;font-size:16px;color:var(--ink);line-height:1.1;display:block}
 .logo-sub{font-size:9px;letter-spacing:1.4px;color:var(--muted);display:block}
@@ -303,9 +304,9 @@ tbody tr:last-child td{border-bottom:none}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 
 /* ---------- Google Reviews & Map Styling ---------- */
-.g-trust-banner{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.03)}
-.g-trust-left{display:flex;align-items:center;gap:14px}
-.g-logo-svg{width:36px;height:36px;flex-shrink:0}
+.g-trust-banner{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.03)}
+.g-trust-left{display:flex;align-items:center;gap:14px;max-width:100%}
+.g-logo-svg{width:36px!important;height:36px!important;min-width:36px!important;max-width:36px!important;flex-shrink:0!important;display:block}
 .g-trust-score{font-family:'Outfit',sans-serif;font-size:26px;font-weight:700;color:var(--ink);line-height:1}
 .g-stars-row{color:#f59e0b;font-size:16px;margin:3px 0}
 .g-trust-meta{font-size:13px;color:var(--muted)}
@@ -346,3 +347,79 @@ tbody tr:last-child td{border-bottom:none}
 .faq-item p{font-size:14.5px;color:#4b5563;line-height:1.6}
 .faq-item p a{color:var(--gold-d);font-weight:600}
 @media(max-width:760px){.faq-grid{grid-template-columns:1fr}}
+
+/* ============================================================
+   PREMIUM VEHICLE RENTAL UI & INSTANT BOOKING SYSTEM
+   ============================================================ */
+.vtabs-wrap{display:flex;justify-content:center;margin-bottom:32px}
+.vtabs-bar{display:inline-flex;background:#fff;padding:6px;border-radius:50px;border:1px solid var(--line);box-shadow:0 4px 16px rgba(0,0,0,.04);gap:6px;flex-wrap:wrap;justify-content:center}
+.vt-pill{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:40px;font-weight:600;font-size:14px;color:var(--text);text-decoration:none;transition:all .25s ease}
+.vt-pill i{font-size:15px;color:var(--muted);transition:color .25s ease}
+.vt-pill .vt-badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;border-radius:20px;background:#f1f4f9;color:var(--muted);margin-left:4px}
+.vt-pill:hover{background:#f8fafc;color:var(--ink)}
+.vt-pill.on{background:var(--gold);color:var(--gold-ink);box-shadow:0 4px 12px rgba(246,169,26,.35)}
+.vt-pill.on i{color:var(--gold-ink)}
+.vt-pill.on .vt-badge{background:rgba(0,0,0,.15);color:#fff}
+
+/* Vehicle Card Pro */
+.vcard-pro{background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 4px 20px rgba(0,0,0,.04);transition:transform .25s ease,box-shadow .25s ease}
+.vcard-pro:hover{transform:translateY(-5px);box-shadow:0 12px 32px rgba(0,0,0,.08);border-color:#cbd5e1}
+
+/* Card Visual Header */
+.vcard-pro-head{background:radial-gradient(circle at center,#ffffff 30%,#f1f5f9 100%);padding:18px 16px 10px;position:relative;height:200px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid #edf2f7}
+.vcard-pro-head img{max-height:160px;width:auto;max-width:92%;object-fit:contain;transition:transform .35s ease;filter:drop-shadow(0 6px 14px rgba(0,0,0,.10))}
+.vcard-pro:hover .vcard-pro-head img{transform:scale(1.05)}
+.vcard-price-tag{position:absolute;top:12px;right:12px;background:var(--gold);color:var(--gold-ink);font-weight:700;font-size:12px;padding:5px 12px;border-radius:20px;box-shadow:0 2px 8px rgba(246,169,26,.35);letter-spacing:.2px}
+.vcard-type-tag{position:absolute;top:12px;left:12px;background:rgba(20,27,46,.82);color:#fff;font-weight:500;font-size:11px;padding:4px 9px;border-radius:14px;backdrop-filter:blur(4px);display:inline-flex;align-items:center;gap:5px}
+
+/* Card Body */
+.vcard-pro-body{padding:20px;display:flex;flex-direction:column;flex:1}
+.vcard-title-row{margin-bottom:12px}
+.vcard-pro h3{font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.2}
+.vcard-models{font-size:13px;color:var(--muted);font-weight:500}
+
+/* Feature Chips */
+.v-chips-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-bottom:14px}
+.v-chip{display:inline-flex;align-items:center;gap:6px;background:#f8fafc;border:1px solid #edf0f5;padding:6px 9px;border-radius:8px;font-size:12px;font-weight:500;color:#475569}
+.v-chip i{color:var(--gold-d);font-size:13px}
+
+/* Description */
+.vcard-desc{font-size:13.5px;line-height:1.55;color:#526077;margin-bottom:14px;flex-grow:1}
+
+/* Rate Section: Local Bhuj */
+.v-rate-block{margin-bottom:14px}
+.v-rate-header{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#1e293b;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.v-rate-header i{color:var(--gold-d)}
+.v-rate-tbl{width:100%;border-collapse:separate;border-spacing:0;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;font-size:12px;min-width:auto}
+.v-rate-tbl thead th{background:#1e293b;color:#f8fafc;padding:7px 10px;font-size:11px;font-weight:600;text-align:center}
+.v-rate-tbl thead th:first-child{text-align:left}
+.v-rate-tbl tbody td{padding:7px 10px;border-bottom:1px solid #edf2f7;color:#334155;text-align:center}
+.v-rate-tbl tbody td:first-child{text-align:left;font-weight:500;color:#1e293b}
+.v-rate-tbl tbody tr:last-child td{border-bottom:none}
+.v-rate-tbl tbody tr:nth-child(even){background:#fafcff}
+.v-rate-tbl strong{color:#0f172a;font-weight:700}
+
+/* Outstation & Extra Pills Grid */
+.v-extra-pills{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:16px}
+.v-extra-pill{background:#f8fafc;border:1px solid #edf0f5;border-radius:9px;padding:6px 9px;display:flex;flex-direction:column;gap:2px}
+.v-extra-pill span{font-size:10.5px;color:#64748b;text-transform:uppercase;letter-spacing:.4px}
+.v-extra-pill strong{font-size:13px;color:#0f172a;font-weight:700}
+
+/* Easy Booking Action Buttons */
+.v-booking-actions{display:grid;grid-template-columns:1.4fr 1fr;gap:8px;margin-top:auto;padding-top:14px;border-top:1px solid #edf2f7}
+.btn-book-wa{background:#25d366;color:#fff!important;font-weight:600;font-size:13.5px;padding:11px 12px;border-radius:10px;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 3px 10px rgba(37,211,102,.25);transition:all .2s ease}
+.btn-book-wa:hover{background:#1ebc59;transform:translateY(-1px);box-shadow:0 6px 16px rgba(37,211,102,.35)}
+.btn-book-wa i{font-size:17px}
+.btn-book-call{background:#0f172a;color:#fff!important;font-weight:600;font-size:13px;padding:11px 10px;border-radius:10px;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:all .2s ease}
+.btn-book-call:hover{background:#1e293b;color:var(--gold)!important;transform:translateY(-1px)}
+.btn-book-call i{color:var(--gold)}
+
+@media(max-width:900px){
+  .v-chips-grid{grid-template-columns:1fr 1fr}
+  .vcard-pro-head{height:180px}
+}
+@media(max-width:600px){
+  .vtabs-bar{border-radius:14px;width:100%}
+  .vt-pill{width:100%;justify-content:center;border-radius:10px;padding:10px 14px}
+  .v-booking-actions{grid-template-columns:1fr}
+}
