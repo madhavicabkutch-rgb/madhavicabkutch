@@ -631,8 +631,8 @@ export default {
       }
     }
 
-    // 3. Admin SPA routing: redirect /admin to /admin/ and serve /admin/index.html
-    if (path === '/admin') {
+    // 3. Admin SPA routing: redirect /admin or any /.../admin to /admin/ and serve /admin/index.html
+    if (path === '/admin' || (path.endsWith('/admin') && !path.startsWith('/api/'))) {
       const targetUrl = new URL('/admin/', url.origin);
       targetUrl.search = url.search;
       return Response.redirect(targetUrl.toString(), 301);

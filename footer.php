@@ -39,12 +39,12 @@
       <div>
         <h4>Quick links</h4>
         <ul class="ftr-list">
-          <li><a href="./">Home</a></li>
-          <li><a href="vehicle-rental">Car rental in Bhuj</a></li>
-          <li><a href="one-way-taxi">One way taxi</a></li>
-          <li><a href="fixed-kutch-tour-package">Kutch tour packages</a></li>
-          <li><a href="places-to-visit">Places to visit in Kutch</a></li>
-          <li><a href="contact">Contact us</a></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="/vehicle-rental">Car rental in Bhuj</a></li>
+          <li><a href="/one-way-taxi">One way taxi</a></li>
+          <li><a href="/fixed-kutch-tour-package">Kutch tour packages</a></li>
+          <li><a href="/places-to-visit">Places to visit in Kutch</a></li>
+          <li><a href="/contact">Contact us</a></li>
         </ul>
       </div>
 
@@ -55,17 +55,17 @@
             $ftr_routes = fetch_all("SELECT to_city FROM routes WHERE is_active=1 ORDER BY sort_order ASC, id ASC LIMIT 5");
             if (count($ftr_routes)) {
                 foreach ($ftr_routes as $fr) {
-                    echo '<li><a href="one-way-taxi">Bhuj to ' . e($fr['to_city']) . '</a></li>';
+                    echo '<li><a href="/one-way-taxi">Bhuj to ' . e($fr['to_city']) . '</a></li>';
                 }
             } else {
-                echo '<li><a href="one-way-taxi">Bhuj to Ahmedabad</a></li>';
-                echo '<li><a href="one-way-taxi">Bhuj to Rajkot</a></li>';
-                echo '<li><a href="one-way-taxi">Bhuj to Dholavira</a></li>';
-                echo '<li><a href="one-way-taxi">Bhuj to Mandvi</a></li>';
-                echo '<li><a href="one-way-taxi">Bhuj to Dhordo</a></li>';
+                echo '<li><a href="/one-way-taxi">Bhuj to Ahmedabad</a></li>';
+                echo '<li><a href="/one-way-taxi">Bhuj to Rajkot</a></li>';
+                echo '<li><a href="/one-way-taxi">Bhuj to Dholavira</a></li>';
+                echo '<li><a href="/one-way-taxi">Bhuj to Mandvi</a></li>';
+                echo '<li><a href="/one-way-taxi">Bhuj to Dhordo</a></li>';
             }
           ?>
-          <li><a href="one-way-taxi" class="ftr-more">View all routes &rarr;</a></li>
+          <li><a href="/one-way-taxi" class="ftr-more">View all routes &rarr;</a></li>
         </ul>
       </div>
 
@@ -89,11 +89,11 @@
     </div>
 
     <div class="ftr-policy">
-      <a href="cancellation-policy">Cancellation policy</a>
+      <a href="/cancellation-policy">Cancellation policy</a>
       <span>&middot;</span>
-      <a href="privacy-policy">Privacy policy</a>
+      <a href="/privacy-policy">Privacy policy</a>
       <span>&middot;</span>
-      <a href="terms">Terms and conditions</a>
+      <a href="/terms">Terms and conditions</a>
     </div>
 
     <div class="ftr-bot">
@@ -109,7 +109,7 @@
 <nav class="mbar" aria-label="Quick contact">
   <a href="tel:<?php echo BIZ_PHONE; ?>"><i class="fa fa-phone"></i>Call</a>
   <a href="<?php echo wa_link('Hi, I would like to make an enquiry.'); ?>" target="_blank" rel="noopener"><i class="fa fa-whatsapp"></i>WhatsApp</a>
-  <a href="contact"><i class="fa fa-pencil-square-o"></i>Enquiry</a>
+  <a href="/contact"><i class="fa fa-pencil-square-o"></i>Enquiry</a>
 </nav>
 
 <script>

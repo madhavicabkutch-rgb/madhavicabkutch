@@ -23,7 +23,7 @@ export function waLink(phone, msg) {
 export function photo(file, alt, icon = '&#128663;', fit = 'cover') {
   if (file) {
     const cls = fit === 'contain' ? 'ph contain' : 'ph';
-    return `<div class="${cls}"><img src="assets/img/${e(file)}" alt="${e(alt)}" loading="lazy"></div>`;
+    return `<div class="${cls}"><img src="/assets/img/${e(file)}" alt="${e(alt)}" loading="lazy"></div>`;
   }
   return `<div class="ph">${icon}</div>`;
 }
@@ -201,14 +201,14 @@ export function renderLayout({
 <meta name="twitter:description" content="${e(description)}">
 <meta name="twitter:image" content="${ogImage}">
 
-<link rel="icon" href="assets/img/favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="icon" href="/assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="assets/css/style-h1.css?v=2.4">
+<link rel="stylesheet" href="/assets/css/style-h1.css?v=2.4">
 
 <script type="application/ld+json">
 ${JSON.stringify(globalSchema, null, 2)}
@@ -226,19 +226,19 @@ ${pageSchema ? `\n${pageSchema}\n` : ''}
 
 <header class="hdr">
   <div class="wrap">
-    <a href="./" class="logo-plate" title="Madhavi Cab Kutch - Car Rental & Taxi Service in Bhuj">
-      <img src="assets/img/logo.png" alt="${e(bizName)} - Car Rental & Taxi Service in Bhuj Kutch" onerror="this.outerHTML='<span class=\\'logo-mark\\'>M</span><span><span class=\\'logo-txt\\'>Madhavi Cab</span><span class=\\'logo-sub\\'>CAB KUTCH</span></span>'">
+    <a href="/" class="logo-plate" title="Madhavi Cab Kutch - Car Rental & Taxi Service in Bhuj">
+      <img src="/assets/img/logo.png" alt="${e(bizName)} - Car Rental & Taxi Service in Bhuj Kutch" onerror="this.outerHTML='<span class=\\'logo-mark\\'>M</span><span><span class=\\'logo-txt\\'>Madhavi Cab</span><span class=\\'logo-sub\\'>CAB KUTCH</span></span>'">
     </a>
 
     <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
 
     <nav class="nav" id="nav">
-      <a href="./"${navClass('home')}>Home</a>
-      <a href="vehicle-rental"${navClass('rental')}>Car Rental</a>
-      <a href="one-way-taxi"${navClass('oneway')}>One Way Taxi</a>
-      <a href="fixed-kutch-tour-package"${navClass('packages')}>Tour Packages</a>
-      <a href="places-to-visit"${navClass('places')}>Places to Visit</a>
-      <a href="contact"${navClass('contact')}>Contact</a>
+      <a href="/"${navClass('home')}>Home</a>
+      <a href="/vehicle-rental"${navClass('rental')}>Car Rental</a>
+      <a href="/one-way-taxi"${navClass('oneway')}>One Way Taxi</a>
+      <a href="/fixed-kutch-tour-package"${navClass('packages')}>Tour Packages</a>
+      <a href="/places-to-visit"${navClass('places')}>Places to Visit</a>
+      <a href="/contact"${navClass('contact')}>Contact</a>
       <a href="${waLink(bizWa, 'Hi, I would like to make an enquiry.')}" class="nav-cta" target="_blank" rel="noopener">Enquire Now</a>
     </nav>
   </div>
@@ -266,7 +266,7 @@ ${content}
       <div>
         <div class="ftr-brand">
           <span class="logo-plate">
-            <img src="assets/img/logo.png" alt="${e(bizName)} - Car Rental & Taxi Service in Bhuj Kutch" loading="lazy" onerror="this.outerHTML='<span class=\\'logo-mark\\'>M</span><span><span class=\\'logo-txt\\'>Madhavi Cab</span><span class=\\'logo-sub\\'>CAB KUTCH</span></span>'">
+            <img src="/assets/img/logo.png" alt="${e(bizName)} - Car Rental & Taxi Service in Bhuj Kutch" loading="lazy" onerror="this.outerHTML='<span class=\\'logo-mark\\'>M</span><span><span class=\\'logo-txt\\'>Madhavi Cab</span><span class=\\'logo-sub\\'>CAB KUTCH</span></span>'">
           </span>
         </div>
         <p class="ftr-about">Car rental, one way taxi and Kutch tour packages operated from Bhuj. Fixed fares, verified local drivers and clean vehicles across Kutch and Gujarat.</p>
@@ -279,12 +279,12 @@ ${content}
       <div>
         <h4>Quick links</h4>
         <ul class="ftr-list">
-          <li><a href="./">Home</a></li>
-          <li><a href="vehicle-rental">Car rental in Bhuj</a></li>
-          <li><a href="one-way-taxi">One way taxi</a></li>
-          <li><a href="fixed-kutch-tour-package">Kutch tour packages</a></li>
-          <li><a href="places-to-visit">Places to visit in Kutch</a></li>
-          <li><a href="contact">Contact us</a></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="/vehicle-rental">Car rental in Bhuj</a></li>
+          <li><a href="/one-way-taxi">One way taxi</a></li>
+          <li><a href="/fixed-kutch-tour-package">Kutch tour packages</a></li>
+          <li><a href="/places-to-visit">Places to visit in Kutch</a></li>
+          <li><a href="/contact">Contact us</a></li>
         </ul>
       </div>
 
@@ -292,7 +292,7 @@ ${content}
         <h4>Popular routes</h4>
         <ul class="ftr-list">
           ${routesHtml}
-          <li><a href="one-way-taxi" class="ftr-more">View all routes &rarr;</a></li>
+          <li><a href="/one-way-taxi" class="ftr-more">View all routes &rarr;</a></li>
         </ul>
       </div>
 
@@ -316,11 +316,11 @@ ${content}
     </div>
 
     <div class="ftr-policy">
-      <a href="cancellation-policy">Cancellation policy</a>
+      <a href="/cancellation-policy">Cancellation policy</a>
       <span>&middot;</span>
-      <a href="privacy-policy">Privacy policy</a>
+      <a href="/privacy-policy">Privacy policy</a>
       <span>&middot;</span>
-      <a href="terms">Terms and conditions</a>
+      <a href="/terms">Terms and conditions</a>
     </div>
 
     <div class="ftr-bot">
@@ -335,7 +335,7 @@ ${content}
 <nav class="mbar" aria-label="Quick contact">
   <a href="tel:${e(bizPhone)}"><i class="fa fa-phone"></i>Call</a>
   <a href="${waLink(bizWa, 'Hi, I would like to make an enquiry.')}" target="_blank" rel="noopener"><i class="fa fa-whatsapp"></i>WhatsApp</a>
-  <a href="contact"><i class="fa fa-pencil-square-o"></i>Enquiry</a>
+  <a href="/contact"><i class="fa fa-pencil-square-o"></i>Enquiry</a>
 </nav>
 
 <script>

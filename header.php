@@ -39,7 +39,7 @@ function img_url($file) {
     if (!$file || !has_img($file)) return '';
     $path = __DIR__ . '/assets/img/' . $file;
     $version = @filemtime($path);
-    return 'assets/img/' . e($file) . ($version ? '?v=' . $version : '');
+    return '/assets/img/' . e($file) . ($version ? '?v=' . $version : '');
 }
 
 /* $fit = 'cover' fills and crops (scenery). 'contain' shows the
@@ -95,14 +95,14 @@ function wa_link($msg) {
 <meta name="twitter:description" content="<?php echo e($page_desc); ?>">
 <meta name="twitter:image" content="<?php echo isset($og_image) ? $og_image : (SITE_URL . '/assets/img/og-image.jpg'); ?>">
 
-<link rel="icon" href="assets/img/favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="icon" href="/assets/img/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="assets/css/style-h1.css">
+<link rel="stylesheet" href="/assets/css/style-h1.css">
 
 <?php
 // Breadcrumb schema builder
@@ -244,7 +244,7 @@ foreach ($bc_items as $idx => $bc) {
 
 <header class="hdr">
   <div class="wrap">
-    <a href="./" class="logo-plate" title="Madhavi Cab Kutch - Car Rental & Taxi Service in Bhuj">
+    <a href="/" class="logo-plate" title="Madhavi Cab Kutch - Car Rental & Taxi Service in Bhuj">
       <?php if (has_img('logo.png')): ?>
         <img src="<?php echo img_url('logo.png'); ?>" alt="<?php echo BIZ_NAME; ?> - Car Rental & Taxi Service in Bhuj Kutch">
       <?php else: ?>
@@ -259,12 +259,12 @@ foreach ($bc_items as $idx => $bc) {
     <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">&#9776;</button>
 
     <nav class="nav" id="nav">
-      <a href="./"<?php echo navclass('home'); ?>>Home</a>
-      <a href="vehicle-rental"<?php echo navclass('rental'); ?>>Car Rental</a>
-      <a href="one-way-taxi"<?php echo navclass('oneway'); ?>>One Way Taxi</a>
-      <a href="fixed-kutch-tour-package"<?php echo navclass('packages'); ?>>Tour Packages</a>
-      <a href="places-to-visit"<?php echo navclass('places'); ?>>Places to Visit</a>
-      <a href="contact"<?php echo navclass('contact'); ?>>Contact</a>
+      <a href="/"<?php echo navclass('home'); ?>>Home</a>
+      <a href="/vehicle-rental"<?php echo navclass('rental'); ?>>Car Rental</a>
+      <a href="/one-way-taxi"<?php echo navclass('oneway'); ?>>One Way Taxi</a>
+      <a href="/fixed-kutch-tour-package"<?php echo navclass('packages'); ?>>Tour Packages</a>
+      <a href="/places-to-visit"<?php echo navclass('places'); ?>>Places to Visit</a>
+      <a href="/contact"<?php echo navclass('contact'); ?>>Contact</a>
       <a href="<?php echo wa_link('Hi, I would like to make an enquiry.'); ?>" class="nav-cta" target="_blank" rel="noopener">Enquire Now</a>
     </nav>
   </div>
