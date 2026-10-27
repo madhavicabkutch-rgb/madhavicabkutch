@@ -1,23 +1,31 @@
 # ============================================================
 # Clean URLs & Security Configuration for Madhavi Cab Kutch
+# Optimized for Hostinger (LiteSpeed & Apache)
 # ============================================================
 
+Options -MultiViews
 RewriteEngine On
 RewriteBase /
 
-# 1. Do not rewrite existing files or directories (like assets, images, admin, blog)
+# 1. Do not rewrite real files or directories (assets, images, admin, blog)
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# 2. Redirect direct requests for *.php to extensionless URLs (301 Permanent Redirect)
+# 2. Redirect direct requests for *.php to clean URL (301 Permanent Redirect)
 # E.g. /vehicle-rental.php -> /vehicle-rental
-RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[\s?] [NC]
-RewriteCond %{REQUEST_URI} !^/blog/ [NC]
-RewriteCond %{REQUEST_URI} !^/admin/ [NC]
-RewriteRule ^ /%1 [R=301,L]
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+([^.]+)\.php [NC]
+RewriteCond %{REQUEST_URI} !^/(admin|blog) [NC]
+RewriteRule ^ %1 [R=301,L]
 
-# 3. Internally rewrite extensionless URL to *.php file if it exists
-RewriteCond %{DOCUMENT_ROOT}/$1.php -f [OR]
+# 3. Clean URL to .php rewrite using %{REQUEST_URI} (Robust on Hostinger)
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.php -f
+RewriteRule ^ %{REQUEST_URI}.php [L,QSA]
+
+# 4. Clean URL to .php rewrite using relative filename
 RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+?)/?$ $1.php [L,QSA]
+
+# 5. Clean URL to .php rewrite using document root
+RewriteCond %{DOCUMENT_ROOT}/$1.php -f
 RewriteRule ^(.+?)/?$ $1.php [L,QSA]
