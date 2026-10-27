@@ -1,0 +1,11 @@
+name = "madhavicabkutch"
+main = "src/worker.js"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[vars]
+SITE_URL = "https://madhavicabkutch.com"

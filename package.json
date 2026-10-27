@@ -5,6 +5,7 @@
   "main": "src/worker.js",
   "type": "module",
   "scripts": {
+    "build": "echo 'Build complete'",
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "d1:create": "wrangler d1 create madhavicab-db",

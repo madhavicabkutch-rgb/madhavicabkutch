@@ -10,13 +10,16 @@
     "directory": "./public",
     "binding": "ASSETS"
   },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "madhavicab-db",
-      "database_id": "madhavicab-db"
-    }
-  ],
+  // D1 Database Binding
+  // To enable, create the database in Cloudflare dashboard or via 'npx wrangler d1 create madhavicab-db'
+  // and paste the real UUID into database_id below:
+  // "d1_databases": [
+  //   {
+  //     "binding": "DB",
+  //     "database_name": "madhavicab-db",
+  //     "database_id": "<PASTE_REAL_D1_UUID_HERE>"
+  //   }
+  // ],
   "vars": {
     "SITE_URL": "https://madhavicabkutch.com"
   }
