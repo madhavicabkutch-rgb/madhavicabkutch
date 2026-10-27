@@ -75,12 +75,12 @@ $page_schema = '<script type="application/ld+json">' . json_encode($rental_schem
 
 include 'header.php';
 
-$vehicles = DB_OK ? fetch_all(
+$vehicles = fetch_all(
   "SELECT * FROM vehicles
    WHERE is_active=1
    AND category='" . $type . "'
    ORDER BY sort_order ASC, id ASC"
-) : array();
+);
 ?>
 
 <section class="phero">

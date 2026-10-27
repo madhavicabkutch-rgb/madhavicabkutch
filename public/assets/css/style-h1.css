@@ -423,3 +423,25 @@ tbody tr:last-child td{border-bottom:none}
   .vt-pill{width:100%;justify-content:center;border-radius:10px;padding:10px 14px}
   .v-booking-actions{grid-template-columns:1fr}
 }
+
+/* ============================================================
+   TOP DESTINATIONS PRO CARDS (Places & Tour Packages)
+   ============================================================ */
+.plcard-pro{background:#fff;border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 3px 14px rgba(0,0,0,.04);transition:transform .25s ease,box-shadow .25s ease;text-decoration:none}
+.plcard-pro:hover{transform:translateY(-5px);box-shadow:0 12px 28px rgba(0,0,0,.09);border-color:#cbd5e1}
+.plcard-pro-img{position:relative;height:190px;overflow:hidden;background:#e2e8f0}
+.plcard-pro-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.plcard-pro:hover .plcard-pro-img img{transform:scale(1.06)}
+.pl-cat-badge{position:absolute;top:12px;left:12px;background:#e11d48;color:#fff;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.6px;padding:4px 9px;border-radius:20px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.pl-dist-badge{position:absolute;bottom:10px;left:12px;background:rgba(15,23,42,.85);color:#fff;font-size:11.5px;font-weight:500;padding:4px 9px;border-radius:14px;backdrop-filter:blur(4px);display:inline-flex;align-items:center;gap:4px}
+.pl-dist-badge i{color:var(--gold)}
+.plcard-pro-body{padding:18px;display:flex;flex-direction:column;flex:1}
+.plcard-pro h3{font-family:'Outfit',sans-serif;font-size:17.5px;font-weight:700;color:var(--ink);margin-bottom:6px;line-height:1.25;text-transform:uppercase}
+.plcard-pro h3 a{color:inherit;text-decoration:none}
+.plcard-pro p{font-size:13.5px;line-height:1.55;color:#526077;margin-bottom:14px;flex-grow:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.plcard-pro-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:12px;border-top:1px solid #edf2f7;margin-top:auto}
+.pl-explore-btn{color:#e11d48;font-weight:700;font-size:13.5px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:gap .2s ease}
+.pl-explore-btn:hover{text-decoration:underline;gap:8px}
+.pl-book-wa{background:#25d366;color:#fff!important;font-weight:600;font-size:12px;padding:6px 11px;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:5px;box-shadow:0 2px 6px rgba(37,211,102,.25)}
+.pl-book-wa:hover{background:#1ebc59}
+

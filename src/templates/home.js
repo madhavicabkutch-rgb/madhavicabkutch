@@ -387,25 +387,39 @@ ${routes && routes.length ? `
 ${places && places.length ? `
 <section class="sec sec-grey">
   <div class="wrap">
-    <div class="sec-head">
-      <div class="kick">EXPLORE KUTCH</div>
-      <h2>Top Places to Visit in Kutch by Cab</h2>
-      <p>The spots our drivers are asked for most. Tell us where you want to go and we will build the route around it.</p>
+    <div class="sec-head center" style="text-align:center;margin-bottom:34px;">
+      <div class="kick" style="letter-spacing:2px;font-weight:700;">EXPLORE KUTCH</div>
+      <h2 style="font-size:32px;font-weight:700;color:var(--ink);margin-bottom:10px;">Top Destinations You Shouldn't Miss</h2>
+      <p style="margin:0 auto;color:var(--muted);font-size:15.5px;max-width:760px;">From the endless white salt desert to ancient ruins and serene beaches, discover the best of Kutch. Reach any of these easily with our car rental and tour packages.</p>
     </div>
 
-    <div class="g4">
-      ${places.map(pl => `
-        <a href="place-detail?slug=${e(pl.slug)}" class="plcard">
-          ${photo(pl.image, `${pl.title} in Kutch`, '&#127963;')}
-          <div class="b">
-            <h3>${e(pl.title)}</h3>
-            <div class="dist">${pl.distance_bhuj ? e(pl.distance_bhuj) + ' from Bhuj' : 'In Kutch'}</div>
+    <div class="g3">
+      ${places.slice(0, 6).map(pl => `
+        <article class="plcard-pro">
+          <div class="plcard-pro-img">
+            <span class="pl-cat-badge">${e(pl.category || 'DESTINATION')}</span>
+            <span class="pl-dist-badge"><i class="fa fa-map-marker"></i> ${e(pl.distance_bhuj || 'In Kutch')}</span>
+            <a href="place-detail?slug=${e(pl.slug)}" title="${e(pl.title)}">
+              ${photo(pl.image, `${pl.title} in Kutch`, '&#127963;')}
+            </a>
           </div>
-        </a>
+          <div class="plcard-pro-body">
+            <h3><a href="place-detail?slug=${e(pl.slug)}">${e(pl.title)}</a></h3>
+            <p>${e(pl.short_desc || pl.description)}</p>
+            <div class="plcard-pro-foot">
+              <a href="place-detail?slug=${e(pl.slug)}" class="pl-explore-btn">Explore &rarr;</a>
+              <a href="${waLink(bizWa, `Hi Madhavi Cab, I want to book a taxi/package to visit ${pl.title}.`)}" class="pl-book-wa" target="_blank" rel="noopener">
+                <i class="fa fa-whatsapp"></i> Book Cab
+              </a>
+            </div>
+          </div>
+        </article>
       `).join('')}
     </div>
 
-    <p class="tbl-note"><a href="places-to-visit" class="more">See all places in Kutch &rarr;</a></p>
+    <div style="text-align:center;margin-top:32px;">
+      <a href="places-to-visit" class="btn btn-gold">View All 24+ Top Destinations &rarr;</a>
+    </div>
   </div>
 </section>
 ` : ''}

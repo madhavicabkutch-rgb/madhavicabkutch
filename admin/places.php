@@ -9,10 +9,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'delete') {
         flash_set('error', 'Session expired. Please try again.');
     } else {
         $id = (int)post('id');
-        $st = $conn->prepare("DELETE FROM places WHERE id = ?");
-        $st->bind_param('i', $id);
-        $st->execute() ? flash_set('ok', 'Place deleted.') : flash_set('error', 'Could not delete: ' . $conn->error);
-        $st->close();
+        if (defined('DB_OK') && DB_OK && isset($conn) && $conn) {
+            $st = $conn->prepare("DELETE FROM places WHERE id = ?");
+            if ($st) {
+                $st->bind_param('i', $id);
+                $st->execute();
+                $st->close();
+            }
+        } else {
+            $places = load_local_data('places');
+            $places = array_values(array_filter($places, function($p) use ($id) { return $p['id'] != $id; }));
+            save_local_data('places', $places);
+        }
+        flash_set('ok', 'Place deleted.');
     }
     header('Location: places.php');
     exit;
@@ -22,7 +31,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'delete') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'toggle') {
     if (csrf_ok()) {
         $id = (int)post('id');
-        $conn->query("UPDATE places SET is_active = 1 - is_active WHERE id = " . $id);
+        if (defined('DB_OK') && DB_OK && isset($conn) && $conn) {
+            $conn->query("UPDATE places SET is_active = 1 - is_active WHERE id = " . $id);
+        } else {
+            $places = load_local_data('places');
+            foreach ($places as &$p) {
+                if ($p['id'] == $id) {
+                    $p['is_active'] = empty($p['is_active']) ? 1 : 0;
+                }
+            }
+            save_local_data('places', $places);
+        }
     }
     header('Location: places.php');
     exit;

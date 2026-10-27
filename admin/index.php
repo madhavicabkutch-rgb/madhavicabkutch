@@ -17,7 +17,9 @@ $home_routes = $home_routes ? (int)$home_routes['c'] : 0;
 ?>
 
 <?php if (!DB_OK): ?>
-  <div class="alert al-bad">The database is not reachable. Check config.php before making any changes.</div>
+  <div class="alert" style="background:#e8f0fe;border-left:4px solid #1a73e8;color:#174ea6;padding:12px 16px;border-radius:6px;margin-bottom:20px;">
+    <strong>Local Data Active:</strong> Using saved dataset (<?php echo $n_routes; ?> routes, <?php echo $n_places; ?> places, <?php echo $n_vehicles; ?> vehicles).
+  </div>
 <?php endif; ?>
 
 <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">

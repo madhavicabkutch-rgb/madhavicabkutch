@@ -15,25 +15,35 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_ok()) {
     exit;
 }
 
-$st = $conn->prepare("SELECT image FROM vehicles WHERE id=? LIMIT 1");
-$st->bind_param('i', $id);
-$st->execute();
-$row = $st->get_result()->fetch_assoc();
-$st->close();
-
-$st = $conn->prepare("DELETE FROM vehicles WHERE id=?");
-$st->bind_param('i', $id);
-
-if ($st->execute()) {
-    if (!empty($row['image'])) {
-        $path = __DIR__ . '/../assets/img/' . basename($row['image']);
-        if (is_file($path)) @unlink($path);
+if (defined('DB_OK') && DB_OK && isset($conn) && $conn) {
+    $st = $conn->prepare("SELECT image FROM vehicles WHERE id=? LIMIT 1");
+    if ($st) {
+        $st->bind_param('i', $id);
+        $st->execute();
+        $row = $st->get_result()->fetch_assoc();
+        $st->close();
     }
-    flash_set('ok', 'Vehicle deleted.');
+
+    $st = $conn->prepare("DELETE FROM vehicles WHERE id=?");
+    if ($st) {
+        $st->bind_param('i', $id);
+        if ($st->execute()) {
+            if (!empty($row['image'])) {
+                $path = __DIR__ . '/../assets/img/' . basename($row['image']);
+                if (is_file($path)) @unlink($path);
+            }
+            flash_set('ok', 'Vehicle deleted.');
+        } else {
+            flash_set('error', 'Could not delete vehicle.');
+        }
+        $st->close();
+    }
 } else {
-    flash_set('error', 'Could not delete vehicle.');
+    $vehicles = load_local_data('vehicles');
+    $vehicles = array_values(array_filter($vehicles, function($v) use ($id) { return $v['id'] != $id; }));
+    save_local_data('vehicles', $vehicles);
+    flash_set('ok', 'Vehicle deleted.');
 }
-$st->close();
 
 header('Location: vehicles.php');
 exit;

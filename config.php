@@ -105,23 +105,98 @@ function money($n) {
     return number_format((float)$n, 0, '.', ',');
 }
 
-/* Fetch rows as an array. Returns an empty array if the DB is down,
-   so pages using foreach() never break.
-   Example: fetch_all("SELECT * FROM routes WHERE is_active=1 ORDER BY sort_order") */
+require_once __DIR__ . '/local_data.php';
+
+/* Fallback query processor when MySQL is offline */
+function fallback_query($sql) {
+    $lsql = strtolower($sql);
+
+    // 1. Routes
+    if (strpos($lsql, 'routes') !== false) {
+        $items = load_local_data('routes');
+        if (preg_match('/where.*?id\s*=\s*(\d+)/i', $sql, $m)) {
+            $id = (int)$m[1];
+            $items = array_values(array_filter($items, function($r) use ($id) { return $r['id'] == $id; }));
+        }
+        if (strpos($lsql, 'show_on_home=1') !== false || strpos($lsql, 'show_on_home = 1') !== false) {
+            $items = array_values(array_filter($items, function($r) { return !empty($r['show_on_home']); }));
+        }
+        if (strpos($lsql, 'is_active=1') !== false || strpos($lsql, 'is_active = 1') !== false) {
+            $items = array_values(array_filter($items, function($r) { return !empty($r['is_active']); }));
+        }
+        if (strpos($lsql, 'count(') !== false) {
+            return array(array('c' => count($items)));
+        }
+        if (preg_match('/limit\s+(\d+)/i', $sql, $m)) {
+            $items = array_slice($items, 0, (int)$m[1]);
+        }
+        return $items;
+    }
+
+    // 2. Places
+    if (strpos($lsql, 'places') !== false) {
+        $items = load_local_data('places');
+        if (preg_match('/where.*?id\s*=\s*(\d+)/i', $sql, $m)) {
+            $id = (int)$m[1];
+            $items = array_values(array_filter($items, function($p) use ($id) { return $p['id'] == $id; }));
+        }
+        if (preg_match('/slug\s*=\s*[\'"]([^\'"]+)[\'"]/i', $sql, $m)) {
+            $slug = $m[1];
+            $items = array_values(array_filter($items, function($p) use ($slug) { return $p['slug'] === $slug; }));
+        }
+        if (strpos($lsql, 'is_active=1') !== false || strpos($lsql, 'is_active = 1') !== false) {
+            $items = array_values(array_filter($items, function($p) { return !empty($p['is_active']); }));
+        }
+        if (strpos($lsql, 'count(') !== false) {
+            return array(array('c' => count($items)));
+        }
+        if (preg_match('/limit\s+(\d+)/i', $sql, $m)) {
+            $items = array_slice($items, 0, (int)$m[1]);
+        }
+        return $items;
+    }
+
+    // 3. Vehicles
+    if (strpos($lsql, 'vehicles') !== false) {
+        $items = load_local_data('vehicles');
+        if (preg_match('/where.*?id\s*=\s*(\d+)/i', $sql, $m)) {
+            $id = (int)$m[1];
+            $items = array_values(array_filter($items, function($v) use ($id) { return $v['id'] == $id; }));
+        }
+        if (preg_match('/category\s*=\s*[\'"]([^\'"]+)[\'"]/i', $sql, $m)) {
+            $cat = $m[1];
+            $items = array_values(array_filter($items, function($v) use ($cat) { return strcasecmp($v['category'], $cat) === 0; }));
+        }
+        if (strpos($lsql, 'is_active=1') !== false || strpos($lsql, 'is_active = 1') !== false) {
+            $items = array_values(array_filter($items, function($v) { return !empty($v['is_active']); }));
+        }
+        if (strpos($lsql, 'count(') !== false) {
+            return array(array('c' => count($items)));
+        }
+        if (preg_match('/limit\s+(\d+)/i', $sql, $m)) {
+            $items = array_slice($items, 0, (int)$m[1]);
+        }
+        return $items;
+    }
+
+    return array();
+}
+
+/* Fetch rows as an array. Automatically falls back to local data if DB is offline */
 function fetch_all($sql) {
     global $conn;
-    if (!DB_OK) return array();
-        $out = array();
-    try {
-        $res = $conn->query($sql);
-        if ($res) {
-            while ($row = $res->fetch_assoc()) { $out[] = $row; }
-            $res->free();
-        }
-    } catch (Exception $ex) {
-        return array();
+    if (defined('DB_OK') && DB_OK && isset($conn) && $conn) {
+        try {
+            $res = $conn->query($sql);
+            if ($res) {
+                $out = array();
+                while ($row = $res->fetch_assoc()) { $out[] = $row; }
+                $res->free();
+                if (count($out)) return $out;
+            }
+        } catch (Exception $ex) {}
     }
-    return $out;
+    return fallback_query($sql);
 }
 
 /* Fetch a single row, or null */

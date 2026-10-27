@@ -1,20 +1,34 @@
 <?php
-// router.php - Router for PHP's built-in web server (php -S localhost:8000 router.php)
+// router.php - Router for PHP's built-in web server (php -S localhost:8080 router.php)
+ob_start();
+
 $uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 
-// Normalize trailing slashes (e.g. /vehicle-rental/ -> /vehicle-rental)
-if ($uri !== '/' && substr($uri, -1) === '/') {
+// Shortcut: redirect /login or /login.php to /admin/login.php
+if ($uri === '/login' || $uri === '/login.php') {
+    header("Location: /admin/login.php", true, 302);
+    exit;
+}
+
+// Shortcut: redirect /admin to /admin/login.php
+if ($uri === '/admin' || $uri === '/admin/') {
+    header("Location: /admin/login.php", true, 302);
+    exit;
+}
+
+// Normalize trailing slashes (e.g. /vehicle-rental/ -> /vehicle-rental), unless it's a directory
+if ($uri !== '/' && substr($uri, -1) === '/' && !is_dir(__DIR__ . $uri)) {
     $uri = rtrim($uri, '/');
 }
 
-// Serve static assets, admin, blog, or existing files directly
-if ($uri !== '/' && file_exists(__DIR__ . $uri)) {
-    return false; // let the built-in server serve the static file
+// Serve existing files (images, css, js, php files in subdirectories) directly
+if ($uri !== '/' && is_file(__DIR__ . $uri)) {
+    return false; // let the built-in server serve the static file or php script
 }
 
 // Redirect *.php to clean URL in browser (except admin/blog)
 if (preg_match('#^/(?!admin|blog)(.+)\.php$#', $uri, $matches)) {
-    $queryString = $_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '';
+    $queryString = !empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '';
     header("Location: /" . $matches[1] . $queryString, true, 301);
     exit;
 }

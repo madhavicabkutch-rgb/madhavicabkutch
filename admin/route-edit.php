@@ -58,69 +58,105 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         flash_set('error', 'Enter the destination city.');
     } else {
 
-        /* Slug must be unique */
-        $chk = $conn->prepare("SELECT id FROM routes WHERE slug = ? AND id <> ? LIMIT 1");
-        $chk->bind_param('si', $slug, $id);
-        $chk->execute();
-        $clash = $chk->get_result()->fetch_assoc();
-        $chk->close();
+        if (defined('DB_OK') && DB_OK && isset($conn) && $conn) {
+            /* Slug must be unique */
+            $chk = $conn->prepare("SELECT id FROM routes WHERE slug = ? AND id <> ? LIMIT 1");
+            $chk->bind_param('si', $slug, $id);
+            $chk->execute();
+            $clash = $chk->get_result()->fetch_assoc();
+            $chk->close();
 
-        if ($clash) {
-            $slug = $slug . '-' . time();
-        }
+            if ($clash) {
+                $slug = $slug . '-' . time();
+            }
 
-        if ($id) {
-            /* 12 values + id = 13 placeholders, 13 type letters */
-            $sql = "UPDATE routes SET
-                      from_city=?, to_city=?, slug=?, distance_km=?, duration=?,
-                      sedan_fare=?, suv_fare=?, tempo_fare=?, description=?,
-                      show_on_home=?, sort_order=?, is_active=?
-                    WHERE id=?";
-            $st = $conn->prepare($sql);
-            if (!$st) {
-                flash_set('error', 'SQL error: ' . $conn->error);
-            } else {
-                $st->bind_param(
-                    'sssisdddsiiii',
-                    $from_city, $to_city, $slug, $distance_km, $duration,
-                    $sedan_fare, $suv_fare, $tempo_fare, $description,
-                    $show_on_home, $sort_order, $is_active, $id
-                );
-                if ($st->execute()) {
-                    flash_set('ok', 'Route saved.');
+            if ($id) {
+                /* 12 values + id = 13 placeholders, 13 type letters */
+                $sql = "UPDATE routes SET
+                          from_city=?, to_city=?, slug=?, distance_km=?, duration=?,
+                          sedan_fare=?, suv_fare=?, tempo_fare=?, description=?,
+                          show_on_home=?, sort_order=?, is_active=?
+                        WHERE id=?";
+                $st = $conn->prepare($sql);
+                if (!$st) {
+                    flash_set('error', 'SQL error: ' . $conn->error);
+                } else {
+                    $st->bind_param(
+                        'sssisdddsiiii',
+                        $from_city, $to_city, $slug, $distance_km, $duration,
+                        $sedan_fare, $suv_fare, $tempo_fare, $description,
+                        $show_on_home, $sort_order, $is_active, $id
+                    );
+                    if ($st->execute()) {
+                        flash_set('ok', 'Route saved.');
+                        $st->close();
+                        header('Location: routes.php');
+                        exit;
+                    }
+                    flash_set('error', 'Could not save: ' . $st->error);
                     $st->close();
-                    header('Location: routes.php');
-                    exit;
                 }
-                flash_set('error', 'Could not save: ' . $st->error);
-                $st->close();
+            } else {
+                /* 12 placeholders, 12 type letters */
+                $sql = "INSERT INTO routes
+                          (from_city, to_city, slug, distance_km, duration,
+                           sedan_fare, suv_fare, tempo_fare, description,
+                           show_on_home, sort_order, is_active)
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+                $st = $conn->prepare($sql);
+                if (!$st) {
+                    flash_set('error', 'SQL error: ' . $conn->error);
+                } else {
+                    $st->bind_param(
+                        'sssisdddsiii',
+                        $from_city, $to_city, $slug, $distance_km, $duration,
+                        $sedan_fare, $suv_fare, $tempo_fare, $description,
+                        $show_on_home, $sort_order, $is_active
+                    );
+                    if ($st->execute()) {
+                        flash_set('ok', 'Route added.');
+                        $st->close();
+                        header('Location: routes.php');
+                        exit;
+                    }
+                    flash_set('error', 'Could not save: ' . $st->error);
+                    $st->close();
+                }
             }
         } else {
-            /* 12 placeholders, 12 type letters */
-            $sql = "INSERT INTO routes
-                      (from_city, to_city, slug, distance_km, duration,
-                       sedan_fare, suv_fare, tempo_fare, description,
-                       show_on_home, sort_order, is_active)
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-            $st = $conn->prepare($sql);
-            if (!$st) {
-                flash_set('error', 'SQL error: ' . $conn->error);
-            } else {
-                $st->bind_param(
-                    'sssisdddsiii',
-                    $from_city, $to_city, $slug, $distance_km, $duration,
-                    $sedan_fare, $suv_fare, $tempo_fare, $description,
-                    $show_on_home, $sort_order, $is_active
-                );
-                if ($st->execute()) {
-                    flash_set('ok', 'Route added.');
-                    $st->close();
-                    header('Location: routes.php');
-                    exit;
+            // Local JSON storage save
+            $routes = load_local_data('routes');
+            if ($id) {
+                foreach ($routes as &$r) {
+                    if ($r['id'] == $id) {
+                        $r['from_city'] = $from_city;
+                        $r['to_city'] = $to_city;
+                        $r['slug'] = $slug;
+                        $r['distance_km'] = $distance_km;
+                        $r['duration'] = $duration;
+                        $r['sedan_fare'] = $sedan_fare;
+                        $r['suv_fare'] = $suv_fare;
+                        $r['tempo_fare'] = $tempo_fare;
+                        $r['description'] = $description;
+                        $r['show_on_home'] = $show_on_home;
+                        $r['sort_order'] = $sort_order;
+                        $r['is_active'] = $is_active;
+                    }
                 }
-                flash_set('error', 'Could not save: ' . $st->error);
-                $st->close();
+                flash_set('ok', 'Route saved locally.');
+            } else {
+                $newId = count($routes) ? max(array_column($routes, 'id')) + 1 : 1;
+                $routes[] = array(
+                    'id' => $newId, 'from_city' => $from_city, 'to_city' => $to_city, 'slug' => $slug,
+                    'distance_km' => $distance_km, 'duration' => $duration,
+                    'sedan_fare' => $sedan_fare, 'suv_fare' => $suv_fare, 'tempo_fare' => $tempo_fare,
+                    'description' => $description, 'show_on_home' => $show_on_home, 'sort_order' => $sort_order, 'is_active' => $is_active
+                );
+                flash_set('ok', 'Route added locally.');
             }
+            save_local_data('routes', $routes);
+            header('Location: routes.php');
+            exit;
         }
     }
 

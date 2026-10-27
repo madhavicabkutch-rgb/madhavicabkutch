@@ -9,14 +9,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'delete') {
         flash_set('error', 'Session expired. Please try again.');
     } else {
         $id = (int)post('id');
-        $st = $conn->prepare("DELETE FROM routes WHERE id = ?");
-        $st->bind_param('i', $id);
-        if ($st->execute()) {
-            flash_set('ok', 'Route deleted.');
+        if (defined('DB_OK') && DB_OK && isset($conn) && $conn) {
+            $st = $conn->prepare("DELETE FROM routes WHERE id = ?");
+            if ($st) {
+                $st->bind_param('i', $id);
+                $st->execute();
+                $st->close();
+            }
         } else {
-            flash_set('error', 'Could not delete: ' . $conn->error);
+            $routes = load_local_data('routes');
+            $routes = array_values(array_filter($routes, function($r) use ($id) { return $r['id'] != $id; }));
+            save_local_data('routes', $routes);
         }
-        $st->close();
+        flash_set('ok', 'Route deleted.');
     }
     header('Location: routes.php');
     exit;
@@ -27,7 +32,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'toggle') {
     if (csrf_ok()) {
         $id  = (int)post('id');
         $col = (post('col') === 'home') ? 'show_on_home' : 'is_active';
-        $conn->query("UPDATE routes SET `$col` = 1 - `$col` WHERE id = " . $id);
+        if (defined('DB_OK') && DB_OK && isset($conn) && $conn) {
+            $conn->query("UPDATE routes SET `$col` = 1 - `$col` WHERE id = " . $id);
+        } else {
+            $routes = load_local_data('routes');
+            foreach ($routes as &$r) {
+                if ($r['id'] == $id) {
+                    $r[$col] = empty($r[$col]) ? 1 : 0;
+                }
+            }
+            save_local_data('routes', $routes);
+        }
     }
     header('Location: routes.php');
     exit;

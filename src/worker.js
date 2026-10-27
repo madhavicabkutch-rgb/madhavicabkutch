@@ -55,80 +55,314 @@ const FALLBACK_ROUTES = [
 const FALLBACK_PLACES = [
   {
     id: 1,
-    title: 'White Desert (Great Rann of Kutch)',
+    title: 'White Rann of Kutch',
     slug: 'white-rann',
-    category: 'Salt Desert',
-    distance_bhuj: '85 km',
+    category: 'DESERT',
+    distance_bhuj: '80 from Bhuj',
     best_time: 'Nov to Feb (Sunset & Full Moon)',
-    short_desc: 'The world-famous salt desert of Dhordo. Vast stretches of pristine white salt, cultural performances during Rann Utsav, and unforgettable sunsets.',
-    description: 'The Great Rann of Kutch is a seasonal salt marsh located in the Thar Desert in the Kutch District of Gujarat. Dhordo is the gateway to the White Rann where tourists flock during the world-famous Rann Utsav. Experience unforgettable sunsets across miles of shimmering salt crust.',
+    short_desc: 'The White Rann of Kutch is one of the largest salt deserts in the world and a breathtaking natural wonder located near Dhordo.',
+    description: 'The Great Rann of Kutch is a seasonal salt marsh located in the Thar Desert in the Kutch District of Gujarat. Dhordo is the gateway to the White Rann where tourists flock during the world-famous Rann Utsav. Experience unforgettable sunsets, camel safaris, and full moon nights across miles of shimmering salt crust.',
     image: 'white-rann.jpg',
     sort_order: 1,
     is_active: 1
   },
   {
     id: 2,
-    title: 'Dholavira Harappan Civilization Site',
-    slug: 'dholavira',
-    category: 'UNESCO World Heritage',
-    distance_bhuj: '215 km',
-    best_time: 'Oct to Mar (Early morning start recommended)',
-    short_desc: 'Ancient 5000-year-old Indus Valley metropolis with monumental water reservoirs, accessed via the breathtaking Road to Heaven across the Rann.',
-    description: 'Dholavira is an archaeological site at Khadirbet in Bhachau Taluka of Kutch. It is one of the five largest Harappan sites and the most prominent archaeological site in India belonging to the Indus Valley Civilization. The journey via the elevated Road to Heaven across salt flats is a once-in-a-lifetime drive.',
-    image: 'dholavira.jpg',
+    title: 'Rann Utsav',
+    slug: 'rann-utsav',
+    category: 'FESTIVAL',
+    distance_bhuj: '80 from Bhuj',
+    best_time: 'Nov to Feb',
+    short_desc: 'Rann Utsav is a vibrant cultural festival held every year in the vast white salt desert of the Great Rann of Kutch with music, dance, and tent city.',
+    description: 'Rann Utsav is Gujarat\'s premier desert carnival celebrated annually from November to February in Dhordo. The festival celebrates the colorful heritage, traditional Kutchi folk music and dance, exquisite handicrafts, hot air ballooning, and luxury glamping in the tent city.',
+    image: 'rann-utsav-hariom.jpg',
     sort_order: 2,
     is_active: 1
   },
   {
     id: 3,
-    title: 'Kalo Dungar (Black Hill)',
-    slug: 'kalo-dungar',
-    category: 'Scenic Viewpoint',
-    distance_bhuj: '95 km',
-    best_time: 'Oct to Mar (Late afternoon for sunset)',
-    short_desc: 'The highest point in Kutch at 462 meters, offering panoramic views where the horizon dissolves into the great white salt plains. Famous 400-year-old Dattatreya Temple.',
-    description: 'Kalo Dungar is the highest point in Kutch, Gujarat, at 462 m above sea level. It offers a spectacular panoramic view of the Great Rann of Kutch. The 400-year-old Dattatreya temple at the top is known for the daily jackal feeding ritual. Combine this trip with Dhordo White Rann on the same afternoon.',
-    image: 'kalo-dungar.jpg',
+    title: 'UNESCO World Heritage Site Dholavira',
+    slug: 'dholavira',
+    category: 'ARCHAEOLOGICAL',
+    distance_bhuj: '140 from Bhuj',
+    best_time: 'Oct to Mar',
+    short_desc: 'Dholavira is a UNESCO World Heritage Site and one of the most remarkable archaeological sites of the ancient Indus Valley Civilization dating back 4500 years.',
+    description: 'Dholavira is an ancient Harappan metropolis situated on Khadir Bet island in Kutch. It features magnificent stone architecture, world-famous water reservoirs, underground drainage, and a massive citadel, offering profound insights into ancient town planning.',
+    image: 'dholavira.jpg',
     sort_order: 3,
     is_active: 1
   },
   {
     id: 4,
-    title: 'Mandvi Beach & Vijay Vilas Palace',
-    slug: 'mandvi-beach',
-    category: 'Coast & Heritage',
-    distance_bhuj: '60 km',
-    best_time: 'Open all year (Pleasant evenings)',
-    short_desc: 'Peaceful Arabian Sea coastline with soft sands, camel rides, and the grand red sandstone Vijay Vilas Palace set in private coastal grounds.',
-    description: 'Mandvi was once a major port town of the Kutch region and features a clean golden sand beach along the Arabian Sea. Nearby lies Vijay Vilas Palace, a grand royal summer retreat built in 1929 featuring eclectic Rajput architecture and manicured beachside grounds.',
-    image: 'mandvi.jpg',
+    title: 'Fossil Park - Dholavira',
+    slug: 'fossil-park-dholavira',
+    category: 'GEOLOGICAL SITE',
+    distance_bhuj: '140 from Bhuj',
+    best_time: 'Oct to Mar',
+    short_desc: 'Fossil Park in Kutch is a fascinating natural attraction that takes visitors on a journey millions of years back with petrified tree wood from the Jurassic era.',
+    description: 'Located near Dholavira on Khadir Bet, the Jurassic Fossil Park contains ancient petrified tree trunks and marine fossils that are over 160 million years old, preserved by mineral substitution into stone.',
+    image: 'fossil-park-dholavira-hariom.jpg',
     sort_order: 4,
     is_active: 1
   },
   {
     id: 5,
-    title: 'Aina Mahal & Prag Mahal',
-    slug: 'aina-mahal',
-    category: 'Bhuj Heritage',
-    distance_bhuj: 'Within Bhuj City',
-    best_time: 'Open all year (9:00 AM - 12:00 PM & 3:00 PM - 6:00 PM)',
-    short_desc: 'The Palace of Mirrors with Venetian glass, European mirrors and gilded carvings, paired with Prag Mahal\'s majestic Gothic-style clock tower.',
-    description: 'Located inside the heart of old Bhuj, the Aina Mahal (Mirror Palace) was built by Rao Lakhpatji in 1752, mastercrafted by the legendary artisan Ramsinh Malam. Adjacent stands the Prag Mahal with its 45-foot bell tower and grand Italian Gothic design.',
-    image: 'aina-mahel-bhuj-hariom.webp',
+    title: 'Road to Heaven',
+    slug: 'road-to-heaven',
+    category: 'VIEWPOINT',
+    distance_bhuj: '100 from Bhuj',
+    best_time: 'Oct to Mar',
+    short_desc: 'The Road to Heaven is one of the most breathtaking and Instagram-famous stretches in Kutch, connecting Khadir Bet with white salt flats on both sides.',
+    description: 'The newly constructed 30-km highway connecting Khavda to Dholavira cuts directly through the salt flats of the Great Rann. Known popularly as the Road to Heaven, travelers stop along the elevated tarmac for surreal photos with endless white desert on both horizons.',
+    image: 'road-to-heaven-hariom.jpg',
     sort_order: 5,
     is_active: 1
   },
   {
     id: 6,
-    title: 'Road to Heaven',
-    slug: 'road-to-heaven',
-    category: 'Scenic Drive',
-    distance_bhuj: '180 km from Bhuj',
-    best_time: 'Oct to Mar',
-    short_desc: 'A spectacular 30-km highway cutting straight through the shimmering White Rann on both sides on the route to Khadir Bet island.',
-    description: 'The newly constructed highway connecting Khavda to Dholavira cuts directly through the salt flats of the Great Rann. Known popularly as the Road to Heaven, travelers stop along the elevated tarmac for surreal photos with endless white desert on both horizons.',
-    image: 'road-to-heaven-hariom.jpg',
+    title: 'Sunset Point Dholavira',
+    slug: 'sunset-point-dholavira',
+    category: 'NATURE',
+    distance_bhuj: '140 from Bhuj',
+    best_time: 'Oct to Mar (Late Afternoon)',
+    short_desc: 'Sunset Point in Dholavira is a stunning viewpoint that offers one of the most spectacular sunset experiences in the Rann, painting the horizon in crimson.',
+    description: 'Perched on the northern edge of Khadir Bet, Sunset Point Dholavira overlooks the boundless desert marshland. As the sun sets, the vast salt plains reflect vibrant shades of orange, pink, and violet, creating an unforgettable vista.',
+    image: 'sunset-point-dholavira-hariom-tours-and-travels.webp',
     sort_order: 6,
+    is_active: 1
+  },
+  {
+    id: 7,
+    title: 'Archaeological Museum, Dholavira',
+    slug: 'archaeological-museum-dholavira',
+    category: 'MUSEUM',
+    distance_bhuj: '140 from Bhuj',
+    best_time: 'Oct to Mar',
+    short_desc: 'The Archaeological Museum at Dholavira displays excavated Harappan artifacts, seals, pottery, terracotta ornaments, and ancient weights.',
+    description: 'Managed by the Archaeological Survey of India (ASI), this museum preserves authentic relics discovered during Dholavira excavations, showcasing the sophisticated urban lifestyle and craftsmanship of Harappan inhabitants.',
+    image: 'archaeology-museum-hariom.webp',
+    sort_order: 7,
+    is_active: 1
+  },
+  {
+    id: 8,
+    title: 'Chari-Dhand Wetland Conservation',
+    slug: 'chari-dhand-wetland',
+    category: 'WILDLIFE SANCTUARY',
+    distance_bhuj: '60 from Bhuj',
+    best_time: 'Nov to Feb',
+    short_desc: 'Chari-Dhand Wetland Conservation is famous for migratory birds including thousands of pink flamingos, common cranes, and rare desert birds in winter.',
+    description: 'Located on the edge of the Banni grasslands, Chari-Dhand is a shallow seasonal wetland that attracts nearly 200 species of migratory birds every winter. It is a paradise for wildlife photographers and bird watchers.',
+    image: 'slide2.jpg',
+    sort_order: 8,
+    is_active: 1
+  },
+  {
+    id: 9,
+    title: 'Narayan Sarovar',
+    slug: 'narayan-sarovar',
+    category: 'TEMPLE',
+    distance_bhuj: '160 from Bhuj',
+    best_time: 'Open all year',
+    short_desc: 'Narayan Sarovar is one of the 5 sacred lakes of Hindu theology, famous for historic temples, peaceful ghats, and spiritual pilgrimages on the western border.',
+    description: 'Revered alongside Mansarovar, Bindu Sarovar, Pushkar, and Pampa Sarovar, Narayan Sarovar features ancient temples dedicated to Shri Trikamraiji, Laxminarayan, and Adinarayan, drawing devotees from across the nation.',
+    image: 'narayan-sarovar-hariom.jpg',
+    sort_order: 9,
+    is_active: 1
+  },
+  {
+    id: 10,
+    title: 'Koteshwar Mahadev Temple',
+    slug: 'koteshwar-mahadev-temple',
+    category: 'TEMPLE',
+    distance_bhuj: '162 from Bhuj',
+    best_time: 'Open all year (Sunset time)',
+    short_desc: 'Koteshwar Mahadev Temple is an ancient and highly revered Shiva temple located at the westernmost tip of India, standing majestically over the Arabian Sea.',
+    description: 'Steeped in Ramayana legends involving Ravana and Lord Shiva, Koteshwar Mahadev is situated at the edge where the western Indian coastline meets the sea. The temple offers spiritual bliss and mesmerizing sunsets over the ocean.',
+    image: 'koteshwar-mahadev-temple-hariom.jpg',
+    sort_order: 10,
+    is_active: 1
+  },
+  {
+    id: 11,
+    title: 'Mata No Madh (Ashapura Mata Temple)',
+    slug: 'mata-no-madh',
+    category: 'TEMPLE',
+    distance_bhuj: '100 from Bhuj',
+    best_time: 'Open all year',
+    short_desc: 'Mata No Madh is one of the most important and revered pilgrimage sites in Kutch, home to Maa Ashapura, the divine Kuldevi of the region.',
+    description: 'Surrounded by low hills in Lakhpat taluka, Mata No Madh is the principal shrine of Goddess Ashapura. Lakhs of devotees travel here on foot during Navratri to seek blessings at this historic, high-energy spiritual temple.',
+    image: 'mata-no-madh-hariom.jpg',
+    sort_order: 11,
+    is_active: 1
+  },
+  {
+    id: 12,
+    title: 'Kadiya Dhro',
+    slug: 'kadiya-dhro',
+    category: 'SCENIC POINT',
+    distance_bhuj: '35 from Bhuj',
+    best_time: 'Oct to Mar',
+    short_desc: 'Kadiya Dhro is one of the most spectacular hidden natural wonders of Kutch, popularly known as the \'Grand Canyon of Kutch\' for its colorful rock formations.',
+    description: 'Featured in international travel magazines, Kadiya Dhro is a breathtaking canyon carved by centuries of river water flow through layered sedimentary rocks, displaying vibrant shades of red, yellow, and orange.',
+    image: 'fossil-park-dholavira-hariom.jpg',
+    sort_order: 12,
+    is_active: 1
+  },
+  {
+    id: 13,
+    title: '72 Jinalay Temple, Mandvi',
+    slug: '72-jinalay-mandvi',
+    category: 'JAIN TEERTH',
+    distance_bhuj: '50 from Bhuj',
+    best_time: 'Open all year',
+    short_desc: '72 Jinalay is a magnificent Jain temple complex located at Koday village near Mandvi, renowned for its pristine white marble carvings and 72 shrines.',
+    description: 'Also known as Adiswar Bavan Jinalay, this sprawling white marble pilgrimage complex houses 72 individual deris around a central sanctum, offering architectural brilliance and profound tranquility.',
+    image: '72-jinalaya-mandvi-hariom.webp',
+    sort_order: 13,
+    is_active: 1
+  },
+  {
+    id: 14,
+    title: 'Vijay Vilas Palace, Mandvi',
+    slug: 'vijay-vilas-palace-mandvi',
+    category: 'PALACE',
+    distance_bhuj: '70 from Bhuj',
+    best_time: 'Open all year (Pleasant evenings)',
+    short_desc: 'Vijay Vilas Palace is a stunning royal heritage monument located near Mandvi, set amidst manicured coastal orchards with its own private beach.',
+    description: 'Built in 1929 by Maharao Shri Khengarji III as a summer retreat, Vijay Vilas Palace features Rajput and European architecture in red sandstone with carved jharokhas, royal museum rooms, and a rooftop offering panoramic Arabian Sea views.',
+    image: 'vijay-vilas-palace-hariom.png',
+    sort_order: 14,
+    is_active: 1
+  },
+  {
+    id: 15,
+    title: 'Shyamji Krishna Verma Kranti Teerth, Mandvi',
+    slug: 'shyamji-krishna-verma-mandvi',
+    category: 'MEMORIAL',
+    distance_bhuj: '65 from Bhuj',
+    best_time: 'Open all year',
+    short_desc: 'Shyamji Krishna Verma Kranti Teerth is a proud national memorial honoring the great freedom fighter, featuring a replica of London\'s India House.',
+    description: 'Located near Mandvi beach, this patriotic memorial honors Pandit Shyamji Krishna Varma who spearheaded India\'s freedom struggle from Europe. It houses his ashes, historical exhibits, and an exact replica of India House in London.',
+    image: 'shyamji-krishna-varma-memorial-hariom.webp',
+    sort_order: 15,
+    is_active: 1
+  },
+  {
+    id: 16,
+    title: 'Gurudwara Lakhpat Sahib',
+    slug: 'gurudwara-lakhpat-sahib',
+    category: 'TEMPLE',
+    distance_bhuj: '145 from Bhuj',
+    best_time: 'Open all year',
+    short_desc: 'Gurudwara Lakhpat Sahib is a deeply revered Sikh pilgrimage site located within the historic Lakhpat Fort where Guru Nanak Dev Ji stayed on his journey.',
+    description: 'This UNESCO Asia-Pacific heritage award-winning Gurudwara preserves the charan paduka (wooden footwear) and sacred relics of Guru Nanak Dev Ji, who stayed here during his missionary journey to Mecca.',
+    image: 'shree-swaminarayan-temple-bhuj-hariom.webp',
+    sort_order: 16,
+    is_active: 1
+  },
+  {
+    id: 17,
+    title: 'Ship Building Yard, Mandvi',
+    slug: 'ship-building-yard-mandvi',
+    category: 'VILLAGE CRAFT',
+    distance_bhuj: '80 from Bhuj',
+    best_time: 'Open all year',
+    short_desc: 'The Ship Building Yard at Mandvi is a 400-year-old living maritime heritage site where handcrafted wooden cargo vessels (dhows) are constructed by master carpenters.',
+    description: 'Along the banks of the Rukmavati river, skilled artisans continue the ancient tradition of building massive ocean-going wooden ships completely by hand without modern blueprints, supplying traders across the Persian Gulf and Africa.',
+    image: 'mandvi.jpg',
+    sort_order: 17,
+    is_active: 1
+  },
+  {
+    id: 18,
+    title: 'Rogan Art (Nirona Village), Kutch',
+    slug: 'rogan-art-nirona',
+    category: 'HANDICRAFT / VILLAGE',
+    distance_bhuj: '45 from Bhuj',
+    best_time: 'Open all year',
+    short_desc: 'Rogan Art is a rare and exquisite 400-year-old craft practiced exclusively by the Khatri family in Nirona village using castor oil colors and a metal stylus.',
+    description: 'Nirona village is the global home of Rogan Painting, where master artisans paint intricate floral and geometric motifs onto silk and cotton without touching the fabric. It was famously gifted by Prime Minister Narendra Modi to the President of the United States.',
+    image: 'rogan-art-hariom.jpg',
+    sort_order: 18,
+    is_active: 1
+  },
+  {
+    id: 19,
+    title: 'Regional Science Centre, Bhuj',
+    slug: 'regional-science-centre-bhuj',
+    category: 'MUSEUM',
+    distance_bhuj: 'City Tour from Bhuj',
+    best_time: 'Open all year',
+    short_desc: 'The Regional Science Centre in Bhuj is a modern science museum featuring interactive galleries on space, energy, marine life, and life-size dinosaurs.',
+    description: 'Built atop Mirzapar road near Bhuj, this sprawling science centre features life-size dinosaur replicas, 3D planetarium shows, interactive physical science experiments, and engaging educational galleries for families and children.',
+    image: 'smritivan-earthquake-memorial-museum-bhuj-hariom.jpg',
+    sort_order: 19,
+    is_active: 1
+  },
+  {
+    id: 20,
+    title: 'Bharatiya Sanskruti Darshan Museum, Bhuj',
+    slug: 'bharatiya-sanskriti-darshan-museum-bhuj',
+    category: 'MUSEUM',
+    distance_bhuj: 'City Tour from Bhuj',
+    best_time: 'Open all year',
+    short_desc: 'Bharatiya Sanskruti Darshan Museum is a cultural treasure house in Bhuj showcasing Kutchi folk art, embroidery, rural lifestyle, and tribal heritage.',
+    description: 'Founded by scholar Ramsinhji Rathod, this folk museum houses authentic Kutchi rural huts (Bhunga), rare tribal textiles, woodcarvings, musical instruments, and traditional artifacts representing the vibrant ethnographic soul of Kutch.',
+    image: 'kutch-museum-hariom.jpg',
+    sort_order: 20,
+    is_active: 1
+  },
+  {
+    id: 21,
+    title: 'Sign Board Site, Dholavira',
+    slug: 'sign-board-site-dholavira',
+    category: 'ARCHAEOLOGICAL',
+    distance_bhuj: '140 from Bhuj',
+    best_time: 'Oct to Mar',
+    short_desc: 'The Sign Board Site at Dholavira features one of the oldest inscribed wooden signboards in human history, containing 10 large Indus script symbols.',
+    description: 'Discovered near the northern gate of the Dholavira citadel, this ancient inscription is considered the world\'s oldest known public billboard, crafted from crystalline mineral gypsum inlaid into a wooden plank.',
+    image: 'dholavira.jpg',
+    sort_order: 21,
+    is_active: 1
+  },
+  {
+    id: 22,
+    title: 'Kala Dungar (Black Hill)',
+    slug: 'kalo-dungar',
+    category: 'HIGHEST POINT OF KUTCH',
+    distance_bhuj: '90 from Bhuj',
+    best_time: 'Oct to Mar (Sunset)',
+    short_desc: 'Kala Dungar, also known as Black Hill, is the highest point in Kutch at 462m, offering panoramic views where the horizon dissolves into the great white salt plains.',
+    description: 'Kala Dungar is the highest point in Kutch, Gujarat, offering a spectacular 360-degree panoramic view of the Great Rann. The 400-year-old Dattatreya temple at the summit is famous for the daily jackal feeding ritual. Best visited before sunset combined with Dhordo White Rann.',
+    image: 'kalo-dungar.jpg',
+    sort_order: 22,
+    is_active: 1
+  },
+  {
+    id: 23,
+    title: 'Aina Mahal, Bhuj',
+    slug: 'aina-mahal-bhuj',
+    category: 'PALACE',
+    distance_bhuj: 'City Tour from Bhuj',
+    best_time: 'Open all year',
+    short_desc: 'Aina Mahal, the \'Palace of Mirrors\', is a stunning 18th-century royal palace in Bhuj renowned for Venetian glass, mirrored pillars, and gilded artistry.',
+    description: 'Commissioned in 1752 by Rao Lakhpatji and designed by master craftsman Ramsinh Malam, Aina Mahal boasts a magnificent Pleasure Hall surrounded by water fountains, European clocks, Belgian glass chandeliers, and antique Kutchi weaponry.',
+    image: 'aina-mahel-bhuj-hariom.webp',
+    sort_order: 23,
+    is_active: 1
+  },
+  {
+    id: 24,
+    title: 'Prag Mahal, Bhuj',
+    slug: 'prag-mahal-bhuj',
+    category: 'PALACE',
+    distance_bhuj: 'City Tour from Bhuj',
+    best_time: 'Open all year',
+    short_desc: 'Prag Mahal is a grand 19th-century Italian Gothic palace in Bhuj featuring a 45-foot clock tower, grand durbar hall, and Corinthian columns.',
+    description: 'Built in 1865 by Maharao Pragmalji II and designed by Colonel Henry Saint Wilkins, Prag Mahal is famous for its towering bell tower with panoramic views over Bhuj, chandelier-lit royal Durbar hall, and taxidermy trophies.',
+    image: 'bhuj-heritage.jpg',
+    sort_order: 24,
     is_active: 1
   }
 ];
@@ -372,6 +606,10 @@ export default {
     // 1. Redirect legacy *.php URLs to extensionless clean URLs (HTTP 301 Permanent Redirect)
     // Matches existing .htaccess and router.php behavior
     if (path.endsWith('.php')) {
+      if (path.startsWith('/admin')) {
+        const targetUrl = new URL('/admin/', url.origin);
+        return Response.redirect(targetUrl.toString(), 301);
+      }
       const cleanPath = path.replace(/\.php$/, '');
       const redirectTarget = (cleanPath === '/index' || cleanPath === '') ? '/' : cleanPath;
       const targetUrl = new URL(redirectTarget, url.origin);
@@ -382,6 +620,7 @@ export default {
     // 2. Serve static assets via Cloudflare Workers Static Assets binding (env.ASSETS)
     if (
       path.startsWith('/assets/') ||
+      path.startsWith('/admin/assets/') ||
       path === '/robots.txt' ||
       path === '/sitemap.xml' ||
       path === '/google3ebd36e3d137923c.html' ||
@@ -392,8 +631,14 @@ export default {
       }
     }
 
-    // 3. Admin SPA routing: /admin or /admin/
-    if (path === '/admin' || path === '/admin/' || path === '/admin/index.html') {
+    // 3. Admin SPA routing: redirect /admin to /admin/ and serve /admin/index.html
+    if (path === '/admin') {
+      const targetUrl = new URL('/admin/', url.origin);
+      targetUrl.search = url.search;
+      return Response.redirect(targetUrl.toString(), 301);
+    }
+
+    if (path.startsWith('/admin')) {
       if (env.ASSETS) {
         const assetUrl = new URL('/admin/index.html', url.origin);
         return await env.ASSETS.fetch(new Request(assetUrl, request));
@@ -431,15 +676,16 @@ export default {
             return jsonResponse({ error: 'Username and password required.' }, 400);
           }
 
+          const trimmedUser = (username || '').trim().toLowerCase();
           let user = null;
           if (env.DB) {
             try {
-              user = await env.DB.prepare('SELECT id, username, password_hash FROM admin_users WHERE username=? LIMIT 1').bind(username).first();
+              user = await env.DB.prepare('SELECT id, username, password_hash FROM admin_users WHERE LOWER(username)=? LIMIT 1').bind(trimmedUser).first();
             } catch (e) {}
           }
 
           // Fallback admin check if DB is empty/unseeded
-          if (!user && username === 'admin') {
+          if (!user && (trimmedUser === 'admin' || username === 'admin')) {
             user = { id: 1, username: 'admin', password_hash: '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918' };
           }
 
@@ -648,7 +894,8 @@ export default {
 
     // Fixed Kutch Tour Packages: /fixed-kutch-tour-package
     if (cleanPath === '/fixed-kutch-tour-package') {
-      return htmlResponse(renderTourPackagesPage({ settings, popularRoutes }));
+      const places = await getPlaces(env);
+      return htmlResponse(renderTourPackagesPage({ places, settings, popularRoutes }));
     }
 
     // Package Detail: /package-detail
