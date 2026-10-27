@@ -6,7 +6,7 @@ export function renderHomePage({ routes = [], places = [], settings = {}, popula
   const bizPhone = settings.biz_phone || '+918128807488';
   const bizPhoneD = settings.biz_phone_display || '+91 81288 07488';
   const bizWa = settings.biz_whatsapp || '918128807488';
-  const googleReviewUrl = 'https://share.google/umyeUNRZxnhOibomq';
+  const googleReviewUrl = 'https://share.google/w1WkYmNi1OvbMWryI';
 
   const content = `
 <style>

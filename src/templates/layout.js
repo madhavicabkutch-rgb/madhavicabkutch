@@ -53,7 +53,7 @@ export function renderLayout({
   const bizLat = '23.2597753';
   const bizLng = '69.6435447';
   const bizMap = 'https://www.google.com/maps/place/MADHAVI+CAB+KUTCH/data=!4m2!3m1!1s0x0:0x582ca8dfc5fabc7?sa=X&ved=1t:2428&ictx=111';
-  const googleReviewUrl = 'https://share.google/umyeUNRZxnhOibomq';
+  const googleReviewUrl = 'https://share.google/w1WkYmNi1OvbMWryI';
   const currentYear = new Date().getFullYear();
 
   // Breadcrumbs

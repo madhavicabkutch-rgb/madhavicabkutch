@@ -10,7 +10,7 @@ export function renderContactPage({ settings = {}, popularRoutes = [] }) {
   const bizStreet = settings.biz_street || '4, Yogeswar Nagar';
   const bizPin = settings.biz_pin || '370001';
   const bizMap = 'https://www.google.com/maps/place/MADHAVI+CAB+KUTCH/data=!4m2!3m1!1s0x0:0x582ca8dfc5fabc7?sa=X&ved=1t:2428&ictx=111';
-  const googleReviewUrl = 'https://share.google/umyeUNRZxnhOibomq';
+  const googleReviewUrl = 'https://share.google/w1WkYmNi1OvbMWryI';
   const googleMapEmbed = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3665.5412441365474!2d69.64354471059004!3d23.25977530734772!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39511d0074460941%3A0x582ca8dfc5fabc7!2sMADHAVI%20CAB%20KUTCH!5e0!3m2!1sen!2sin!4v1786945317706!5m2!1sen!2sin';
 
   const contactSchema = {

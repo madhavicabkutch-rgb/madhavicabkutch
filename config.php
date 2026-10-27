@@ -158,7 +158,7 @@ define('BIZ_PIN',     setting('biz_pin'));
 define('BIZ_LAT',     '23.2597753');
 define('BIZ_LNG',     '69.6435447');
 define('BIZ_MAP',           'https://www.google.com/maps/place/MADHAVI+CAB+KUTCH/data=!4m2!3m1!1s0x0:0x582ca8dfc5fabc7?sa=X&ved=1t:2428&ictx=111');
-define('GOOGLE_REVIEW_URL', 'https://share.google/umyeUNRZxnhOibomq');
+define('GOOGLE_REVIEW_URL', 'https://share.google/w1WkYmNi1OvbMWryI');
 define('GOOGLE_MAP_EMBED',  'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3665.5412441365474!2d69.64354471059004!3d23.25977530734772!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39511d0074460941%3A0x582ca8dfc5fabc7!2sMADHAVI%20CAB%20KUTCH!5e0!3m2!1sen!2sin!4v1786945317706!5m2!1sen!2sin');
 define('FB_URL',            setting('fb_url'));
 define('IG_URL',            setting('ig_url'));
