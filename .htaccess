@@ -1,0 +1,23 @@
+# ============================================================
+# Clean URLs & Security Configuration for Madhavi Cab Kutch
+# ============================================================
+
+RewriteEngine On
+RewriteBase /
+
+# 1. Do not rewrite existing files or directories (like assets, images, admin, blog)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 2. Redirect direct requests for *.php to extensionless URLs (301 Permanent Redirect)
+# E.g. /vehicle-rental.php -> /vehicle-rental
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[\s?] [NC]
+RewriteCond %{REQUEST_URI} !^/blog/ [NC]
+RewriteCond %{REQUEST_URI} !^/admin/ [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# 3. Internally rewrite extensionless URL to *.php file if it exists
+RewriteCond %{DOCUMENT_ROOT}/$1.php -f [OR]
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+?)/?$ $1.php [L,QSA]

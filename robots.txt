@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /assets/css/
+Allow: /assets/img/
+Allow: /assets/js/
+
+Disallow: /admin/
+Disallow: /blog/wp-admin/
+Disallow: /blog/wp-includes/
+
+Sitemap: https://madhavicabkutch.com/sitemap.xml
