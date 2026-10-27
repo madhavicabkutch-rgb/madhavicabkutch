@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "madhavicabkutch",
+  "main": "src/worker.js",
+  "compatibility_date": "2024-11-01",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "madhavicab-db",
+      "database_id": "madhavicab-db"
+    }
+  ],
+  "vars": {
+    "SITE_URL": "https://madhavicabkutch.com"
+  }
+}

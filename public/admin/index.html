@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel | Madhavi Cab Kutch</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/admin.css">
+<style>
+/* Additional helper styles for interactive SPA modal & states */
+.modal-overlay { position: fixed; inset: 0; background: rgba(14,35,64,0.6); display: none; place-items: center; z-index: 1000; padding: 20px; overflow-y: auto; }
+.modal-overlay.open { display: grid; }
+.modal-card { background: #fff; border-radius: 10px; max-width: 680px; width: 100%; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+.modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+.fld { margin-bottom: 16px; }
+.fld label { display: block; font-size: 13.5px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+.fld input, .fld select, .fld textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14.5px; font-family: inherit; }
+.fld input:focus, .fld select:focus, .fld textarea:focus { border-color: var(--primary); outline: none; }
+.fld-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.fld-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.chk-fld { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.chk-fld input { width: auto; }
+.badge-active { background: #E6F4EA; color: #137333; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+.badge-inactive { background: #FCE8E6; color: #C5221F; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+.view-section { display: none; }
+.view-section.active { display: block; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN VIEW -->
+<div id="login-view" class="login-body">
+  <div class="login-box">
+    <div class="login-head">
+      <span class="logo-mark">M</span>
+      <div>
+        <div class="login-name">Madhavi Cab</div>
+        <div class="login-sub">ADMIN PANEL</div>
+      </div>
+    </div>
+
+    <div id="login-alert" class="alert al-bad" style="display:none;margin-bottom:16px"></div>
+
+    <form id="login-form" autocomplete="off">
+      <div class="fld">
+        <label for="username">Username</label>
+        <input type="text" id="login-username" required autofocus placeholder="admin">
+      </div>
+      <div class="fld">
+        <label for="password">Password</label>
+        <input type="password" id="login-password" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn btn-accent btn-block" id="login-btn">Log in</button>
+    </form>
+
+    <p class="login-foot"><a href="/">&larr; Back to website</a></p>
+  </div>
+</div>
+
+<!-- DASHBOARD VIEW -->
+<div id="app-view" class="shell" style="display:none">
+
+  <!-- SIDEBAR -->
+  <aside class="side" id="side">
+    <div class="side-head">
+      <span class="logo-mark">M</span>
+      <div>
+        <div class="side-name">Madhavi Cab</div>
+        <div class="side-sub">ADMIN PANEL</div>
+      </div>
+    </div>
+
+    <nav class="side-nav">
+      <a href="#home" class="nav-item on" data-sec="home">Dashboard</a>
+
+      <div class="side-lbl">RATE MANAGEMENT</div>
+      <a href="#routes" class="nav-item" data-sec="routes">One-way routes</a>
+
+      <div class="side-lbl">CONTENT</div>
+      <a href="#places" class="nav-item" data-sec="places">Places to visit</a>
+      <a href="#vehicles" class="nav-item" data-sec="vehicles">Vehicles</a>
+
+      <div class="side-lbl">ACCOUNT</div>
+      <a href="#pwd" class="nav-item" data-sec="pwd">Change password</a>
+    </nav>
+
+    <div class="side-foot">
+      <a href="/" target="_blank">View website &rarr;</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="burger" id="burger" aria-label="Menu">&#9776;</button>
+        <h1 id="page-title">Dashboard</h1>
+      </div>
+      <div class="top-right">
+        <span id="user-display">Admin</span>
+        <button id="logout-btn" class="btn btn-out btn-sm">Log out</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div id="global-alert" style="display:none;margin-bottom:16px"></div>
+
+      <!-- SECTION: HOME DASHBOARD -->
+      <section id="sec-home" class="view-section active">
+        <div class="stat-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px">
+          <div class="stat" style="background:#fff;padding:24px;border-radius:8px;border:1px solid var(--border)">
+            <div class="stat-n" id="stat-routes" style="font-size:32px;font-weight:700;color:var(--primary)">0</div>
+            <div class="stat-l" style="font-size:14px;color:var(--muted)">One-way routes</div>
+            <a href="#routes" class="nav-trigger" data-sec="routes" style="color:var(--primary);font-size:13px;font-weight:600;margin-top:8px;display:inline-block">Manage &rarr;</a>
+          </div>
+
+          <div class="stat" style="background:#fff;padding:24px;border-radius:8px;border:1px solid var(--border)">
+            <div class="stat-n" id="stat-places" style="font-size:32px;font-weight:700;color:var(--primary)">0</div>
+            <div class="stat-l" style="font-size:14px;color:var(--muted)">Places to visit</div>
+            <a href="#places" class="nav-trigger" data-sec="places" style="color:var(--primary);font-size:13px;font-weight:600;margin-top:8px;display:inline-block">Manage &rarr;</a>
+          </div>
+
+          <div class="stat" style="background:#fff;padding:24px;border-radius:8px;border:1px solid var(--border)">
+            <div class="stat-n" id="stat-vehicles" style="font-size:32px;font-weight:700;color:var(--primary)">0</div>
+            <div class="stat-l" style="font-size:14px;color:var(--muted)">Vehicles</div>
+            <a href="#vehicles" class="nav-trigger" data-sec="vehicles" style="color:var(--primary);font-size:13px;font-weight:600;margin-top:8px;display:inline-block">Manage &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" style="background:#fff;padding:24px;border-radius:8px;border:1px solid var(--border);margin-bottom:24px">
+          <h2>Cloudflare Workers &amp; D1 Database</h2>
+          <p class="card-note" style="color:var(--muted);font-size:14px;margin-bottom:16px">This website is deployed on Cloudflare Workers with serverless D1 SQLite database storage.</p>
+          <ul style="padding-left:18px;color:#4a5568;line-height:1.8;font-size:14.5px">
+            <li>Any updates to routes, places, or vehicles take effect globally at edge speed.</li>
+            <li>Static assets (CSS, images) are cached across Cloudflare's global CDN.</li>
+            <li>Old <code>.php</code> URLs automatically 301-redirect to clean URLs for SEO.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- SECTION: ROUTES -->
+      <section id="sec-routes" class="view-section">
+        <div class="card" style="background:#fff;padding:24px;border-radius:8px;border:1px solid var(--border)">
+          <div class="card-head" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <div>
+              <h2>One-way routes</h2>
+              <p class="card-note" style="color:var(--muted);font-size:13.5px">Manage routes and fares for the One-way taxi page and homepage table.</p>
+            </div>
+            <button class="btn btn-accent" id="btn-add-route">+ Add Route</button>
+          </div>
+
+          <div class="tbl-wrap" style="overflow-x:auto">
+            <table style="width:100%;border-collapse:collapse;font-size:14px">
+              <thead>
+                <tr style="border-bottom:2px solid var(--border);text-align:left">
+                  <th style="padding:10px">#</th>
+                  <th style="padding:10px">Route</th>
+                  <th style="padding:10px">Km</th>
+                  <th style="padding:10px">Sedan</th>
+                  <th style="padding:10px">SUV</th>
+                  <th style="padding:10px">Tempo</th>
+                  <th style="padding:10px">Homepage</th>
+                  <th style="padding:10px">Status</th>
+                  <th style="padding:10px">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="routes-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: PLACES -->
+      <section id="sec-places" class="view-section">
+        <div class="card" style="background:#fff;padding:24px;border-radius:8px;border:1px solid var(--border)">
+          <div class="card-head" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <div>
+              <h2>Places to visit</h2>
+              <p class="card-note" style="color:var(--muted);font-size:13.5px">Sightseeing destinations in Kutch shown on the Places to Visit page and homepage.</p>
+            </div>
+            <button class="btn btn-accent" id="btn-add-place">+ Add Place</button>
+          </div>
+
+          <div class="tbl-wrap" style="overflow-x:auto">
+            <table style="width:100%;border-collapse:collapse;font-size:14px">
+              <thead>
+                <tr style="border-bottom:2px solid var(--border);text-align:left">
+                  <th style="padding:10px">#</th>
+                  <th style="padding:10px">Place</th>
+                  <th style="padding:10px">Category</th>
+                  <th style="padding:10px">Distance</th>
+                  <th style="padding:10px">Image</th>
+                  <th style="padding:10px">Status</th>
+                  <th style="padding:10px">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="places-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: VEHICLES -->
+      <section id="sec-vehicles" class="view-section">
+        <div class="card" style="background:#fff;padding:24px;border-radius:8px;border:1px solid var(--border)">
+          <div class="card-head" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <div>
+              <h2>Vehicles</h2>
+              <p class="card-note" style="color:var(--muted);font-size:13.5px">Manage vehicle fleet cards and rental rate cards.</p>
+            </div>
+            <button class="btn btn-accent" id="btn-add-vehicle">+ Add Vehicle</button>
+          </div>
+
+          <div class="tbl-wrap" style="overflow-x:auto">
+            <table style="width:100%;border-collapse:collapse;font-size:14px">
+              <thead>
+                <tr style="border-bottom:2px solid var(--border);text-align:left">
+                  <th style="padding:10px">Vehicle</th>
+                  <th style="padding:10px">Category</th>
+                  <th style="padding:10px">Seats</th>
+                  <th style="padding:10px">Per Km</th>
+                  <th style="padding:10px">Local 8h/80km</th>
+                  <th style="padding:10px">Status</th>
+                  <th style="padding:10px">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="vehicles-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: CHANGE PASSWORD -->
+      <section id="sec-pwd" class="view-section">
+        <div class="card" style="background:#fff;padding:24px;border-radius:8px;border:1px solid var(--border);max-width:500px">
+          <div class="card-head" style="margin-bottom:16px">
+            <h2>Change Password</h2>
+            <p class="card-note" style="color:var(--muted);font-size:13.5px">Update your admin login password.</p>
+          </div>
+
+          <form id="pwd-form">
+            <div class="fld">
+              <label for="pwd-current">Current Password</label>
+              <input type="password" id="pwd-current" required>
+            </div>
+            <div class="fld">
+              <label for="pwd-new">New Password (at least 8 chars)</label>
+              <input type="password" id="pwd-new" required minlength="8">
+            </div>
+            <div class="fld">
+              <label for="pwd-confirm">Confirm New Password</label>
+              <input type="password" id="pwd-confirm" required minlength="8">
+            </div>
+            <button type="submit" class="btn btn-accent">Save New Password</button>
+          </form>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- ROUTE MODAL -->
+<div class="modal-overlay" id="route-modal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="route-modal-title">Edit Route</h3>
+      <button type="button" class="btn btn-out btn-sm close-modal">&times;</button>
+    </div>
+    <form id="route-form">
+      <input type="hidden" id="route-id" value="">
+      <div class="fld-grid">
+        <div class="fld">
+          <label>From City</label>
+          <input type="text" id="route-from" required value="Bhuj">
+        </div>
+        <div class="fld">
+          <label>To City</label>
+          <input type="text" id="route-to" required placeholder="Ahmedabad">
+        </div>
+      </div>
+      <div class="fld-grid">
+        <div class="fld">
+          <label>Distance (km)</label>
+          <input type="number" id="route-km" placeholder="335">
+        </div>
+        <div class="fld">
+          <label>Duration</label>
+          <input type="text" id="route-duration" placeholder="6.5 hours">
+        </div>
+      </div>
+      <div class="fld-grid-3">
+        <div class="fld">
+          <label>Sedan Fare (₹)</label>
+          <input type="number" id="route-sedan" placeholder="4500">
+        </div>
+        <div class="fld">
+          <label>SUV Fare (₹)</label>
+          <input type="number" id="route-suv" placeholder="6200">
+        </div>
+        <div class="fld">
+          <label>Tempo Fare (₹)</label>
+          <input type="number" id="route-tempo" placeholder="11000">
+        </div>
+      </div>
+      <div class="fld">
+        <label>Description / Route info</label>
+        <textarea id="route-desc" rows="2" placeholder="Via Samakhiali highway..."></textarea>
+      </div>
+      <div class="fld-grid">
+        <div class="chk-fld">
+          <input type="checkbox" id="route-home" value="1">
+          <label for="route-home" style="margin:0">Show on Homepage</label>
+        </div>
+        <div class="chk-fld">
+          <input type="checkbox" id="route-active" value="1" checked>
+          <label for="route-active" style="margin:0">Active</label>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
+        <button type="button" class="btn btn-out close-modal">Cancel</button>
+        <button type="submit" class="btn btn-accent">Save Route</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- PLACE MODAL -->
+<div class="modal-overlay" id="place-modal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="place-modal-title">Edit Place</h3>
+      <button type="button" class="btn btn-out btn-sm close-modal">&times;</button>
+    </div>
+    <form id="place-form">
+      <input type="hidden" id="place-id" value="">
+      <div class="fld-grid">
+        <div class="fld">
+          <label>Place Name</label>
+          <input type="text" id="place-title" required placeholder="White Desert">
+        </div>
+        <div class="fld">
+          <label>Category</label>
+          <input type="text" id="place-category" placeholder="Salt Desert, Heritage">
+        </div>
+      </div>
+      <div class="fld-grid">
+        <div class="fld">
+          <label>Distance from Bhuj</label>
+          <input type="text" id="place-distance" placeholder="85 km from Bhuj">
+        </div>
+        <div class="fld">
+          <label>Best Time to Visit</label>
+          <input type="text" id="place-time" placeholder="Nov to Feb (Sunset)">
+        </div>
+      </div>
+      <div class="fld">
+        <label>Image Filename (in assets/img/)</label>
+        <input type="text" id="place-image" placeholder="white-rann.jpg">
+      </div>
+      <div class="fld">
+        <label>Short Description (Card)</label>
+        <textarea id="place-short" rows="2" placeholder="Brief summary..."></textarea>
+      </div>
+      <div class="fld">
+        <label>Full Description (Detail Page)</label>
+        <textarea id="place-desc" rows="4" placeholder="Full historical and visitor information..."></textarea>
+      </div>
+      <div class="chk-fld">
+        <input type="checkbox" id="place-active" value="1" checked>
+        <label for="place-active" style="margin:0">Active</label>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
+        <button type="button" class="btn btn-out close-modal">Cancel</button>
+        <button type="submit" class="btn btn-accent">Save Place</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- VEHICLE MODAL -->
+<div class="modal-overlay" id="vehicle-modal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="vehicle-modal-title">Edit Vehicle</h3>
+      <button type="button" class="btn btn-out btn-sm close-modal">&times;</button>
+    </div>
+    <form id="vehicle-form">
+      <input type="hidden" id="vehicle-id" value="">
+      <div class="fld-grid">
+        <div class="fld">
+          <label>Vehicle Name</label>
+          <input type="text" id="veh-name" required placeholder="Swift Dzire">
+        </div>
+        <div class="fld">
+          <label>Category</label>
+          <select id="veh-cat">
+            <option value="Car">Car</option>
+            <option value="Bus">Bus</option>
+            <option value="Premium">Premium</option>
+          </select>
+        </div>
+      </div>
+      <div class="fld-grid-3">
+        <div class="fld">
+          <label>Models</label>
+          <input type="text" id="veh-models" placeholder="Dzire, Etios">
+        </div>
+        <div class="fld">
+          <label>Seats</label>
+          <input type="text" id="veh-seats" placeholder="4">
+        </div>
+        <div class="fld">
+          <label>Luggage</label>
+          <input type="text" id="veh-luggage" placeholder="2 Bags">
+        </div>
+      </div>
+      <div class="fld-grid-3">
+        <div class="fld">
+          <label>Per Km (₹)</label>
+          <input type="text" id="veh-perkm" placeholder="12">
+        </div>
+        <div class="fld">
+          <label>Local 8h/80km AC (₹)</label>
+          <input type="text" id="veh-local8" placeholder="2,000">
+        </div>
+        <div class="fld">
+          <label>Local 12h/300km AC (₹)</label>
+          <input type="text" id="veh-local12" placeholder="3,500">
+        </div>
+      </div>
+      <div class="fld">
+        <label>Image Filename (in assets/img/)</label>
+        <input type="text" id="veh-image" placeholder="sedan.jpg">
+      </div>
+      <div class="fld">
+        <label>Description</label>
+        <textarea id="veh-desc" rows="2" placeholder="Vehicle features and comfort..."></textarea>
+      </div>
+      <div class="chk-fld">
+        <input type="checkbox" id="veh-active" value="1" checked>
+        <label for="veh-active" style="margin:0">Active</label>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
+        <button type="button" class="btn btn-out close-modal">Cancel</button>
+        <button type="submit" class="btn btn-accent">Save Vehicle</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// Cloudflare Admin Client JS
+(function(){
+  var currentSection = 'home';
+
+  function showAlert(msg, isBad) {
+    var a = document.getElementById('global-alert');
+    if (!a) return;
+    a.className = 'alert ' + (isBad ? 'al-bad' : 'al-ok');
+    a.textContent = msg;
+    a.style.display = 'block';
+    setTimeout(function(){ a.style.display = 'none'; }, 5000);
+  }
+
+  // Check auth status
+  async function checkAuth() {
+    try {
+      var res = await fetch('/api/admin/me');
+      if (res.ok) {
+        var data = await res.json();
+        document.getElementById('user-display').textContent = data.username || 'Admin';
+        document.getElementById('login-view').style.display = 'none';
+        document.getElementById('app-view').style.display = 'flex';
+        loadDashboard();
+      } else {
+        document.getElementById('login-view').style.display = 'grid';
+        document.getElementById('app-view').style.display = 'none';
+      }
+    } catch(err) {
+      document.getElementById('login-view').style.display = 'grid';
+      document.getElementById('app-view').style.display = 'none';
+    }
+  }
+
+  // Login handler
+  document.getElementById('login-form').addEventListener('submit', async function(e){
+    e.preventDefault();
+    var u = document.getElementById('login-username').value.trim();
+    var p = document.getElementById('login-password').value;
+    var alertEl = document.getElementById('login-alert');
+    alertEl.style.display = 'none';
+
+    try {
+      var res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: u, password: p })
+      });
+      var data = await res.json();
+      if (res.ok && data.ok) {
+        checkAuth();
+      } else {
+        alertEl.textContent = data.error || 'Invalid username or password.';
+        alertEl.style.display = 'block';
+      }
+    } catch(err) {
+      alertEl.textContent = 'Server connection error.';
+      alertEl.style.display = 'block';
+    }
+  });
+
+  // Logout handler
+  document.getElementById('logout-btn').addEventListener('click', async function(){
+    await fetch('/api/admin/logout', { method: 'POST' });
+    checkAuth();
+  });
+
+  // Section navigation
+  function showSection(sec) {
+    currentSection = sec;
+    document.querySelectorAll('.view-section').forEach(function(el){ el.classList.remove('active'); });
+    var target = document.getElementById('sec-' + sec);
+    if (target) target.classList.add('active');
+
+    document.querySelectorAll('.nav-item').forEach(function(el){
+      if (el.getAttribute('data-sec') === sec) el.classList.add('on');
+      else el.classList.remove('on');
+    });
+
+    var titles = {
+      home: 'Dashboard',
+      routes: 'One-way routes',
+      places: 'Places to visit',
+      vehicles: 'Vehicles',
+      pwd: 'Change password'
+    };
+    document.getElementById('page-title').textContent = titles[sec] || 'Admin';
+
+    if (sec === 'home') loadDashboard();
+    if (sec === 'routes') loadRoutes();
+    if (sec === 'places') loadPlaces();
+    if (sec === 'vehicles') loadVehicles();
+  }
+
+  document.querySelectorAll('.nav-item, .nav-trigger').forEach(function(el){
+    el.addEventListener('click', function(e){
+      e.preventDefault();
+      var sec = el.getAttribute('data-sec');
+      showSection(sec);
+    });
+  });
+
+  // Mobile menu toggle
+  var burger = document.getElementById('burger');
+  if (burger) {
+    burger.addEventListener('click', function(){
+      document.getElementById('side').classList.toggle('open');
+    });
+  }
+
+  // Modals
+  document.querySelectorAll('.close-modal').forEach(function(el){
+    el.addEventListener('click', function(){
+      document.querySelectorAll('.modal-overlay').forEach(function(m){ m.classList.remove('open'); });
+    });
+  });
+
+  // 1. Dashboard counts
+  async function loadDashboard() {
+    try {
+      var res = await fetch('/api/admin/stats');
+      if (res.ok) {
+        var data = await res.json();
+        document.getElementById('stat-routes').textContent = data.routes || 0;
+        document.getElementById('stat-places').textContent = data.places || 0;
+        document.getElementById('stat-vehicles').textContent = data.vehicles || 0;
+      }
+    } catch(e){}
+  }
+
+  // 2. Routes
+  var routesData = [];
+  async function loadRoutes() {
+    try {
+      var res = await fetch('/api/admin/routes');
+      if (res.ok) {
+        routesData = await res.json();
+        renderRoutesTable(routesData);
+      }
+    } catch(e){}
+  }
+
+  function renderRoutesTable(list) {
+    var tbody = document.getElementById('routes-tbody');
+    tbody.innerHTML = list.map(function(r, idx){
+      return '<tr style="border-bottom:1px solid #eee">' +
+        '<td style="padding:10px">' + (idx + 1) + '</td>' +
+        '<td style="padding:10px"><strong>' + r.from_city + ' &rarr; ' + r.to_city + '</strong></td>' +
+        '<td style="padding:10px">' + (r.distance_km ? r.distance_km + ' km' : '—') + '</td>' +
+        '<td style="padding:10px">₹' + (r.sedan_fare || '—') + '</td>' +
+        '<td style="padding:10px">₹' + (r.suv_fare || '—') + '</td>' +
+        '<td style="padding:10px">₹' + (r.tempo_fare || '—') + '</td>' +
+        '<td style="padding:10px">' + (r.show_on_home ? '<span class="badge-active">Yes</span>' : '<span class="badge-inactive">No</span>') + '</td>' +
+        '<td style="padding:10px">' + (r.is_active ? '<span class="badge-active">Active</span>' : '<span class="badge-inactive">Hidden</span>') + '</td>' +
+        '<td style="padding:10px">' +
+          '<button class="btn btn-out btn-sm btn-edit-route" data-id="' + r.id + '" style="margin-right:6px">Edit</button>' +
+          '<button class="btn btn-danger btn-sm btn-del-route" data-id="' + r.id + '">Delete</button>' +
+        '</td>' +
+      '</tr>';
+    }).join('');
+
+    document.querySelectorAll('.btn-edit-route').forEach(function(b){
+      b.addEventListener('click', function(){
+        var id = Number(b.getAttribute('data-id'));
+        var found = routesData.find(function(x){ return x.id === id; });
+        if (found) openRouteModal(found);
+      });
+    });
+
+    document.querySelectorAll('.btn-del-route').forEach(function(b){
+      b.addEventListener('click', async function(){
+        if (!confirm('Delete this route?')) return;
+        var id = Number(b.getAttribute('data-id'));
+        await fetch('/api/admin/routes?id=' + id, { method: 'DELETE' });
+        loadRoutes();
+        showAlert('Route deleted.');
+      });
+    });
+  }
+
+  function openRouteModal(item) {
+    document.getElementById('route-modal-title').textContent = item ? 'Edit Route' : 'Add Route';
+    document.getElementById('route-id').value = item ? item.id : '';
+    document.getElementById('route-from').value = item ? item.from_city : 'Bhuj';
+    document.getElementById('route-to').value = item ? item.to_city : '';
+    document.getElementById('route-km').value = item ? item.distance_km : '';
+    document.getElementById('route-duration').value = item ? (item.duration || '') : '';
+    document.getElementById('route-sedan').value = item ? item.sedan_fare : '';
+    document.getElementById('route-suv').value = item ? item.suv_fare : '';
+    document.getElementById('route-tempo').value = item ? item.tempo_fare : '';
+    document.getElementById('route-desc').value = item ? (item.description || '') : '';
+    document.getElementById('route-home').checked = item ? Boolean(item.show_on_home) : false;
+    document.getElementById('route-active').checked = item ? Boolean(item.is_active) : true;
+    document.getElementById('route-modal').classList.add('open');
+  }
+
+  document.getElementById('btn-add-route').addEventListener('click', function(){ openRouteModal(null); });
+
+  document.getElementById('route-form').addEventListener('submit', async function(e){
+    e.preventDefault();
+    var id = document.getElementById('route-id').value;
+    var body = {
+      id: id ? Number(id) : undefined,
+      from_city: document.getElementById('route-from').value.trim(),
+      to_city: document.getElementById('route-to').value.trim(),
+      distance_km: Number(document.getElementById('route-km').value) || 0,
+      duration: document.getElementById('route-duration').value.trim(),
+      sedan_fare: Number(document.getElementById('route-sedan').value) || 0,
+      suv_fare: Number(document.getElementById('route-suv').value) || 0,
+      tempo_fare: Number(document.getElementById('route-tempo').value) || 0,
+      description: document.getElementById('route-desc').value.trim(),
+      show_on_home: document.getElementById('route-home').checked ? 1 : 0,
+      is_active: document.getElementById('route-active').checked ? 1 : 0
+    };
+
+    var method = id ? 'PUT' : 'POST';
+    await fetch('/api/admin/routes', {
+      method: method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    document.getElementById('route-modal').classList.remove('open');
+    loadRoutes();
+    showAlert('Route saved.');
+  });
+
+  // 3. Places
+  var placesData = [];
+  async function loadPlaces() {
+    try {
+      var res = await fetch('/api/admin/places');
+      if (res.ok) {
+        placesData = await res.json();
+        renderPlacesTable(placesData);
+      }
+    } catch(e){}
+  }
+
+  function renderPlacesTable(list) {
+    var tbody = document.getElementById('places-tbody');
+    tbody.innerHTML = list.map(function(p, idx){
+      return '<tr style="border-bottom:1px solid #eee">' +
+        '<td style="padding:10px">' + (idx + 1) + '</td>' +
+        '<td style="padding:10px"><strong>' + p.title + '</strong></td>' +
+        '<td style="padding:10px">' + (p.category || '—') + '</td>' +
+        '<td style="padding:10px">' + (p.distance_bhuj || '—') + '</td>' +
+        '<td style="padding:10px">' + (p.image || '—') + '</td>' +
+        '<td style="padding:10px">' + (p.is_active ? '<span class="badge-active">Active</span>' : '<span class="badge-inactive">Hidden</span>') + '</td>' +
+        '<td style="padding:10px">' +
+          '<button class="btn btn-out btn-sm btn-edit-place" data-id="' + p.id + '" style="margin-right:6px">Edit</button>' +
+          '<button class="btn btn-danger btn-sm btn-del-place" data-id="' + p.id + '">Delete</button>' +
+        '</td>' +
+      '</tr>';
+    }).join('');
+
+    document.querySelectorAll('.btn-edit-place').forEach(function(b){
+      b.addEventListener('click', function(){
+        var id = Number(b.getAttribute('data-id'));
+        var found = placesData.find(function(x){ return x.id === id; });
+        if (found) openPlaceModal(found);
+      });
+    });
+
+    document.querySelectorAll('.btn-del-place').forEach(function(b){
+      b.addEventListener('click', async function(){
+        if (!confirm('Delete this place?')) return;
+        var id = Number(b.getAttribute('data-id'));
+        await fetch('/api/admin/places?id=' + id, { method: 'DELETE' });
+        loadPlaces();
+        showAlert('Place deleted.');
+      });
+    });
+  }
+
+  function openPlaceModal(item) {
+    document.getElementById('place-modal-title').textContent = item ? 'Edit Place' : 'Add Place';
+    document.getElementById('place-id').value = item ? item.id : '';
+    document.getElementById('place-title').value = item ? item.title : '';
+    document.getElementById('place-category').value = item ? (item.category || '') : '';
+    document.getElementById('place-distance').value = item ? (item.distance_bhuj || '') : '';
+    document.getElementById('place-time').value = item ? (item.best_time || '') : '';
+    document.getElementById('place-image').value = item ? (item.image || '') : '';
+    document.getElementById('place-short').value = item ? (item.short_desc || '') : '';
+    document.getElementById('place-desc').value = item ? (item.description || '') : '';
+    document.getElementById('place-active').checked = item ? Boolean(item.is_active) : true;
+    document.getElementById('place-modal').classList.add('open');
+  }
+
+  document.getElementById('btn-add-place').addEventListener('click', function(){ openPlaceModal(null); });
+
+  document.getElementById('place-form').addEventListener('submit', async function(e){
+    e.preventDefault();
+    var id = document.getElementById('place-id').value;
+    var body = {
+      id: id ? Number(id) : undefined,
+      title: document.getElementById('place-title').value.trim(),
+      category: document.getElementById('place-category').value.trim(),
+      distance_bhuj: document.getElementById('place-distance').value.trim(),
+      best_time: document.getElementById('place-time').value.trim(),
+      image: document.getElementById('place-image').value.trim(),
+      short_desc: document.getElementById('place-short').value.trim(),
+      description: document.getElementById('place-desc').value.trim(),
+      is_active: document.getElementById('place-active').checked ? 1 : 0
+    };
+
+    var method = id ? 'PUT' : 'POST';
+    await fetch('/api/admin/places', {
+      method: method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    document.getElementById('place-modal').classList.remove('open');
+    loadPlaces();
+    showAlert('Place saved.');
+  });
+
+  // 4. Vehicles
+  var vehiclesData = [];
+  async function loadVehicles() {
+    try {
+      var res = await fetch('/api/admin/vehicles');
+      if (res.ok) {
+        vehiclesData = await res.json();
+        renderVehiclesTable(vehiclesData);
+      }
+    } catch(e){}
+  }
+
+  function renderVehiclesTable(list) {
+    var tbody = document.getElementById('vehicles-tbody');
+    tbody.innerHTML = list.map(function(v){
+      return '<tr style="border-bottom:1px solid #eee">' +
+        '<td style="padding:10px"><strong>' + v.name + '</strong></td>' +
+        '<td style="padding:10px">' + v.category + '</td>' +
+        '<td style="padding:10px">' + (v.seats || '—') + '</td>' +
+        '<td style="padding:10px">' + (v.per_km ? '₹' + v.per_km : '—') + '</td>' +
+        '<td style="padding:10px">' + (v.local_8h_80km_ac ? '₹' + v.local_8h_80km_ac : '—') + '</td>' +
+        '<td style="padding:10px">' + (v.is_active ? '<span class="badge-active">Active</span>' : '<span class="badge-inactive">Inactive</span>') + '</td>' +
+        '<td style="padding:10px">' +
+          '<button class="btn btn-out btn-sm btn-edit-veh" data-id="' + v.id + '" style="margin-right:6px">Edit</button>' +
+          '<button class="btn btn-danger btn-sm btn-del-veh" data-id="' + v.id + '">Delete</button>' +
+        '</td>' +
+      '</tr>';
+    }).join('');
+
+    document.querySelectorAll('.btn-edit-veh').forEach(function(b){
+      b.addEventListener('click', function(){
+        var id = Number(b.getAttribute('data-id'));
+        var found = vehiclesData.find(function(x){ return x.id === id; });
+        if (found) openVehicleModal(found);
+      });
+    });
+
+    document.querySelectorAll('.btn-del-veh').forEach(function(b){
+      b.addEventListener('click', async function(){
+        if (!confirm('Delete this vehicle?')) return;
+        var id = Number(b.getAttribute('data-id'));
+        await fetch('/api/admin/vehicles?id=' + id, { method: 'DELETE' });
+        loadVehicles();
+        showAlert('Vehicle deleted.');
+      });
+    });
+  }
+
+  function openVehicleModal(item) {
+    document.getElementById('vehicle-modal-title').textContent = item ? 'Edit Vehicle' : 'Add Vehicle';
+    document.getElementById('vehicle-id').value = item ? item.id : '';
+    document.getElementById('veh-name').value = item ? item.name : '';
+    document.getElementById('veh-cat').value = item ? item.category : 'Car';
+    document.getElementById('veh-models').value = item ? (item.models || '') : '';
+    document.getElementById('veh-seats').value = item ? (item.seats || '') : '';
+    document.getElementById('veh-luggage').value = item ? (item.luggage || '') : '';
+    document.getElementById('veh-perkm').value = item ? (item.per_km || '') : '';
+    document.getElementById('veh-local8').value = item ? (item.local_8h_80km_ac || '') : '';
+    document.getElementById('veh-local12').value = item ? (item.local_12h_300km_ac || '') : '';
+    document.getElementById('veh-image').value = item ? (item.image || '') : '';
+    document.getElementById('veh-desc').value = item ? (item.description || '') : '';
+    document.getElementById('veh-active').checked = item ? Boolean(item.is_active) : true;
+    document.getElementById('vehicle-modal').classList.add('open');
+  }
+
+  document.getElementById('btn-add-vehicle').addEventListener('click', function(){ openVehicleModal(null); });
+
+  document.getElementById('vehicle-form').addEventListener('submit', async function(e){
+    e.preventDefault();
+    var id = document.getElementById('vehicle-id').value;
+    var body = {
+      id: id ? Number(id) : undefined,
+      name: document.getElementById('veh-name').value.trim(),
+      category: document.getElementById('veh-cat').value,
+      models: document.getElementById('veh-models').value.trim(),
+      seats: document.getElementById('veh-seats').value.trim(),
+      luggage: document.getElementById('veh-luggage').value.trim(),
+      per_km: document.getElementById('veh-perkm').value.trim(),
+      local_8h_80km_ac: document.getElementById('veh-local8').value.trim(),
+      local_12h_300km_ac: document.getElementById('veh-local12').value.trim(),
+      image: document.getElementById('veh-image').value.trim(),
+      description: document.getElementById('veh-desc').value.trim(),
+      is_active: document.getElementById('veh-active').checked ? 1 : 0
+    };
+
+    var method = id ? 'PUT' : 'POST';
+    await fetch('/api/admin/vehicles', {
+      method: method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    document.getElementById('vehicle-modal').classList.remove('open');
+    loadVehicles();
+    showAlert('Vehicle saved.');
+  });
+
+  // 5. Change Password
+  document.getElementById('pwd-form').addEventListener('submit', async function(e){
+    e.preventDefault();
+    var cur = document.getElementById('pwd-current').value;
+    var nw = document.getElementById('pwd-new').value;
+    var conf = document.getElementById('pwd-confirm').value;
+
+    if (nw !== conf) {
+      alert('The two new passwords do not match.');
+      return;
+    }
+
+    var res = await fetch('/api/admin/change-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ current: cur, newPassword: nw })
+    });
+    var data = await res.json();
+    if (res.ok && data.ok) {
+      alert('Password updated successfully!');
+      document.getElementById('pwd-form').reset();
+      showSection('home');
+    } else {
+      alert(data.error || 'Could not change password.');
+    }
+  });
+
+  // Initial check
+  checkAuth();
+})();
+</script>
+
+</body>
+</html>
