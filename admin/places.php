@@ -1,7 +1,8 @@
 <?php
+require_once __DIR__ . '/auth.php';
+
 $pg = 'places';
 $pg_title = 'Places to visit';
-require_once __DIR__ . '/inc/admin-header.php';
 
 /* ---- Delete ---- */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'delete') {
@@ -16,11 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'delete') {
                 $st->execute();
                 $st->close();
             }
-        } else {
-            $places = load_local_data('places');
-            $places = array_values(array_filter($places, function($p) use ($id) { return $p['id'] != $id; }));
-            save_local_data('places', $places);
         }
+        sync_delete_place($id);
         flash_set('ok', 'Place deleted.');
     }
     header('Location: places.php');
@@ -33,19 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'toggle') {
         $id = (int)post('id');
         if (defined('DB_OK') && DB_OK && isset($conn) && $conn) {
             $conn->query("UPDATE places SET is_active = 1 - is_active WHERE id = " . $id);
-        } else {
-            $places = load_local_data('places');
-            foreach ($places as &$p) {
-                if ($p['id'] == $id) {
-                    $p['is_active'] = empty($p['is_active']) ? 1 : 0;
-                }
-            }
-            save_local_data('places', $places);
         }
+        sync_toggle_place($id);
     }
     header('Location: places.php');
     exit;
 }
+
+require_once __DIR__ . '/inc/admin-header.php';
 
 $places = fetch_all("SELECT * FROM places ORDER BY sort_order ASC, id ASC");
 ?>

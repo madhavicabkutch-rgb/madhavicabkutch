@@ -4,7 +4,6 @@ require_once __DIR__ . '/auth.php';
 $pg = 'vehicles';
 $id = get_id();
 $pg_title = $id ? 'Edit vehicle' : 'Add vehicle';
-require_once __DIR__ . '/inc/admin-header.php';
 
 $row = array(
   'id'=>0,
@@ -82,55 +81,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $image = isset($row['image']) ? $row['image'] : '';
     $upload_failed = false;
 
-    if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] !== UPLOAD_ERR_NO_FILE) {
-        $f = $_FILES['image_file'];
-
-        if ($f['error'] !== UPLOAD_ERR_OK) {
-            flash_set('error', 'Image upload failed.');
-            $upload_failed = true;
-        } elseif ($f['size'] > 5 * 1024 * 1024) {
-            flash_set('error', 'Image must be 5 MB or smaller.');
-            $upload_failed = true;
-        } else {
-            $finfo = new finfo(FILEINFO_MIME_TYPE);
-            $mime = $finfo->file($f['tmp_name']);
-
-            $allowed = array(
-                'image/jpeg' => 'jpg',
-                'image/png'  => 'png',
-                'image/webp' => 'webp'
-            );
-
-            if (!isset($allowed[$mime])) {
-                flash_set('error', 'Please upload JPG, PNG or WebP.');
-                $upload_failed = true;
-            } else {
-                $base = make_slug(pathinfo($f['name'], PATHINFO_FILENAME));
-                $ext = $allowed[$mime];
-                $filename = $base . '.' . $ext;
-                $dir = __DIR__ . '/../assets/img/';
-
-                if (!is_dir($dir)) {
-                    @mkdir($dir, 0755, true);
-                }
-
-                if (file_exists($dir . $filename) && $filename !== $image) {
-                    $filename = $base . '-' . time() . '.' . $ext;
-                }
-
-                if (!move_uploaded_file($f['tmp_name'], $dir . $filename)) {
-                    flash_set('error', 'Could not save the uploaded image. Check assets/img permissions.');
-                    $upload_failed = true;
-                } else {
-                    $image = $filename;
-                }
-            }
-        }
+    $upload = handle_image_upload('image_file', $image);
+    if (!$upload['ok']) {
+        flash_set('error', $upload['error']);
+        $upload_failed = true;
+    } elseif ($upload['has_file']) {
+        $image = $upload['filename'];
     }
 
     if ($name === '') {
         flash_set('error', 'Vehicle name is required.');
     } elseif (!$upload_failed) {
+
+        $vehicle_data = array(
+            'name' => $name,
+            'category' => $category,
+            'models' => $models,
+            'seats' => $seats,
+            'luggage' => $luggage,
+            'per_km' => $per_km,
+            'description' => $description,
+            'image' => $image,
+            'sort_order' => $sort_order,
+            'is_active' => $is_active,
+            'local_8h_80km_ac' => $local_8h_80km_ac,
+            'local_8h_80km_nonac' => $local_8h_80km_nonac,
+            'local_12h_300km_ac' => $local_12h_300km_ac,
+            'local_12h_300km_nonac' => $local_12h_300km_nonac,
+            'extra_km_ac' => $extra_km_ac,
+            'extra_km_nonac' => $extra_km_nonac,
+            'airport_transfer' => $airport_transfer,
+            'daily_min_km' => $daily_min_km,
+            'driver_night_allowance' => $driver_night_allowance,
+            'notes' => $notes
+        );
 
         if (defined('DB_OK') && DB_OK && isset($conn) && $conn) {
             if ($id) {
@@ -160,6 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     );
 
                     if ($st->execute()) {
+                        sync_save_vehicle($vehicle_data, $id);
                         flash_set('ok', 'Vehicle updated successfully.');
                         $st->close();
                         header('Location: vehicles.php');
@@ -196,6 +181,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     );
 
                     if ($st->execute()) {
+                        $newDbId = $conn->insert_id;
+                        sync_save_vehicle($vehicle_data, $newDbId);
                         flash_set('ok', 'Vehicle added successfully.');
                         $st->close();
                         header('Location: vehicles.php');
@@ -208,49 +195,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } else {
             // Local JSON storage save
-            $vehicles = load_local_data('vehicles');
-            if ($id) {
-                foreach ($vehicles as &$v) {
-                    if ($v['id'] == $id) {
-                        $v['name'] = $name;
-                        $v['category'] = $category;
-                        $v['models'] = $models;
-                        $v['seats'] = $seats;
-                        $v['luggage'] = $luggage;
-                        $v['per_km'] = $per_km;
-                        $v['description'] = $description;
-                        $v['image'] = $image;
-                        $v['sort_order'] = $sort_order;
-                        $v['is_active'] = $is_active;
-                        $v['local_8h_80km_ac'] = $local_8h_80km_ac;
-                        $v['local_8h_80km_nonac'] = $local_8h_80km_nonac;
-                        $v['local_12h_300km_ac'] = $local_12h_300km_ac;
-                        $v['local_12h_300km_nonac'] = $local_12h_300km_nonac;
-                        $v['extra_km_ac'] = $extra_km_ac;
-                        $v['extra_km_nonac'] = $extra_km_nonac;
-                        $v['airport_transfer'] = $airport_transfer;
-                        $v['daily_min_km'] = $daily_min_km;
-                        $v['driver_night_allowance'] = $driver_night_allowance;
-                        $v['notes'] = $notes;
-                    }
-                }
-                flash_set('ok', 'Vehicle updated successfully.');
-            } else {
-                $newId = count($vehicles) ? max(array_column($vehicles, 'id')) + 1 : 1;
-                $vehicles[] = array(
-                    'id' => $newId, 'name' => $name, 'category' => $category, 'models' => $models,
-                    'seats' => $seats, 'luggage' => $luggage, 'per_km' => $per_km,
-                    'description' => $description, 'image' => $image, 'sort_order' => $sort_order,
-                    'is_active' => $is_active, 'local_8h_80km_ac' => $local_8h_80km_ac,
-                    'local_8h_80km_nonac' => $local_8h_80km_nonac, 'local_12h_300km_ac' => $local_12h_300km_ac,
-                    'local_12h_300km_nonac' => $local_12h_300km_nonac, 'extra_km_ac' => $extra_km_ac,
-                    'extra_km_nonac' => $extra_km_nonac, 'airport_transfer' => $airport_transfer,
-                    'daily_min_km' => $daily_min_km, 'driver_night_allowance' => $driver_night_allowance,
-                    'notes' => $notes
-                );
-                flash_set('ok', 'Vehicle added successfully.');
-            }
-            save_local_data('vehicles', $vehicles);
+            sync_save_vehicle($vehicle_data, $id);
+            flash_set('ok', $id ? 'Vehicle updated successfully.' : 'Vehicle added successfully.');
             header('Location: vehicles.php');
             exit;
         }
@@ -272,6 +218,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'notes'=>$notes
     ));
 }
+
+require_once __DIR__ . '/inc/admin-header.php';
 ?>
 
 <div class="card">

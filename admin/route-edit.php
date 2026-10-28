@@ -4,7 +4,6 @@ require_once __DIR__ . '/auth.php';
 $pg = 'routes';
 $id = get_id();
 $pg_title = $id ? 'Edit route' : 'Add route';
-require_once __DIR__ . '/inc/admin-header.php';
 
 /* ---- Defaults for a new route ---- */
 $row = array(
@@ -58,6 +57,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         flash_set('error', 'Enter the destination city.');
     } else {
 
+        $route_data = array(
+            'from_city' => $from_city,
+            'to_city' => $to_city,
+            'slug' => $slug,
+            'distance_km' => $distance_km,
+            'duration' => $duration,
+            'sedan_fare' => $sedan_fare,
+            'suv_fare' => $suv_fare,
+            'tempo_fare' => $tempo_fare,
+            'description' => $description,
+            'show_on_home' => $show_on_home,
+            'sort_order' => $sort_order,
+            'is_active' => $is_active
+        );
+
         if (defined('DB_OK') && DB_OK && isset($conn) && $conn) {
             /* Slug must be unique */
             $chk = $conn->prepare("SELECT id FROM routes WHERE slug = ? AND id <> ? LIMIT 1");
@@ -68,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($clash) {
                 $slug = $slug . '-' . time();
+                $route_data['slug'] = $slug;
             }
 
             if ($id) {
@@ -88,6 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $show_on_home, $sort_order, $is_active, $id
                     );
                     if ($st->execute()) {
+                        sync_save_route($route_data, $id);
                         flash_set('ok', 'Route saved.');
                         $st->close();
                         header('Location: routes.php');
@@ -114,6 +130,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $show_on_home, $sort_order, $is_active
                     );
                     if ($st->execute()) {
+                        $newDbId = $conn->insert_id;
+                        sync_save_route($route_data, $newDbId);
                         flash_set('ok', 'Route added.');
                         $st->close();
                         header('Location: routes.php');
@@ -125,36 +143,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } else {
             // Local JSON storage save
-            $routes = load_local_data('routes');
-            if ($id) {
-                foreach ($routes as &$r) {
-                    if ($r['id'] == $id) {
-                        $r['from_city'] = $from_city;
-                        $r['to_city'] = $to_city;
-                        $r['slug'] = $slug;
-                        $r['distance_km'] = $distance_km;
-                        $r['duration'] = $duration;
-                        $r['sedan_fare'] = $sedan_fare;
-                        $r['suv_fare'] = $suv_fare;
-                        $r['tempo_fare'] = $tempo_fare;
-                        $r['description'] = $description;
-                        $r['show_on_home'] = $show_on_home;
-                        $r['sort_order'] = $sort_order;
-                        $r['is_active'] = $is_active;
-                    }
-                }
-                flash_set('ok', 'Route saved locally.');
-            } else {
-                $newId = count($routes) ? max(array_column($routes, 'id')) + 1 : 1;
-                $routes[] = array(
-                    'id' => $newId, 'from_city' => $from_city, 'to_city' => $to_city, 'slug' => $slug,
-                    'distance_km' => $distance_km, 'duration' => $duration,
-                    'sedan_fare' => $sedan_fare, 'suv_fare' => $suv_fare, 'tempo_fare' => $tempo_fare,
-                    'description' => $description, 'show_on_home' => $show_on_home, 'sort_order' => $sort_order, 'is_active' => $is_active
-                );
-                flash_set('ok', 'Route added locally.');
-            }
-            save_local_data('routes', $routes);
+            sync_save_route($route_data, $id);
+            flash_set('ok', $id ? 'Route saved.' : 'Route added.');
             header('Location: routes.php');
             exit;
         }
@@ -168,8 +158,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       'description' => $description, 'show_on_home' => $show_on_home,
       'sort_order' => $sort_order, 'is_active' => $is_active
     );
-    echo flash_show();
 }
+
+require_once __DIR__ . '/inc/admin-header.php';
 ?>
 
 <div class="card">

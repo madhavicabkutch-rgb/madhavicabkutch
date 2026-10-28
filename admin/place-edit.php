@@ -4,7 +4,6 @@ require_once __DIR__ . '/auth.php';
 $pg = 'places';
 $id = get_id();
 $pg_title = $id ? 'Edit place' : 'Add place';
-require_once __DIR__ . '/inc/admin-header.php';
 
 $row = array(
   'id' => 0, 'title' => '', 'slug' => '', 'category' => '',
@@ -48,63 +47,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
 
         /* ---- Image upload ---- */
-        if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] !== UPLOAD_ERR_NO_FILE) {
-            $upload = $_FILES['image_file'];
-
-            if ($upload['error'] !== UPLOAD_ERR_OK) {
-                flash_set('error', 'The image upload failed. Please try again.');
-            } elseif ($upload['size'] > 5 * 1024 * 1024) {
-                flash_set('error', 'Image must be 5 MB or smaller.');
-            } else {
-                $finfo = new finfo(FILEINFO_MIME_TYPE);
-                $mime = $finfo->file($upload['tmp_name']);
-
-                $allowed = array(
-                    'image/jpeg' => 'jpg',
-                    'image/png'  => 'png',
-                    'image/webp' => 'webp'
-                );
-
-                if (!isset($allowed[$mime])) {
-                    flash_set('error', 'Please upload a JPG, PNG or WebP image.');
-                } else {
-                    $safeBase = make_slug(pathinfo($upload['name'], PATHINFO_FILENAME));
-                    if ($safeBase === '') {
-                        $safeBase = 'place-image';
-                    }
-
-                    $ext = $allowed[$mime];
-                    $filename = $safeBase . '.' . $ext;
-                    $uploadDir = __DIR__ . '/../assets/img/';
-
-                    if (!is_dir($uploadDir)) {
-                        @mkdir($uploadDir, 0755, true);
-                    }
-
-                    /* Avoid overwriting another existing image. */
-                    if (file_exists($uploadDir . $filename) && $filename !== $image) {
-                        $filename = $safeBase . '-' . time() . '.' . $ext;
-                    }
-
-                    if (!move_uploaded_file($upload['tmp_name'], $uploadDir . $filename)) {
-                        flash_set('error', 'Could not save the uploaded image. Check folder permissions.');
-                    } else {
-                        $image = $filename;
-                    }
-                }
-            }
-        }
-
-        /* Only continue to the database if there was no upload error. */
+        $upload = handle_image_upload('image_file', $image);
         $hasError = false;
-        /* flash messages are not exposed as a state flag, so re-check upload when present. */
-        if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] !== UPLOAD_ERR_NO_FILE) {
-            if (!isset($mime) || !isset($allowed[$mime]) || !isset($filename) || !file_exists(__DIR__ . '/../assets/img/' . $image)) {
-                $hasError = true;
-            }
+
+        if (!$upload['ok']) {
+            flash_set('error', $upload['error']);
+            $hasError = true;
+        } elseif ($upload['has_file']) {
+            $image = $upload['filename'];
         }
 
         if (!$hasError) {
+            $place_data = array(
+                'title' => $title,
+                'slug' => $slug,
+                'category' => $category,
+                'distance_bhuj' => $distance_bhuj,
+                'best_time' => $best_time,
+                'short_desc' => $short_desc,
+                'description' => $description,
+                'image' => $image,
+                'sort_order' => $sort_order,
+                'is_active' => $is_active
+            );
+
             if (defined('DB_OK') && DB_OK && isset($conn) && $conn) {
                 $chk = $conn->prepare("SELECT id FROM places WHERE slug = ? AND id <> ? LIMIT 1");
                 $chk->bind_param('si', $slug, $id);
@@ -113,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $chk->close();
                 if ($clash) {
                     $slug = $slug . '-' . time();
+                    $place_data['slug'] = $slug;
                 }
 
                 if ($id) {
@@ -127,6 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $title, $slug, $category, $distance_bhuj, $best_time,
                             $short_desc, $description, $image, $sort_order, $is_active, $id);
                         if ($st->execute()) {
+                            sync_save_place($place_data, $id);
                             flash_set('ok', 'Place saved.');
                             $st->close();
                             header('Location: places.php');
@@ -147,6 +115,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $title, $slug, $category, $distance_bhuj, $best_time,
                             $short_desc, $description, $image, $sort_order, $is_active);
                         if ($st->execute()) {
+                            $newDbId = $conn->insert_id;
+                            sync_save_place($place_data, $newDbId);
                             flash_set('ok', 'Place added.');
                             $st->close();
                             header('Location: places.php');
@@ -158,35 +128,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             } else {
                 // Local JSON storage save
-                $places = load_local_data('places');
-                if ($id) {
-                    foreach ($places as &$p) {
-                        if ($p['id'] == $id) {
-                            $p['title'] = $title;
-                            $p['slug'] = $slug;
-                            $p['category'] = $category;
-                            $p['distance_bhuj'] = $distance_bhuj;
-                            $p['best_time'] = $best_time;
-                            $p['short_desc'] = $short_desc;
-                            $p['description'] = $description;
-                            $p['image'] = $image;
-                            $p['sort_order'] = $sort_order;
-                            $p['is_active'] = $is_active;
-                        }
-                    }
-                    flash_set('ok', 'Place saved.');
-                } else {
-                    $newId = count($places) ? max(array_column($places, 'id')) + 1 : 1;
-                    $places[] = array(
-                        'id' => $newId, 'title' => $title, 'slug' => $slug,
-                        'category' => $category, 'distance_bhuj' => $distance_bhuj,
-                        'best_time' => $best_time, 'short_desc' => $short_desc,
-                        'description' => $description, 'image' => $image,
-                        'sort_order' => $sort_order, 'is_active' => $is_active
-                    );
-                    flash_set('ok', 'Place added.');
-                }
-                save_local_data('places', $places);
+                sync_save_place($place_data, $id);
+                flash_set('ok', $id ? 'Place saved.' : 'Place added.');
                 header('Location: places.php');
                 exit;
             }
@@ -200,6 +143,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       'image' => $image, 'sort_order' => $sort_order, 'is_active' => $is_active
     );
 }
+
+require_once __DIR__ . '/inc/admin-header.php';
 ?>
 
 <div class="card">

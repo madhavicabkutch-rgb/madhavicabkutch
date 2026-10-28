@@ -1,7 +1,8 @@
 <?php
+require_once __DIR__ . '/auth.php';
+
 $pg = 'routes';
 $pg_title = 'One-way routes';
-require_once __DIR__ . '/inc/admin-header.php';
 
 /* ---- Delete ---- */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'delete') {
@@ -16,11 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'delete') {
                 $st->execute();
                 $st->close();
             }
-        } else {
-            $routes = load_local_data('routes');
-            $routes = array_values(array_filter($routes, function($r) use ($id) { return $r['id'] != $id; }));
-            save_local_data('routes', $routes);
         }
+        sync_delete_route($id);
         flash_set('ok', 'Route deleted.');
     }
     header('Location: routes.php');
@@ -34,19 +32,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'toggle') {
         $col = (post('col') === 'home') ? 'show_on_home' : 'is_active';
         if (defined('DB_OK') && DB_OK && isset($conn) && $conn) {
             $conn->query("UPDATE routes SET `$col` = 1 - `$col` WHERE id = " . $id);
-        } else {
-            $routes = load_local_data('routes');
-            foreach ($routes as &$r) {
-                if ($r['id'] == $id) {
-                    $r[$col] = empty($r[$col]) ? 1 : 0;
-                }
-            }
-            save_local_data('routes', $routes);
         }
+        sync_toggle_route($id, $col);
     }
     header('Location: routes.php');
     exit;
 }
+
+require_once __DIR__ . '/inc/admin-header.php';
 
 $routes = fetch_all("SELECT * FROM routes ORDER BY sort_order ASC, id ASC");
 ?>

@@ -87,3 +87,114 @@ function save_local_data($type, $items) {
     $file = get_local_storage_file($type);
     @file_put_contents($file, json_encode(array_values($items), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 }
+
+function sync_save_vehicle($data, $id = 0) {
+    $items = load_local_data('vehicles');
+    $found = false;
+    if ($id) {
+        foreach ($items as &$v) {
+            if ($v['id'] == $id) {
+                $v = array_merge($v, $data);
+                $v['id'] = (int)$id;
+                $found = true;
+                break;
+            }
+        }
+    }
+    if (!$found) {
+        $newId = $id ? (int)$id : (count($items) ? max(array_column($items, 'id')) + 1 : 1);
+        $data['id'] = $newId;
+        $items[] = $data;
+    }
+    save_local_data('vehicles', $items);
+}
+
+function sync_delete_vehicle($id) {
+    $items = load_local_data('vehicles');
+    $items = array_values(array_filter($items, function($v) use ($id) { return $v['id'] != $id; }));
+    save_local_data('vehicles', $items);
+}
+
+function sync_toggle_vehicle($id) {
+    $items = load_local_data('vehicles');
+    foreach ($items as &$v) {
+        if ($v['id'] == $id) {
+            $v['is_active'] = empty($v['is_active']) ? 1 : 0;
+        }
+    }
+    save_local_data('vehicles', $items);
+}
+
+function sync_save_place($data, $id = 0) {
+    $items = load_local_data('places');
+    $found = false;
+    if ($id) {
+        foreach ($items as &$p) {
+            if ($p['id'] == $id) {
+                $p = array_merge($p, $data);
+                $p['id'] = (int)$id;
+                $found = true;
+                break;
+            }
+        }
+    }
+    if (!$found) {
+        $newId = $id ? (int)$id : (count($items) ? max(array_column($items, 'id')) + 1 : 1);
+        $data['id'] = $newId;
+        $items[] = $data;
+    }
+    save_local_data('places', $items);
+}
+
+function sync_delete_place($id) {
+    $items = load_local_data('places');
+    $items = array_values(array_filter($items, function($p) use ($id) { return $p['id'] != $id; }));
+    save_local_data('places', $items);
+}
+
+function sync_toggle_place($id) {
+    $items = load_local_data('places');
+    foreach ($items as &$p) {
+        if ($p['id'] == $id) {
+            $p['is_active'] = empty($p['is_active']) ? 1 : 0;
+        }
+    }
+    save_local_data('places', $items);
+}
+
+function sync_save_route($data, $id = 0) {
+    $items = load_local_data('routes');
+    $found = false;
+    if ($id) {
+        foreach ($items as &$r) {
+            if ($r['id'] == $id) {
+                $r = array_merge($r, $data);
+                $r['id'] = (int)$id;
+                $found = true;
+                break;
+            }
+        }
+    }
+    if (!$found) {
+        $newId = $id ? (int)$id : (count($items) ? max(array_column($items, 'id')) + 1 : 1);
+        $data['id'] = $newId;
+        $items[] = $data;
+    }
+    save_local_data('routes', $items);
+}
+
+function sync_delete_route($id) {
+    $items = load_local_data('routes');
+    $items = array_values(array_filter($items, function($r) use ($id) { return $r['id'] != $id; }));
+    save_local_data('routes', $items);
+}
+
+function sync_toggle_route($id, $col = 'is_active') {
+    $items = load_local_data('routes');
+    foreach ($items as &$r) {
+        if ($r['id'] == $id) {
+            $r[$col] = empty($r[$col]) ? 1 : 0;
+        }
+    }
+    save_local_data('routes', $items);
+}

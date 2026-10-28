@@ -32,6 +32,7 @@ if (defined('DB_OK') && DB_OK && isset($conn) && $conn) {
                 $path = __DIR__ . '/../assets/img/' . basename($row['image']);
                 if (is_file($path)) @unlink($path);
             }
+            sync_delete_vehicle($id);
             flash_set('ok', 'Vehicle deleted.');
         } else {
             flash_set('error', 'Could not delete vehicle.');
@@ -39,9 +40,7 @@ if (defined('DB_OK') && DB_OK && isset($conn) && $conn) {
         $st->close();
     }
 } else {
-    $vehicles = load_local_data('vehicles');
-    $vehicles = array_values(array_filter($vehicles, function($v) use ($id) { return $v['id'] != $id; }));
-    save_local_data('vehicles', $vehicles);
+    sync_delete_vehicle($id);
     flash_set('ok', 'Vehicle deleted.');
 }
 

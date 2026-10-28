@@ -8,6 +8,10 @@
 
 require_once __DIR__ . '/config.php';
 
+if (!headers_sent()) {
+    header('Cache-Control: no-cache, must-revalidate, max-age=0');
+}
+
 $page_title = isset($page_title) ? $page_title : 'Car Rental & One Way Taxi in Bhuj, Kutch | ' . BIZ_NAME;
 $page_desc  = isset($page_desc)  ? $page_desc  : 'Car rental and one way taxi in Bhuj, Kutch. Sedans, SUVs, tempo travellers and buses with local drivers. Fixed fares, available 24x7.';
 $active     = isset($active)     ? $active     : '';

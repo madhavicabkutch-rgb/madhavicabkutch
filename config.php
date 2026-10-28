@@ -192,7 +192,18 @@ function fetch_all($sql) {
                 $out = array();
                 while ($row = $res->fetch_assoc()) { $out[] = $row; }
                 $res->free();
-                if (count($out)) return $out;
+                if (count($out) > 0) return $out;
+
+                // If 0 rows, check if the underlying table has any rows in MySQL
+                if (preg_match('/from\s+([a-zA-Z0-9_]+)/i', $sql, $m)) {
+                    $tbl = $m[1];
+                    $chk = @$conn->query("SELECT 1 FROM `{$tbl}` LIMIT 1");
+                    if ($chk && $chk->num_rows > 0) {
+                        $chk->free();
+                        return $out; // legitimate empty match
+                    }
+                    if ($chk) $chk->free();
+                }
             }
         } catch (Exception $ex) {}
     }
