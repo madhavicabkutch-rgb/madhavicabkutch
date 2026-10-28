@@ -87,7 +87,7 @@ export function renderPlaceDetailPage({ slug = '', place = null, others = [], se
     <div class="place-body">
       ${place.image ? `
         <div class="place-hero" style="border-radius:12px;overflow:hidden;margin-bottom:30px;max-height:460px">
-          <img src="assets/img/${e(place.image)}" alt="${e(place.title)} in Kutch - Cab Sightseeing Tour from Bhuj" style="width:100%;height:100%;object-fit:cover" loading="lazy">
+          <img src="${(place.image.startsWith('data:') || place.image.startsWith('http')) ? place.image : 'assets/img/' + e(place.image)}" alt="${e(place.title)} in Kutch - Cab Sightseeing Tour from Bhuj" style="width:100%;height:100%;object-fit:cover" loading="lazy">
         </div>
       ` : ''}
 

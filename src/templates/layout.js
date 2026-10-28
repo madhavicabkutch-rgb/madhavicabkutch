@@ -23,7 +23,8 @@ export function waLink(phone, msg) {
 export function photo(file, alt, icon = '&#128663;', fit = 'cover') {
   if (file) {
     const cls = fit === 'contain' ? 'ph contain' : 'ph';
-    return `<div class="${cls}"><img src="/assets/img/${e(file)}" alt="${e(alt)}" loading="lazy"></div>`;
+    const src = (file.startsWith('data:') || file.startsWith('http://') || file.startsWith('https://')) ? file : `/assets/img/${e(file)}`;
+    return `<div class="${cls}"><img src="${src}" alt="${e(alt)}" loading="lazy"></div>`;
   }
   return `<div class="ph">${icon}</div>`;
 }
