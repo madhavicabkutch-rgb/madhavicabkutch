@@ -219,8 +219,10 @@
             <table style="width:100%;border-collapse:collapse;font-size:14px">
               <thead>
                 <tr style="border-bottom:2px solid var(--border);text-align:left">
+                  <th style="padding:10px">Image</th>
                   <th style="padding:10px">Vehicle</th>
-                  <th style="padding:10px">Category</th>
+                  <th style="padding:10px">Type</th>
+                  <th style="padding:10px">Model / Category</th>
                   <th style="padding:10px">Seats</th>
                   <th style="padding:10px">Per Km</th>
                   <th style="padding:10px">12h / 300km AC</th>
@@ -359,8 +361,14 @@
         </div>
       </div>
       <div class="fld">
-        <label>Image Filename (in assets/img/)</label>
-        <input type="text" id="place-image" placeholder="white-rann.jpg">
+        <label>Place Image</label>
+        <div style="display:flex;align-items:center;gap:12px;margin:8px 0">
+          <img id="place-img-preview" src="" alt="preview" style="width:110px;height:70px;object-fit:cover;border-radius:6px;border:1px solid #dbe2ea;display:none;background:#f8fafc">
+          <div style="flex:1">
+            <input type="text" id="place-image" placeholder="white-rann.jpg" style="margin-bottom:4px">
+            <div style="font-size:12px;color:var(--muted)">Filename in assets/img/ (e.g. white-rann.jpg, dholavira.jpg)</div>
+          </div>
+        </div>
       </div>
       <div class="fld">
         <label>Short Description (Card)</label>
@@ -431,8 +439,14 @@
       </div>
       <input type="hidden" id="veh-local8">
       <div class="fld">
-        <label>Image Filename (in assets/img/)</label>
-        <input type="text" id="veh-image" placeholder="sedan.jpg">
+        <label>Vehicle Image</label>
+        <div style="display:flex;align-items:center;gap:12px;margin:8px 0">
+          <img id="veh-img-preview" src="" alt="preview" style="width:110px;height:70px;object-fit:cover;border-radius:6px;border:1px solid #dbe2ea;display:none;background:#f8fafc">
+          <div style="flex:1">
+            <input type="text" id="veh-image" placeholder="sedan.jpg" style="margin-bottom:4px">
+            <div style="font-size:12px;color:var(--muted)">Filename in assets/img/ (sedan.jpg, suv.jpg, innova.jpg, tempo-traveller.jpg, bus.jpg, fortuner.jpg)</div>
+          </div>
+        </div>
       </div>
       <div class="fld">
         <label>Description</label>
@@ -691,12 +705,15 @@
   function renderPlacesTable(list) {
     var tbody = document.getElementById('places-tbody');
     tbody.innerHTML = list.map(function(p, idx){
+      var imgHtml = p.image
+        ? '<img src="/assets/img/' + p.image + '" alt="' + (p.title||'') + '" style="width:70px;height:45px;object-fit:cover;border-radius:6px;border:1px solid #dbe2ea" onerror="this.style.display=\'none\'">'
+        : '—';
       return '<tr style="border-bottom:1px solid #eee">' +
         '<td style="padding:10px">' + (idx + 1) + '</td>' +
-        '<td style="padding:10px"><strong>' + p.title + '</strong></td>' +
+        '<td style="padding:10px"><strong>' + p.title + '</strong><br><span style="font-size:12px;color:var(--muted)">/' + (p.slug||'') + '</span></td>' +
         '<td style="padding:10px">' + (p.category || '—') + '</td>' +
         '<td style="padding:10px">' + (p.distance_bhuj || '—') + '</td>' +
-        '<td style="padding:10px">' + (p.image || '—') + '</td>' +
+        '<td style="padding:10px">' + imgHtml + '</td>' +
         '<td style="padding:10px">' + (p.is_active ? '<span class="badge-active">Active</span>' : '<span class="badge-inactive">Hidden</span>') + '</td>' +
         '<td style="padding:10px">' +
           '<button class="btn btn-out btn-sm btn-edit-place" data-id="' + p.id + '" style="margin-right:6px">Edit</button>' +
@@ -724,6 +741,17 @@
     });
   }
 
+  function updatePlacePreview(img) {
+    var prev = document.getElementById('place-img-preview');
+    if (!prev) return;
+    if (img && img.trim()) {
+      prev.src = '/assets/img/' + img.trim();
+      prev.style.display = 'block';
+    } else {
+      prev.style.display = 'none';
+    }
+  }
+
   function openPlaceModal(item) {
     document.getElementById('place-modal-title').textContent = item ? 'Edit Place' : 'Add Place';
     document.getElementById('place-id').value = item ? item.id : '';
@@ -735,8 +763,13 @@
     document.getElementById('place-short').value = item ? (item.short_desc || '') : '';
     document.getElementById('place-desc').value = item ? (item.description || '') : '';
     document.getElementById('place-active').checked = item ? Boolean(item.is_active) : true;
+    updatePlacePreview(item ? item.image : '');
     document.getElementById('place-modal').classList.add('open');
   }
+
+  document.getElementById('place-image').addEventListener('input', function(e){
+    updatePlacePreview(e.target.value);
+  });
 
   document.getElementById('btn-add-place').addEventListener('click', function(){ openPlaceModal(null); });
 
@@ -781,9 +814,15 @@
   function renderVehiclesTable(list) {
     var tbody = document.getElementById('vehicles-tbody');
     tbody.innerHTML = list.map(function(v){
+      var imgHtml = v.image
+        ? '<img src="/assets/img/' + v.image + '" alt="' + (v.name||'') + '" style="width:90px;height:58px;object-fit:cover;border-radius:7px;border:1px solid #dbe2ea" onerror="this.style.display=\'none\'">'
+        : '<div style="width:90px;height:58px;background:#f1f5f9;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:22px">&#128663;</div>';
+
       return '<tr style="border-bottom:1px solid #eee">' +
+        '<td style="padding:10px">' + imgHtml + '</td>' +
         '<td style="padding:10px"><strong>' + v.name + '</strong></td>' +
         '<td style="padding:10px">' + v.category + '</td>' +
+        '<td style="padding:10px">' + (v.models || '—') + '</td>' +
         '<td style="padding:10px">' + (v.seats || '—') + '</td>' +
         '<td style="padding:10px">' + (v.per_km ? '₹' + v.per_km : '—') + '</td>' +
         '<td style="padding:10px"><strong>' + (v.local_12h_300km_ac ? '₹' + v.local_12h_300km_ac : '—') + '</strong></td>' +
@@ -814,6 +853,17 @@
     });
   }
 
+  function updateVehPreview(img) {
+    var prev = document.getElementById('veh-img-preview');
+    if (!prev) return;
+    if (img && img.trim()) {
+      prev.src = '/assets/img/' + img.trim();
+      prev.style.display = 'block';
+    } else {
+      prev.style.display = 'none';
+    }
+  }
+
   function openVehicleModal(item) {
     document.getElementById('vehicle-modal-title').textContent = item ? 'Edit Vehicle' : 'Add Vehicle';
     document.getElementById('vehicle-id').value = item ? item.id : '';
@@ -828,8 +878,13 @@
     document.getElementById('veh-image').value = item ? (item.image || '') : '';
     document.getElementById('veh-desc').value = item ? (item.description || '') : '';
     document.getElementById('veh-active').checked = item ? Boolean(item.is_active) : true;
+    updateVehPreview(item ? item.image : '');
     document.getElementById('vehicle-modal').classList.add('open');
   }
+
+  document.getElementById('veh-image').addEventListener('input', function(e){
+    updateVehPreview(e.target.value);
+  });
 
   document.getElementById('btn-add-vehicle').addEventListener('click', function(){ openVehicleModal(null); });
 
