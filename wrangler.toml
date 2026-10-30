@@ -7,5 +7,10 @@ compatibility_flags = ["nodejs_compat"]
 directory = "./public"
 binding = "ASSETS"
 
+[[d1_databases]]
+binding = "DB"
+database_name = "madhavicab-db"
+database_id = "f9dc4d74-c6a3-4f3c-90c0-ff9255d8cc07"
+
 [vars]
 SITE_URL = "https://madhavicabkutch.com"

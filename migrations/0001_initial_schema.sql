@@ -90,6 +90,44 @@ CREATE TABLE IF NOT EXISTS outstation_rates (
   is_active INTEGER DEFAULT 1
 );
 
+CREATE TABLE IF NOT EXISTS packages (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  slug TEXT UNIQUE NOT NULL,
+  pkg_type TEXT DEFAULT 'day',
+  duration_label TEXT,
+  distance_label TEXT,
+  price_from REAL,
+  short_desc TEXT,
+  highlights TEXT,
+  itinerary TEXT,
+  inclusions TEXT,
+  exclusions TEXT,
+  image TEXT,
+  show_on_home INTEGER DEFAULT 0,
+  sort_order INTEGER DEFAULT 0,
+  is_active INTEGER DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS faqs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  page TEXT NOT NULL DEFAULT 'home',
+  question TEXT NOT NULL,
+  answer TEXT NOT NULL,
+  sort_order INTEGER DEFAULT 0,
+  is_active INTEGER DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS reviews (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  customer_name TEXT NOT NULL,
+  customer_city TEXT,
+  rating INTEGER DEFAULT 5,
+  review_text TEXT NOT NULL,
+  sort_order INTEGER DEFAULT 0,
+  is_active INTEGER DEFAULT 1
+);
+
 -- Indices for performance
 CREATE INDEX IF NOT EXISTS idx_routes_active_home ON routes(is_active, show_on_home, sort_order);
 CREATE INDEX IF NOT EXISTS idx_places_active ON places(is_active, sort_order);
